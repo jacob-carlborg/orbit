@@ -1,0 +1,8 @@
+.DS_Store
+dsss.last
+dsss_objs
+test.orbspec
+test.zip
+orb
+*.o
+*.a

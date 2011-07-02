@@ -5,11 +5,11 @@
  * License: $(LINK2 http://www.boost.org/LICENSE_1_0.txt, Boost Software License 1.0)
  * 
  */
-module orbit.core.string;
+module ruby.util.string;
 
-public import orbit.core.Array;
-import orbit.util.Version;
-import orbit.util.Traits;
+public import ruby.util.Array;
+import ruby.util.Version;
+import ruby.util.Traits;
 
 version (Tango)
 {
@@ -17,7 +17,6 @@ version (Tango)
 	import tango.text.Unicode : toFold, isDigit;
 	import tango.text.convert.Utf;
 	import tango.text.Util;
-	import tango.text.convert.Format : format = Format;
 	
 	alias tango.stdc.stringz.toStringz toStringz;
 	alias tango.stdc.stringz.toString16z toString16z;
@@ -49,11 +48,9 @@ else
 	alias std.utf.toUTF16z toString16z;
 	
 	alias std.string.toString fromStringz;
-	
-	alias std.string.format format;
 }
 
-static if (Tango && !PhobosCompatibility)
+static if (ruby.util.Version.Tango && !PhobosCompatibility)
 {
 	/**
 	 * string alias
@@ -90,8 +87,8 @@ static if (Tango && !PhobosCompatibility)
 bool equalsIgnoreCase (string str, string anotherString)
 in
 {
-	assert(str.length > 0, "mambo.string.equalsIgnoreCase: The length of the first string was 0");
-	assert(anotherString.length > 0, "mambo.string.equalsIgnoreCase: The length of the second string was 0");
+	assert(str.length > 0, "ruby.util.string.equalsIgnoreCase: The length of the first string was 0");
+	assert(anotherString.length > 0, "ruby.util.string.equalsIgnoreCase: The length of the second string was 0");
 }
 body
 {	
@@ -121,8 +118,8 @@ body
 bool equalsIgnoreCase (wstring str, wstring anotherString)
 in
 {
-	assert(str.length > 0, "mambo.string.equalsIgnoreCase: The length of the first string was 0");
-	assert(anotherString.length > 0, "mambo.string.equalsIgnoreCase: The length of the second string was 0");
+	assert(str.length > 0, "ruby.util.string.equalsIgnoreCase: The length of the first string was 0");
+	assert(anotherString.length > 0, "ruby.util.string.equalsIgnoreCase: The length of the second string was 0");
 }
 body
 {
@@ -155,8 +152,8 @@ body
 bool equalsIgnoreCase (dstring str, dstring anotherString)
 in
 {
-	assert(str.length > 0, "mambo.string.equalsIgnoreCase: The length of the first string was 0");
-	assert(anotherString.length > 0, "mambo.string.equalsIgnoreCase: The length of the second string was 0");
+	assert(str.length > 0, "ruby.util.string.equalsIgnoreCase: The length of the first string was 0");
+	assert(anotherString.length > 0, "ruby.util.string.equalsIgnoreCase: The length of the second string was 0");
 }
 body
 {
@@ -189,8 +186,8 @@ body
 char charAt (string str, size_t index)
 in
 {
-	assert(str.length > 0, "mambo.string.charAt: The length of the string was 0");
-	assert(index <= str.length, "mambo.string.charAt: The index was to greater than the length of the string");
+	assert(str.length > 0, "ruby.util.string.charAt: The length of the string was 0");
+	assert(index <= str.length, "ruby.util.string.charAt: The index was to greater than the length of the string");
 }
 body
 {
@@ -216,8 +213,8 @@ body
 wchar charAt (wstring str, size_t index)
 in
 {
-	assert(str.length > 0, "mambo.string.charAt: The length of the string was 0");
-	assert(index <= str.length, "mambo.string.charAt: The index was to greater than the length of the string");
+	assert(str.length > 0, "ruby.util.string.charAt: The length of the string was 0");
+	assert(index <= str.length, "ruby.util.string.charAt: The index was to greater than the length of the string");
 }
 body
 {
@@ -243,8 +240,8 @@ body
 dchar charAt (dstring str, size_t index)
 in
 {
-	assert(str.length > 0, "mambo.string.charAt: The length of the string was 0");
-	assert(index <= str.length, "mambo.string.charAt: The index was to greater than the length of the string");
+	assert(str.length > 0, "ruby.util.string.charAt: The length of the string was 0");
+	assert(index <= str.length, "ruby.util.string.charAt: The index was to greater than the length of the string");
 }
 body
 {
@@ -278,9 +275,9 @@ body
 string substring (string str, size_t beginIndex, size_t endIndex)
 in
 {
-	assert(str.length > 0, "mambo.string.substring: The length of the string was 0");
-	assert(beginIndex < endIndex, "mambo.string.substring: The first index was greater the second");
-	assert(endIndex <= str.length, "mambo.string.substring: The second index was greater then the length of the string");
+	assert(str.length > 0, "ruby.util.string.substring: The length of the string was 0");
+	assert(beginIndex < endIndex, "ruby.util.string.substring: The first index was greater the second");
+	assert(endIndex <= str.length, "ruby.util.string.substring: The second index was greater then the length of the string");
 }
 body
 {
@@ -314,9 +311,9 @@ body
 wstring substring (wstring str, size_t beginIndex, size_t endIndex)
 in
 {
-	assert(str.length > 0, "mambo.string.substring: The length of the string was 0");
-	assert(beginIndex < endIndex, "mambo.string.substring: The first index was greater the second");
-	assert(endIndex <= str.length, "mambo.string.substring: The second index was greater then the length of the string");
+	assert(str.length > 0, "ruby.util.string.substring: The length of the string was 0");
+	assert(beginIndex < endIndex, "ruby.util.string.substring: The first index was greater the second");
+	assert(endIndex <= str.length, "ruby.util.string.substring: The second index was greater then the length of the string");
 }
 body
 {
@@ -350,9 +347,9 @@ body
 dstring substring (dstring str, size_t beginIndex, size_t endIndex)
 in
 {
-	assert(str.length > 0, "mambo.string.substring: The length of the string was 0");
-	assert(beginIndex < endIndex, "mambo.string.substring: The first index was greater the second");
-	assert(endIndex <= str.length, "mambo.string.substring: The second index was greater then the length of the string");
+	assert(str.length > 0, "ruby.util.string.substring: The length of the string was 0");
+	assert(beginIndex < endIndex, "ruby.util.string.substring: The first index was greater the second");
+	assert(endIndex <= str.length, "ruby.util.string.substring: The second index was greater then the length of the string");
 }
 body
 {
@@ -383,8 +380,8 @@ body
 string substring (string str, size_t index)
 in
 {
-	assert(str.length > 0, "mambo.string.substring: The length of the string was 0");
-	assert(index < str.length, "mambo.string.substring: The index was greater than the length of the string");
+	assert(str.length > 0, "ruby.util.string.substring: The length of the string was 0");
+	assert(index < str.length, "ruby.util.string.substring: The index was greater than the length of the string");
 }
 body
 {
@@ -415,8 +412,8 @@ body
 wstring substring (wstring str, size_t index)
 in
 {
-	assert(str.length > 0, "mambo.string.substring: The length of the string was 0");
-	assert(index < str.length, "mambo.string.substring: The index was greater than the length of the string");
+	assert(str.length > 0, "ruby.util.string.substring: The length of the string was 0");
+	assert(index < str.length, "ruby.util.string.substring: The index was greater than the length of the string");
 }
 body
 {
@@ -447,8 +444,8 @@ body
 dstring substring (dstring str, size_t index)
 in
 {
-	assert(str.length > 0, "mambo.string.substring: The length of the string was 0");
-	assert(index < str.length, "mambo.string.substring: The index was greater than the length of the string");
+	assert(str.length > 0, "ruby.util.string.substring: The length of the string was 0");
+	assert(index < str.length, "ruby.util.string.substring: The index was greater than the length of the string");
 }
 body
 {
@@ -480,7 +477,7 @@ body
 string substr (string str, size_t pos = 0, size_t n = size_t.max)
 in
 {
-	assert(pos < str.length, "mambo.string.substr: The given position was greater than the length of the string.");
+	assert(pos < str.length, "ruby.util.string.substr: The given position was greater than the length of the string.");
 }
 body
 {
@@ -525,7 +522,7 @@ body
 wstring substr (wstring str, size_t pos = 0, size_t n = size_t.max)
 in
 {
-	assert(pos < str.length, "mambo.string.substr: The given position was greater than the length of the string.");
+	assert(pos < str.length, "ruby.util.string.substr: The given position was greater than the length of the string.");
 }
 body
 {
@@ -570,7 +567,7 @@ body
 dstring substr (dstring str, size_t pos = 0, size_t n = size_t.max)
 in
 {
-	assert(pos < str.length, "mambo.string.substr: The given position was greater than the length of the string.");
+	assert(pos < str.length, "ruby.util.string.substr: The given position was greater than the length of the string.");
 }
 body
 {
@@ -681,7 +678,7 @@ size_t find (dstring str, dstring sub, size_t start = 0)
  * Returns: Returns 0 if the content matches, less than zero if a is 
  * 			"less" than b, or greater than zero where a is "bigger".
  * 
- * See_Also: mambo.collection.array.compare
+ * See_Also: ruby.util.Array.compare
  */
 int compareIgnoreCase (U = size_t) (string a, string b, U end = U.max)
 {
@@ -701,7 +698,7 @@ int compareIgnoreCase (U = size_t) (string a, string b, U end = U.max)
  * Returns: Returns 0 if the content matches, less than zero if a is 
  * 			"less" than b, or greater than zero where a is "bigger".
  * 
- * See_Also: mambo.collection.array.compare
+ * See_Also: ruby.util.Array.compare
  */
 int compareIgnoreCase (U = size_t) (wstring a, wstring b, U end = U.max)
 {
@@ -721,7 +718,7 @@ int compareIgnoreCase (U = size_t) (wstring a, wstring b, U end = U.max)
  * Returns: Returns 0 if the content matches, less than zero if a is 
  * 			"less" than b, or greater than zero where a is "bigger".
  * 
- * See_Also: mambo.collection.array.compare
+ * See_Also: ruby.util.Array.compare
  */
 int compareIgnoreCase (U = size_t) (dstring a, dstring b, U end = U.max)
 {
@@ -741,7 +738,7 @@ int compareIgnoreCase (U = size_t) (dstring a, dstring b, U end = U.max)
  * Returns: Returns 0 if the content matches, less than zero if a is 
  * 			"less" than b, or greater than zero where a is "bigger".
  * 
- * See_Also: mambo.string.compareIgnoreCase
+ * See_Also: ruby.util.string.compareIgnoreCase
  */
 alias compareIgnoreCase icompare;
 

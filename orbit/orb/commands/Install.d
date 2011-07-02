@@ -6,8 +6,10 @@
  */
 module orbit.orb.commands.Install;
 
-import orbit.orb.Command;
 import orbit.core._;
+import orbit.orb.Command;
+import orbit.orbit.Installer;
+import orbit.orbit.Orb;
 
 class Install : Command
 {
@@ -25,6 +27,11 @@ class Install : Command
 	
 	void execute ()
 	{
+		auto orbPath = "/Users/doob/development/eclipse_workspace/orbit/src/test.zip";
+		
+		scope installer = new Installer(Orb.load(orbPath));
+		installer.install;
+		
 		// name = args.first;
 		// auto ver = "";
 		// 

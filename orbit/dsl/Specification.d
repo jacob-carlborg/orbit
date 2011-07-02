@@ -6,16 +6,18 @@
  */
 module orbit.dsl.Specification;
 
+import tango.io.device.File;
+import tango.text.convert.Format : format = Format;
+
 import ruby.c.ruby;
 import ruby.c.intern;
 import ruby.core.Environment;
 import ruby.core.Object;
 import ruby.core.String;
 
-import tango.io.device.File;
-
 import orbit.core._;
 import orbit.dsl.ruby._;
+import Path = orbit.io.Path;
 
 class Specification
 {
@@ -29,7 +31,8 @@ class Specification
 		string name_;
 		string summary_;
 		string version__;
-		string filename_;
+		string[] files_;
+		string orbspecPath_;
 	}
 	
 	static Specification load (string file)
@@ -44,8 +47,10 @@ class Specification
 		auto binding = specEnv.get_binding;
 
 		binding.eval(content);
+		auto spec = new Specification(specEnv);
+		spec.orbspecPath_ = Path.toAbsolute(file);
 
-		return setSpecValues(new Specification(specEnv), specEnv);
+		return setSpecValues(spec, specEnv);
 	}
 	
 	private this (SpecificationEnviroment specEnv)
@@ -55,7 +60,7 @@ class Specification
 	
 	string[] files ()
 	{
-		return ["/Users/doob/development/eclipse_workspace/orbit/src/test.orbspec"[]];
+		return files_;
 	}
 	
 	string name ()
@@ -68,6 +73,7 @@ class Specification
 		return summary_;
 	}
 	
+	/// The version of the orb package
 	string version_ ()
 	{
 		return version__;
@@ -78,19 +84,33 @@ class Specification
 		return null;
 	}
 	
+	/// The version of orbit this specification was created with
 	string orbitVersion ()
 	{
 		return null;
 	}
 	
+	/// The version this specification is written in
 	string specificationVersion ()
 	{
 		return null;
 	}
 	
-	string filename ()
+	/// The path to the orbspec file that this instance represents
+	string orbspecPath ()
 	{
-		return filename_;
+		return orbspecPath_;
+	}
+	
+	string toYaml ()
+	{
+		auto yaml = format("--- !d/object: {}\nname: {}\nversion: {}\nsummary: {}\nbuild: {}\nfiles:\n",
+							this.classinfo.name, name, version_, summary);
+		
+		foreach (file ; files)
+			yaml ~= format("    - {}\n", file);
+			
+		return yaml;
 	}
 	
 	private static Specification setSpecValues (Specification spec, SpecificationEnviroment specEnv)
@@ -98,7 +118,8 @@ class Specification
 		spec.name_ = specEnv.name;
 		spec.summary_ = specEnv.summary;
 		spec.version__ = specEnv.version_;
-		
+		spec.files_ = specEnv.files;
+
 		return spec;
 	}
 }

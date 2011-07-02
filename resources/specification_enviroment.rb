@@ -1,3 +1,9 @@
+class String
+	def / (string)
+		File.join(self, string)
+	end
+end
+
 def accessor (*names)
 	names.each do |name|
 		instance_name = "@#{name}"
@@ -8,7 +14,11 @@ def accessor (*names)
 end
 
 module SpecificationDsl
-	accessor :name, :summary, :version
+	accessor :name, :summary, :version, :files, :build
+	
+	# def initialize
+	# 	@build = :dsss
+	# end
 end
 
 class SpecificationEnviroment

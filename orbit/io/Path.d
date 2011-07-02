@@ -10,8 +10,12 @@ import tango.core.Exception;
 public import tango.io.Path;
 import tango.stdc.posix.sys.stat;
 import tango.sys.Common;
+import tango.sys.Environment;
 
 import orbit.core._;
+
+alias Environment.toAbsolute toAbsolute;
+alias Environment.cwd workingDirectory;
 
 bool isSymlink (string path)
 {
@@ -56,60 +60,26 @@ int remove (string path, bool recursive = false)
 	return removePath(path) ? result + 1 : result;
 }
 
-enum Owner
-{
-	Read = S_IRUSR,
-	Write = S_IWUSR,
-	Execute = S_IXUSR,
-	All = S_IRWXU
-}
+void moveForce (string source, string destination)
+{	
+	if (exists(destination))
+		remove(destination, true);
 
-enum Group
-{
-	Read = S_IRGRP,
-	Write = S_IWGRP,
-	Execute = S_IXGRP,
-	All = S_IRWXG
-}
+	bool createParentOnly = false;
 
-enum Others
-{
-	Read = S_IROTH,
-	Write = S_IWOTH,
-	Execute = S_IXOTH,
-	All = S_IRWXO
-}
+	if (isFile(source))
+		createParentOnly = true;
+	
+	version (Windows)
+		createParentOnly = true;
+	
+	if (createParentOnly)
+		createPath(parse(destination).path);
 
-void permission (string path, ushort mode)
-{
-	if (chmod((path ~ '\0').ptr, mode) == -1)
-		throw new IOException(path ~ ": " ~ SysError.lastMsg);
-}
+	else
+		createPath(destination);
 
-private template permissions (alias reference)
-{
-	const permissions = "if (add)
-	{
-		if (read) m |= " ~ reference.stringof ~ ".Read;
-		if (write) m |= " ~ reference.stringof ~ ".Write;
-		if (execute) m |= " ~ reference.stringof ~ ".Execute;
-	}
-
-	else if (remove)
-	{
-		if (read) m &= ~" ~ reference.stringof ~ ".Read;
-		if (write) m &= ~" ~ reference.stringof ~ ".Write;
-		if (execute) m &= ~" ~ reference.stringof ~ ".Execute;
-	}
-
-	else if (assign)
-	{
-		m = 0;
-
-		if (read) m |= " ~ reference.stringof ~ ".Read;
-		if (write) m |= " ~ reference.stringof ~ ".Write;
-		if (execute) m |= " ~ reference.stringof ~ ".Execute;
-	}";
+	rename(source, destination);
 }
 
 void validatePath (string path)
@@ -117,6 +87,8 @@ void validatePath (string path)
 	if (!exists(path))
 		throw new IOException("File not found \"" ~ path ~ "\"");
 }
+
+version (Posix):
 
 void permission (string path, string mode)
 {
@@ -180,6 +152,62 @@ void permission (string path, string mode)
 	}
 
 	permission(path, m);
+}
+
+enum Owner
+{
+	Read = S_IRUSR,
+	Write = S_IWUSR,
+	Execute = S_IXUSR,
+	All = S_IRWXU
+}
+
+enum Group
+{
+	Read = S_IRGRP,
+	Write = S_IWGRP,
+	Execute = S_IXGRP,
+	All = S_IRWXG
+}
+
+enum Others
+{
+	Read = S_IROTH,
+	Write = S_IWOTH,
+	Execute = S_IXOTH,
+	All = S_IRWXO
+}
+
+void permission (string path, ushort mode)
+{
+	if (chmod((path ~ '\0').ptr, mode) == -1)
+		throw new IOException(path ~ ": " ~ SysError.lastMsg);
+}
+
+private template permissions (alias reference)
+{
+	const permissions = "if (add)
+	{
+		if (read) m |= " ~ reference.stringof ~ ".Read;
+		if (write) m |= " ~ reference.stringof ~ ".Write;
+		if (execute) m |= " ~ reference.stringof ~ ".Execute;
+	}
+
+	else if (remove)
+	{
+		if (read) m &= ~" ~ reference.stringof ~ ".Read;
+		if (write) m &= ~" ~ reference.stringof ~ ".Write;
+		if (execute) m &= ~" ~ reference.stringof ~ ".Execute;
+	}
+
+	else if (assign)
+	{
+		m = 0;
+
+		if (read) m |= " ~ reference.stringof ~ ".Read;
+		if (write) m |= " ~ reference.stringof ~ ".Write;
+		if (execute) m |= " ~ reference.stringof ~ ".Execute;
+	}";
 }
 
 private ushort permission (string path)

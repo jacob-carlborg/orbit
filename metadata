@@ -1,0 +1,35 @@
+--- !d/object: orbit.dsl.Specification.Specification
+name: Orbit
+version: 0.0.1
+summary: Orbit is a package management framework for the D programming language.
+files:
+    - orbit/core/_.d
+    - orbit/core/Array.d
+    - orbit/core/io.d
+    - orbit/core/string.d
+    - orbit/dsl/_.d
+    - orbit/dsl/ruby/_.d
+    - orbit/dsl/ruby/SpecificationEnviroment.d
+    - orbit/dsl/Specification.d
+    - orbit/io/Path.d
+    - orbit/orb/Application.d
+    - orbit/orb/Command.d
+    - orbit/orb/CommandManager.d
+    - orbit/orb/commands/_.d
+    - orbit/orb/commands/Build.d
+    - orbit/orb/commands/Install.d
+    - orbit/orb/Exceptions.d
+    - orbit/orb/Options.d
+    - orbit/orb/Orb.d
+    - orbit/orb/util/OptionParser.d
+    - orbit/orbit/_.d
+    - orbit/orbit/Builder.d
+    - orbit/orbit/Exceptions.d
+    - orbit/orbit/Orb.d
+    - orbit/orbit/Orbit.d
+    - orbit/orbit/OrbitObject.d
+    - orbit/util/_.d
+    - orbit/util/Singleton.d
+    - orbit/util/Traits.d
+    - orbit/util/Use.d
+    - orbit/util/Version.d

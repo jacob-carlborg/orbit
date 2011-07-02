@@ -10,6 +10,7 @@ import ruby.core.Object;
 import ruby.core.Binding;
 import ruby.core.String;
 import ruby.core.Array;
+import ruby.util.string;
 
 struct SpecificationEnviroment
 {
@@ -36,5 +37,22 @@ struct SpecificationEnviroment
 	Binding get_binding ()
 	{
 		return cast(Binding) call("get_binding");
+	}
+	
+	string[] files ()
+	{
+		auto files = cast(Array) call("files");
+		return toStringArray(files);
+	}
+	
+	private string[] toStringArray (Array array)
+	{
+		string[] result;
+		result.reserve(array.length);
+		
+		foreach (e ; array)
+			result ~= (cast(String) e).get;
+			
+		return result;
 	}
 }

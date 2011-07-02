@@ -1,11 +1,11 @@
 /**
- * Copyright: Copyright (c) 2008-2009 Jacob Carlborg. All rights reserved.
+ * Copyright: Copyright (c) 2008-2011 Jacob Carlborg. All rights reserved.
  * Authors: Jacob Carlborg
  * Version: Initial created: 2008
  * License: $(LINK2 http://www.boost.org/LICENSE_1_0.txt, Boost Software License 1.0)
  * 
  */
-module orbit.core.Array;
+module ruby.util.Array;
 
 version (Tango)
 {
@@ -23,7 +23,7 @@ else
 	import stdString = std.string;
 }
 
-import orbit.util.Traits;
+import ruby.util.Traits;
 
 /**
  * Inserts the specified element at the specified position in the array. Shifts the
@@ -43,8 +43,8 @@ import orbit.util.Traits;
 T[] insert (T, U = size_t) (ref T[] arr, U index, T element)
 in
 {
-	assert(arr.length > 0, "mambo.collection.Array.insert: The length of the array was 0");
-	assert(index <= arr.length, "mambo.collection.Array.insert: The index was greater than the length of the array");
+	assert(arr.length > 0, "ruby.util.Array.insert: The length of the array was 0");
+	assert(index <= arr.length, "ruby.util.Array.insert: The index was greater than the length of the array");
 }
 body
 {
@@ -81,8 +81,8 @@ body
 T[] insert (T, U = size_t) (ref T[] arr, U index, T[] element)
 in
 {
-	assert(arr.length > 0, "mambo.collection.Array.insert: The length of the array was 0");
-	assert(index <= arr.length, "mambo.collection.Array.insert: The index was greater than the length of the array");
+	assert(arr.length > 0, "ruby.util.Array.insert: The length of the array was 0");
+	assert(index <= arr.length, "ruby.util.Array.insert: The index was greater than the length of the array");
 }
 body
 {
@@ -119,8 +119,8 @@ body
 T[] add (T, U = size_t) (ref T[] arr, U index, T element)
 in
 {
-	assert(arr.length > 0, "mambo.collection.Array.add: The length of the array was 0");
-	assert(index <= arr.length, "mambo.collection.Array.add: The index was greater than the length of the array");
+	assert(arr.length > 0, "ruby.util.Array.add: The length of the array was 0");
+	assert(index <= arr.length, "ruby.util.Array.add: The index was greater than the length of the array");
 }
 body
 {
@@ -158,8 +158,8 @@ T[] add (T) (ref T[] arr, T element)
 T remove (T, U = size_t) (ref T[] arr, U index)
 in
 {
-	assert(arr.length > 0, "mambo.collection.Array.remove: The length of the array was 0");
-	assert(index < arr.length, "mambo.collection.Array.remove: The index was greater than the length of the array");
+	assert(arr.length > 0, "ruby.util.Array.remove: The length of the array was 0");
+	assert(index < arr.length, "ruby.util.Array.remove: The index was greater than the length of the array");
 }
 body
 {
@@ -197,7 +197,7 @@ body
 T remove (T) (ref T[] arr, T element)
 in
 {
-	assert(arr.length > 0, "mambo.collection.Array.remove: The length of the array was 0");
+	assert(arr.length > 0, "ruby.util.Array.remove: The length of the array was 0");
 }
 out (result)
 {
@@ -231,7 +231,7 @@ body
 U indexOf (T, U = size_t) (T[] arr, T element, U start = 0)
 in
 {
-	assert(start >= 0, "mambo.collection.Array.indexOf: The start index was less than 0");
+	assert(start >= 0, "ruby.util.Array.indexOf: The start index was less than 0");
 }
 body
 {
@@ -278,7 +278,7 @@ body
 bool contains (T) (T[] arr, T element)
 in
 {
-	assert(arr.length > 0, "mambo.collection.Array.contains: The length of the array was 0");
+	assert(arr.length > 0, "ruby.util.Array.contains: The length of the array was 0");
 }
 body
 {
@@ -352,7 +352,7 @@ alias isEmpty empty;
 T[] clear (T) (ref T[] arr)
 out (result)
 {
-	assert(result.length == 0, "mambo.collection.Array.clear: The length of the resulting array was not 0");
+	assert(result.length == 0, "ruby.util.Array.clear: The length of the resulting array was not 0");
 }
 body
 {
@@ -376,8 +376,8 @@ body
 T get (T, U = size_t) (T[] arr, U index)
 in
 {
-	assert(arr.length > 0, "mambo.collection.Array.get: The length of the array was 0");
-	assert(index < arr.length, "mambo.collection.Array.get: The index was greater than the length of the array");
+	assert(arr.length > 0, "ruby.util.Array.get: The length of the array was 0");
+	assert(index < arr.length, "ruby.util.Array.get: The index was greater than the length of the array");
 }
 body
 {
@@ -404,7 +404,7 @@ version (Tango)
 	U lastIndexOf (T, U = size_t) (in T[] arr, T element)
 	in
 	{
-		assert(arr.length > 0, "mambo.collection.Array.lastIndexOf: The length of the array was 0");
+		assert(arr.length > 0, "ruby.util.Array.lastIndexOf: The length of the array was 0");
 	}
 	body
 	{
@@ -422,7 +422,7 @@ else
 	U lastIndexOf (T, U = size_t) (in T[] arr, dchar element)
 	in
 	{
-		assert(arr.length > 0, "mambo.collection.Array.lastIndexOf: The length of the array was 0");
+		assert(arr.length > 0, "ruby.util.Array.lastIndexOf: The length of the array was 0");
 	}
 	body
 	{
@@ -477,7 +477,7 @@ alias indexOf find;
 T[] replace (T, U = size_t) (ref T[] arr, U pos, U n, T[] elements)
 in
 {
-	assert(pos <= arr.length, "mambo.collection.Array.replace: The position was greter than the length of the array");
+	assert(pos <= arr.length, "ruby.util.Array.replace: The position was greter than the length of the array");
 }
 body
 {
@@ -553,7 +553,7 @@ body
 T[] erase (T, U = size_t) (ref T[] arr, U start = 0, U n = U.max)
 in
 {
-	assert(start <= arr.length, "mambo.collection.Array.erase: The start position was greater than the length of the array");
+	assert(start <= arr.length, "ruby.util.Array.erase: The start position was greater than the length of the array");
 }
 body
 {	
@@ -687,20 +687,7 @@ T[] repeat (T) (T[] arr, int number)
 	T[] result;
 	
 	for (int i = 0; i <= number; i++)
-		result ~= arr;
+		result ~= a;
 	
 	return result;
-}
-
-/**
- * Returns $(D_KEYWORD true) if this array contains any elements.
- * 
- * Params:
- *     arr = the array to check if it contains elements
- *
- * Returns: $(D_KEYWORD true) if this array contains elements
- */
-bool any (T) (T[] arr)
-{
-	return arr.length > 0;
 }

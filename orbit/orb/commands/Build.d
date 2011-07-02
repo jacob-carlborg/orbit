@@ -8,7 +8,7 @@ module orbit.orb.commands.Build;
 
 import orbit.core._;
 import orbit.dsl.Specification;
-import orbit.orbit.Builder;
+import orbit.orbit.Archiver;
 
 import orbit.orb.Command;
 
@@ -29,7 +29,7 @@ class Build : Command
 	void execute ()
 	{
 		auto spec = Specification.load("/Users/doob/development/eclipse_workspace/orbit/src/test.orbspec");
-		auto builder = new Builder(spec, "/Users/doob/development/eclipse_workspace/orbit/src/test.zip");
-		builder.build;
+		scope archiver = new Archiver(spec, "/Users/doob/development/eclipse_workspace/orbit/src/test.zip");
+		archiver.archive;
 	}
 }

@@ -9,7 +9,6 @@ module ruby.c.st;
 import tango.stdc.config;
 import tango.stdc.stdint;
 
-import ruby.c.ruby;
 import ruby.c.config;
 
 extern (C):

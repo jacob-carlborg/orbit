@@ -18,7 +18,6 @@ import ruby.c.intern;
 import ruby.c.oniguruma;
 import ruby.c.st;
 import ruby.util.string;
-import mambo.io;
 
 extern (C):
 

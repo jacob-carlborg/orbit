@@ -4,7 +4,7 @@
  * Version: Initial created: Mar 28, 2009
  * License: $(LINK2 http://www.boost.org/LICENSE_1_0.txt, Boost Software License 1.0)
  */
-module mambo.util.Version;
+module ruby.util.Version;
 
 template Version (char[] V)
 {

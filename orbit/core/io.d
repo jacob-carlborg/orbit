@@ -5,14 +5,14 @@
  * License: $(LINK2 http://www.boost.org/LICENSE_1_0.txt, Boost Software License 1.0)
  * 
  */
-module mambo.io;
+module orbit.core.io;
 
 version (Tango)
 {
 	import tango.io.Stdout;
 	import tango.io.Console;
 	
-	import mambo.string;
+	import orbit.core.string;
 }
 
 else 

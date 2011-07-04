@@ -7,7 +7,6 @@
 module ruby.c.defines;
 
 import ruby.c.config;
-import ruby.c.ruby;
 
 static if (SIZEOF_INT * 2 <= SIZEOF_LONG_LONG)
 {

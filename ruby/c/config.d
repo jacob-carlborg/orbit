@@ -10,7 +10,6 @@ import tango.stdc.config;
 import tango.stdc.posix.unistd;
 import tango.stdc.posix.sys.select;
 
-import ruby.c.ruby;
 import ruby.util.Version;
 	
 version (linux)

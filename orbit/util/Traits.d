@@ -22,7 +22,7 @@ else
 	alias std.traits.ReturnType ReturnTypeOf;
 }
 
-import mambo.string;
+import orbit.core.string;
 
 template isPrimitive (T)
 {

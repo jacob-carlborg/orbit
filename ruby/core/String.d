@@ -65,7 +65,7 @@ struct String
 		return rb_str_split(self, (delim ~ '\0').ptr);
 	}
 	
-	string get ()
+	string toD ()
 	{
 		return self != Qnil ? fromStringz(StringValueCStr(self)) : null;
 	}

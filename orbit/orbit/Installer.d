@@ -33,9 +33,9 @@ class Installer : OrbitObject
 	
 	void install ()
 	{
+		clean;
 		build;
 		moveFiles;
-		clean;
 	}
 	
 	string installPath ()
@@ -48,13 +48,10 @@ private:
 	void build ()
 	{
 		verbose("Building:");
-		verbose("Working directory: ", Path.workingDirectory);
 		
-		auto prevWorkingDirectory = Path.workingDirectory;
-		println(Path.join(tmpPath, orbit.constants.orbData));
-		Path.workingDirectory = Path.join(tmpPath, orbit.constants.orbData);
-		Builder.newBuilder(orbit, orb).build;
-		Path.workingDirectory = prevWorkingDirectory;
+		auto builder = Builder.newBuilder(orbit, orb);
+		builder.workingDirectory = Path.join(tmpPath, orbit.constants.orbData);
+		builder.build;
 	}
 	
 	string tmpPath ()
@@ -71,13 +68,20 @@ private:
 		if (Path.exists(fullInstallPath))
 			throw new OrbitException(`The path "` ~ fullInstallPath ~ `" already exists.`, __FILE__, __LINE__);
 		
-		Path.createPath(fullInstallPath);
+		auto path = Path.join(fullInstallPath, orbit.constants.bin);
+		auto tmpDataPath = Path.join(tmpPath, orbit.constants.orbData);
 		
-		foreach (file ; orb.files)
+		Path.createPath(path);
+		
+		foreach (file ; orb.executables)
 		{
-			verbose("Source:", Path.join(tmpPath, file));
-			verbose("Destination: ", Path.join(fullInstallPath, file));
-			//Path.moveForce(file, Path.join(target, file));
+			auto source = Path.join(tmpDataPath, file);
+			auto destination = Path.join(path, file);
+
+			verbose("Source:", source);
+			verbose("Destination: ", destination);
+
+			Path.moveForce(source, destination);
 		}
 	}
 	

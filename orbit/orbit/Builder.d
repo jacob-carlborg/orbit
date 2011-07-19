@@ -7,11 +7,13 @@
 module orbit.orbit.Builder;
 
 import tango.sys.Process;
+import tango.io.Stdout;
 
 import orbit.core._;
 import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
+import Path = orbit.io.Path;
 
 abstract class Builder : OrbitObject
 {
@@ -24,6 +26,8 @@ abstract class Builder : OrbitObject
 		rdmd,
 		shell,
 	}
+	
+	string workingDirectory;
 	
 	mixin Constructors;
 	
@@ -53,11 +57,36 @@ abstract class Builder : OrbitObject
 	}
 	
 	protected void execute (string[] args ...)
-	{		
+	{
+		verbose("Working directory: ", workingDirectory);
 		verbose("Executing command: ");
 		verbose(args);
-		//auto process = new Process(args);
-		//process.execute;
+
+		auto cleanedArgs = cleanArgs(args);
+		auto process = new Process(true, cleanedArgs); // copy the environment 
+		process.workDir = workingDirectory;
+
+		process.execute;		
+		auto result = process.wait;
+
+		if (orbit.isVerbose || result.reason != Process.Result.Exit)
+		{
+			verbose("Output of the build process:", "\n");
+			Stdout.copy(process.stdout).flush;
+			// verbose();
+			// verbose("Process ", process.programName, '(', process.pid, ')', " exited with:");
+			// verbose("reason: ", result.toString);
+			// verbose("status: ", result.status, "\n");
+			verbose(result.toString);
+		}
+	}
+	
+	private string[] cleanArgs (string[] args)
+	{
+		if (args.any() && args[0].empty())
+			return args[0 .. $ - 1];
+
+		return args;
 	}
 }
 
@@ -111,7 +140,7 @@ class Dsss : Builder
 	
 	void build ()
 	{
-		execute("dsss build", orb.buildArgs);
+		execute("dsss", "build"[] ~ orb.buildArgs);
 	}
 }
 

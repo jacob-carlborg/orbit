@@ -6,8 +6,6 @@
  */
 module orbit.orbit.Orb;
 
-import Zip = tango.util.compress.Zip : extractArchive;
-
 import orbit.core._;
 import orbit.dsl.Specification;
 import orbit.io.Path;
@@ -31,19 +29,27 @@ class Orb
 	const Orbit orbit;
 	const OrbVersion version_;
 	
+	string name;
+	string[] executables;
+
+	Builder.Tool buildTool;
+	
 	private
 	{
 		string fullName_;
-		Type type_ = Type.library;
 		string target_;
 		string path_;
+
+		Type type_ = Type.executable;
 	}
 	
 	this (Orbit orbit, Specification spec)
 	{
 		this.orbit = orbit;
 		specification = spec;
-		version_ = OrbVersion.parse(spec.version_);
+		version_ = OrbVersion.parse(specification.version_);
+
+		setValues;
 	}
 	
 	static Orb load (string path, Orbit orbit = Orbit.defaultOrbit)
@@ -52,25 +58,12 @@ class Orb
 		loader.load(path);
 		auto metaDataPath = join(loader.temporaryPath, orbit.constants.orbMetaData);
 
-		auto orb = new Orb(orbit, Specification.load(metaDataPath));
-		orb.path_ = path;
-		
-		return orb;
-	}
-	
-	string name ()
-	{
-		return specification.name;
+		return new Orb(orbit, Specification.load(metaDataPath));
 	}
 	
 	string fullName ()
 	{
 		return fullName_ = fullName_.any() ? fullName_ : name ~ "-" ~ version_.toString;
-	}
-	
-	Builder.Tool buildTool () 
-	{
-		return orbit.spec.defaultBuildTool;
 	}
 	
 	Type type ()
@@ -92,7 +85,7 @@ class Orb
 	string[] buildArgs ()
 	{
 		//assert(false, "not implemented");
-		return [""];
+		return null;
 	}
 	
 	string path ()
@@ -114,5 +107,14 @@ class Orb
 			case Type.library: return target_ = orbit.constants.libPrefix ~ name ~ orbit.constants.libExtension;
 			case Type.source: return target_ = name;
 		}
+	}
+	
+private:
+	
+	void setValues ()
+	{
+		name = specification.name;
+		buildTool = orbit.spec.defaultBuildTool;
+		executables = specification.executables;
 	}
 }

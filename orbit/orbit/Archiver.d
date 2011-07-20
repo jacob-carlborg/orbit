@@ -33,10 +33,10 @@ class Archiver
 	{
 		writer = new ZipBlockWriter(path);
 		writer.method = Method.Deflate;
-		
+
 		foreach (file ; spec.files)
 			addFileToArchive(file);
-		
+
 		addMetaData;
 		writer.finish;
 	}

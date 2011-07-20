@@ -36,20 +36,20 @@ class Orbit
 	private static Orbit defaultConfiguration (Orbit orbit)
 	{
 		version (Posix)
-		{
-			orbit.path = new PathPosix;
-			
+		{			
 			version (darwin)
 				orbit.constants = new ConstantsDarwin;
 				
 			else
 				orbit.constants = new ConstantsPosix;
+
+			orbit.path = new PathPosix(orbit.constants);
 		}
 			
 		else version (Windows)
 		{
-			orbit.path = new PathWindows;
 			orbit.constants = new ConstantsWindows;
+			orbit.path = new PathWindows(orbit.constants);
 		}
 		
 		orbit.verboseHandler = (string[] args ...) {
@@ -97,6 +97,20 @@ abstract class Path
 		string orbs_;
 		string specifications_;
 		string tmp_;
+		Constants constants;
+	}
+	
+	template Constructor ()
+	{
+		this (Constants constants)
+		{
+			super(constants);
+		}
+	}
+	
+	this (Constants constants)
+	{
+		this.constants = constants;
 	}
 	
 	abstract string defaultHome ();
@@ -113,7 +127,7 @@ abstract class Path
 	
 	string bin ()
 	{
-		return bin_ = bin_.length > 0 ? bin_ : join(home, "bin");
+		return bin_ = bin_.length > 0 ? bin_ : join(home, constants.bin);
 	}
 	
 	string bin (string bin)
@@ -123,7 +137,7 @@ abstract class Path
 	
 	string orbs ()
 	{
-		return orbs_ = orbs_.length > 0 ? orbs_ : join(home, "orbs");
+		return orbs_ = orbs_.length > 0 ? orbs_ : join(home, constants.orbs);
 	}
 	
 	string orbs (string orbs)
@@ -133,7 +147,7 @@ abstract class Path
 	
 	string specifications ()
 	{
-		return specifications_ = specifications_.length > 0 ? specifications_ : join(home, "specifications");
+		return specifications_ = specifications_.length > 0 ? specifications_ : join(home, constants.specifications);
 	}
 	
 	string specifications (string specifications)
@@ -143,7 +157,7 @@ abstract class Path
 	
 	string tmp ()
 	{
-		return tmp_ = tmp_.length > 0 ? tmp_ : join(home, "tmp");
+		return tmp_ = tmp_.length > 0 ? tmp_ : join(home, constants.tmp);
 	}
 	
 	string tmp (string tmp)
@@ -154,6 +168,8 @@ abstract class Path
 
 class PathPosix : Path
 {
+	mixin Path.Constructor;
+	
 	string defaultHome ()
 	{
 		return "/usr/local/orbit";
@@ -162,6 +178,8 @@ class PathPosix : Path
 
 class PathWindows : Path
 {
+	mixin Path.Constructor;
+	
 	string defaultHome ()
 	{
 		assert(false, "not implemented");
@@ -181,15 +199,12 @@ abstract class Constants
 	abstract string libExtension ();
 	abstract string libPrefix ();
 	
-	string orbData ()
-	{
-		return "data";
-	}
-	
-	string orbMetaData ()
-	{
-		return "metadata";
-	}
+	string orbData = "data";
+	string orbMetaData = "metadata";
+	string bin = "bin";
+	string tmp = "tmp";
+	string specifications = "specifications";
+	string orbs = "orbs";
 }
 
 class ConstantsPosix : Constants

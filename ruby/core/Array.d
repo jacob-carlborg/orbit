@@ -12,6 +12,7 @@ import tango.sys.win32.Types;
 import ruby.c.intern;
 import ruby.c.ruby;
 import ruby.core.Object;
+import ruby.core.String;
 
 struct Array
 {
@@ -86,5 +87,15 @@ struct Array
 		
 		return result;
 	}
-}
+	
+	string[] toStringArray ()
+	{
+		string[] result;
+		result.reserve(length);
+		
+		foreach (e ; *this)
+			result ~= String(e).toD;
 
+		return result;
+	}
+}

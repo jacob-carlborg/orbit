@@ -27,7 +27,7 @@ class Install : Command
 	
 	void execute ()
 	{
-		auto orbPath = "/Users/doob/development/eclipse_workspace/orbit/src/test.zip";
+		auto orbPath = "/Users/doob/development/d/orbit/test.zip";
 		
 		scope installer = new Installer(Orb.load(orbPath));
 		installer.install;

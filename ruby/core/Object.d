@@ -19,6 +19,22 @@ template ObjectImpl ()
 	
 	VALUE self;
 	
+	static typeof(*this) opCall (VALUE rubyObject)
+	{
+		typeof(*this) object;
+		object.self = rubyObject;
+		
+		return object;
+	}
+	
+	static typeof(*this) opCall (RubyObject rubyObject)
+	{
+		typeof(*this) object;
+		object.self = rubyObject.self;
+		
+		return object;
+	}
+	
 	static typeof(*this) new_ (VALUE[] args ...)
 	{
 		return typeof(*this)(rb_class_new_instance(args.length, args.ptr, rb_path2class(this.stringof.ptr)));

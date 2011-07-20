@@ -14,11 +14,21 @@ def accessor (*names)
 end
 
 module SpecificationDsl
-	accessor :name, :summary, :version, :files, :build
-	
-	# def initialize
-	# 	@build = :dsss
-	# end
+  accessor :summary, :version
+
+  accessor :author, :build, :build_dependencies, :date, 
+           :description, :dvm, :email, :executables,
+           :files, :homepage, :libraries, :name,
+           :orbit_version, :platforms, :package_type,
+           :runtime_dependencies, :specification_version,
+           :type
+
+  alias dependencies runtime_dependencies
+  alias orbs runtime_dependencies
+
+  def orb (name, version = nil)
+    @runtime_dependencies << [name, version]
+  end
 end
 
 class SpecificationEnviroment

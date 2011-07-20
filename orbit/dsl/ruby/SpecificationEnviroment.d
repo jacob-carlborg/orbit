@@ -16,43 +16,108 @@ struct SpecificationEnviroment
 {
 	mixin ObjectImpl;
 	
-	string name ()
-	{
-		auto str = cast(String) call("name");
-		return str.get;
-	}
-	
 	string summary ()
 	{
-		auto str = cast(String) call("summary");
-		return str.get;
+		return String(call("summary")).toD;
 	}
 	
 	string version_ ()
 	{
-		auto str = cast(String) call("version");
-		return str.get;
+		return String(call("version")).toD;
+	}
+	
+	string author ()
+	{
+		return String(call("author")).toD;
+	}
+
+	string build ()
+	{
+		return String(call("build")).toD;
+	}
+
+	string[] build_dependencies ()
+	{
+		return Array(call("build_dependencies")).toStringArray;
+	}
+
+	string date ()
+	{
+		return String(call("date")).toD;
+	}
+
+	string description ()
+	{
+		return String(call("description")).toD;
+	}
+
+	string dvm ()
+	{
+		return String(call("dvm")).toD;
+	}
+
+	string email ()
+	{
+		return String(call("email")).toD;
+	}
+
+	string[] executables ()
+	{
+		return Array(call("executables")).toStringArray;
+	}
+
+	string[] files ()
+	{
+		return Array(call("files")).toStringArray;
+	}
+
+	string homepage ()
+	{
+		return String(call("homepage")).toD;
+	}
+
+	string[] libraries ()
+	{
+		return Array(call("libraries")).toStringArray;
+	}
+
+	string name ()
+	{
+		return String(call("name")).toD;
+	}
+
+	string orbit_version ()
+	{
+		return String(call("orbit_version")).toD;
+	}
+
+	string[] platforms ()
+	{
+		return Array(call("platforms")).toStringArray;
+	}
+
+	string package_type ()
+	{
+		return String(call("package_type")).toD;
+	}
+
+	string[] runtime_dependencies ()
+	{
+		return Array(call("runtime_dependencies")).toStringArray;
+	}
+
+	string specification_version ()
+	{
+		return String(call("specification_version")).toD;
+	}
+
+	string type ()
+	{
+		return String(call("type")).toD;
 	}
 	
 	Binding get_binding ()
 	{
 		return cast(Binding) call("get_binding");
-	}
-	
-	string[] files ()
-	{
-		auto files = cast(Array) call("files");
-		return toStringArray(files);
-	}
-	
-	private string[] toStringArray (Array array)
-	{
-		string[] result;
-		result.reserve(array.length);
-		
-		foreach (e ; array)
-			result ~= (cast(String) e).get;
-			
-		return result;
 	}
 }

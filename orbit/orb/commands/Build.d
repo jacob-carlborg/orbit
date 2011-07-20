@@ -28,8 +28,8 @@ class Build : Command
 	
 	void execute ()
 	{
-		auto spec = Specification.load("/Users/doob/development/eclipse_workspace/orbit/src/test.orbspec");
-		scope archiver = new Archiver(spec, "/Users/doob/development/eclipse_workspace/orbit/src/test.zip");
+		auto spec = Specification.load("/Users/doob/development/d/orbit/test.orbspec");
+		scope archiver = new Archiver(spec, "/Users/doob/development/d/orbit/test.zip");
 		archiver.archive;
 	}
 }

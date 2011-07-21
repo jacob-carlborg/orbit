@@ -41,6 +41,11 @@ abstract class Command
 		this.args = args;
 		execute;
 	}
+	
+	private parseOptions ()
+	{
+		
+	}
 }
 
 private struct Args

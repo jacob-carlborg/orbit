@@ -10,6 +10,7 @@ import tango.text.Arguments;
 import tango.text.convert.Format;
 
 import orbit.core._;
+import orbit.orb.Exceptions;
 import orbit.util._;
 
 class OptionParser
@@ -78,7 +79,9 @@ class OptionParser
 	
 	OptionParser parse (string input, bool sloppy = false)
 	{
-		arguments.parse(input, sloppy);	
+		if (!arguments.parse(input, sloppy))
+			throw new InvalidOptionException(arguments.errors(&stderr.layout.sprint), __FILE__, __LINE__);
+
 		handleArgs(arguments(null).assigned);
 		
 		return this;
@@ -86,7 +89,9 @@ class OptionParser
 	
 	OptionParser parse (string[] input, bool sloppy = false)
 	{
-		arguments.parse(input, sloppy);
+		if (!arguments.parse(input, sloppy))
+			throw new InvalidOptionException(arguments.errors(&stderr.layout.sprint), __FILE__, __LINE__);
+
 		handleArgs(arguments(null).assigned);
 
 		return this;

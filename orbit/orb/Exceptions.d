@@ -7,27 +7,32 @@
 module orbit.orb.Exceptions;
 
 import orbit.core.string;
+import orbit.orbit.Exceptions;
 
-class OrbException : Exception
+class OrbException : OrbitException
 {
-	this (string message, string file, long line)
+	template Constructor ()
 	{
-		super(message, file, line);
+		this (string message, string file, long line)
+		{
+			super(message, file, line);
+		}
 	}
+
+	mixin Constructor;
 }
 
 class MissingArgumentException : OrbException
 {
-	this (string message, string file, long line)
-	{
-		super(message, file, line);
-	}
+	mixin Constructor;
 }
 
 class MissingCommandException : OrbException
 {
-	this (string message, string file, long line)
-	{
-		super(message, file, line);
-	}
+	mixin Constructor;
+}
+
+class InvalidOptionException : OrbException
+{
+	mixin Constructor;
 }

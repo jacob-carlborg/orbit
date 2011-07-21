@@ -7,7 +7,7 @@
 module orbit.orb.Application;
 
 import tango.io.Stdout;
-import tango.stdc.stdlib;
+import tango.stdc.stdlib : EXIT_SUCCESS, EXIT_FAILURE;
 
 import orbit.core._;
 import orbit.dsl.Specification;
@@ -24,8 +24,16 @@ class Application
 	
 	const Version = "0.0.1";
 	
+	enum ExitCode
+	{
+		success = EXIT_SUCCESS,
+		failure = EXIT_FAILURE
+	}
+	
 	private
 	{
+		alias int delegate () Runnable;
+		
 		Options options;
 		string[] args;
 		string[] topLevel;
@@ -40,43 +48,48 @@ class Application
 		registerCommands;
 	}
 
-	void run (string[] args)
+	int run (string[] args)
 	{
-		//spec = Specification.load("/Users/doob/development/eclipse_workspace/orbit/src/test.orbspec");
-		// println(spec.name);
-		// println(spec.version_);
-		// println(spec.summary);
-
 		this.args = args;
 		
-		debugHandleExceptions in {
+		return debugHandleExceptions in {
 			parseOptions;
+			return ExitCode.success
 		};
 	}
 	
 private:
 	
-	Use!(void delegate ()) handleExceptions ()
+	Use!(Runnable) handleExceptions ()
 	{
-		Use!(void delegate ()) use;
+		Use!(Runnable) use;
 		
-		use.args[0] = (void delegate () dg) {
+		use.args[0] = (Runnable dg) {
 			try
-				dg();
+				return dg();
+			
+			catch (OrbitException e)
+			{
+				stderr.format("An error occurred: {}", e).flush;
+				return EXIT_FAILURE;
+			}
 			
 			catch (Exception e)
-				die(e.toString);
+			{
+				stderr.format("An unknown error occurred:").newline;
+				throw e;
+			}
 		};
 		
 		return use;
 	}
 	
-	Use!(void delegate ()) debugHandleExceptions ()
+	Use!(Runnable) debugHandleExceptions ()
 	{
-		Use!(void delegate ()) use;
+		Use!(Runnable) use;
 	
-		use.args[0] = (void delegate () dg) {
-			dg();
+		use.args[0] = (Runnable dg) {
+			return dg();
 		};
 		
 		return use;
@@ -149,11 +162,5 @@ private:
 			
 			opts.parse(args[1 .. $]);
 		}
-	}
-	
-	void die (Args...) (Args args)
-	{
-		Stderr.print(args).newline;
-		exit(1);
 	}
 }

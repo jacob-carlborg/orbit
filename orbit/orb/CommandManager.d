@@ -22,9 +22,9 @@ class CommandManager
 	
 	private Command[string] commands;
 	
-	void register (string command)
+	void register (string command, string className)
 	{
-		commands[command] = null;
+		commands[command] = createCommand(className);
 	}
 
 	Command opIndex (string command)
@@ -33,10 +33,7 @@ class CommandManager
 			if (*c)
 				return *c;
 		
-		auto c = createCommand(command);
-		commands[command] = c;
-		
-		return c;
+		throw new MissingCommandException(`The command "` ~ command ~ `" was missing.`, __FILE__, __LINE__);
 	}
 	
 	string[] names ()

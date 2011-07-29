@@ -40,6 +40,11 @@ abstract class Command
 	
 	abstract void execute ();
 	
+	void printHelp ()
+	{
+		
+	}
+	
 	protected void setupArguments () {}
 }
 

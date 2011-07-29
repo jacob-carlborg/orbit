@@ -11,6 +11,7 @@ import tango.stdc.stdlib : EXIT_SUCCESS, EXIT_FAILURE;
 
 import orbit.core._;
 import orbit.dsl.Specification;
+import orbit.orbit.Exceptions;
 import orbit.util.Singleton;
 import orbit.util.Use;
 
@@ -32,7 +33,7 @@ class Application
 	
 	private
 	{
-		alias int delegate () Runnable;
+		alias ExitCode delegate () Runnable;
 		
 		Options options;
 		string[] args;
@@ -54,7 +55,7 @@ class Application
 		
 		return debugHandleExceptions in {
 			parseOptions;
-			return ExitCode.success
+			return ExitCode.success;
 		};
 	}
 	
@@ -71,7 +72,7 @@ private:
 			catch (OrbitException e)
 			{
 				stderr.format("An error occurred: {}", e).flush;
-				return EXIT_FAILURE;
+				return ExitCode.failure;
 			}
 			
 			catch (Exception e)
@@ -97,9 +98,9 @@ private:
 	
 	void registerCommands ()
 	{
-		commandManager.register("orbit.orb.commands.Build.Build");
-		// commandManager.register("orbit.orb.commands.Fetch.Fetch");
-		commandManager.register("orbit.orb.commands.Install.Install");
+		commandManager.register("build", "orbit.orb.commands.Build.Build");
+		// commandManager.register("fetch", "orbit.orb.commands.Fetch.Fetch");
+		commandManager.register("install", "orbit.orb.commands.Install.Install");
 	}
 	
 	void handleCommand (string command, string[] args)
@@ -110,20 +111,7 @@ private:
 	void handleArgs (string[] args)
 	{
 		if (args.length > 0)
-		{	
-			string command;
-			
-			switch (args[0])
-			{
-				case "build": command = "orbit.orb.commands.Build.Build"; break;
-				case "fetch": command = "orbit.orb.commands.Fetch.Fetch"; break;
-				case "install":	command = "orbit.orb.commands.Install.Install"; break;
-				default:
-					return;
-			}
-		
-			handleCommand(command, args[1 .. $]);			
-		}			
+			handleCommand(args[0], args[1 .. $]);		
 	}
 	
 	void parseOptions ()

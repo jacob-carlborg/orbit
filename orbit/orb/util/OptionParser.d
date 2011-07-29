@@ -6,6 +6,7 @@
  */
 module orbit.orb.util.OptionParser;
 
+import tango.io.Stdout;
 import tango.text.Arguments;
 import tango.text.convert.Format;
 

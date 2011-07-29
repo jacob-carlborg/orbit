@@ -25,6 +25,8 @@ class Orb
 		source,
 	}
 	
+	static const extension = "orb";
+	
 	const Specification specification;
 	const Orbit orbit;
 	const OrbVersion version_;

@@ -5,3 +5,5 @@ test.zip
 orb
 *.o
 *.a
+.classpath
+.project

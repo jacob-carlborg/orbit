@@ -6,8 +6,12 @@
  */
 module orbit.orb.Command;
 
-import orbit.core._;
+import TangoArgs = tango.text.Arguments;
+import tango.util.Convert;
 
+import orbit.orbit.Orbit;
+
+import orbit.core._;
 import orbit.orb.Exceptions;
 import orbit.orb.Options;
 
@@ -15,49 +19,64 @@ abstract class Command
 {
 	string name;
 	string summary;
-	
-	protected Args args;
-	protected Options options;
-	
-	this () {}
+
+	protected Arguments arguments;
+	protected Orbit orbit;
 	
 	this (string name, string summary = "")
 	{
 		this.name = name;
 		this.summary = summary;
-		options = Options.instance;
+		arguments = Arguments();
+		orbit = Orbit.defaultOrbit;
+	}
+	
+	void invoke (string[] args ...)
+	{
+		arguments.originalArgs = args;
+		arguments.parse;
+		execute;
 	}
 	
 	abstract void execute ();
 	
-	void invoke (string[] args ...)
-	{
-		this.args.args = args;
-		execute;
-	}
-	
-	void invoke (Args args)
-	{
-		this.args = args;
-		execute;
-	}
-	
-	private parseOptions ()
-	{
-		
-	}
+	protected void setupArguments () {}
 }
 
-private struct Args
+struct Arguments
 {
-	string[] args;
+	private
+	{
+		TangoArgs.Arguments arguments;
+		string[] originalArgs;
+		string[] args;
+	}
+	
+	static Arguments opCall ()
+	{
+		Arguments args;
+		args.arguments = new TangoArgs.Arguments;
+		
+		return args;
+	}
 	
 	string opIndex (size_t index)
 	{
-		if (index > args.length - 1 && empty)
+		if (index > args.length - 1 || empty)
 			throw new MissingArgumentException("Missing argument(s)", __FILE__, __LINE__);
 
 		return args[index];
+	}
+	
+	void parse ()
+	{
+		if (!arguments.parse(originalArgs))
+			throw new InvalidArgumentException("", __FILE__, __LINE__);
+	}
+	
+	Argument opIndex (string name)
+	{
+		return Argument(arguments[name]);
 	}
 	
 	string first ()
@@ -70,13 +89,47 @@ private struct Args
 		return opIndex(args.length - 1);
 	}
 	
-	string empty ()
+	bool empty ()
 	{
 		return args.length == 0;
 	}
 	
-	string any ()
+	bool any ()
 	{
 		return !empty;
+	}
+}
+
+struct Argument
+{
+	private TangoArgs.Arguments.Argument argument;
+	
+	string value ()
+	{
+		auto value = argument.assigned;
+		return value.any() ? value[0] : "";
+	}
+
+	T as (T) ()
+	{
+		return to!(t)(value);
+	}
+	
+	Argument aliased (char name)
+	{
+		argument.aliased(name);
+		return *this;
+	}
+	
+	Argument help (string text)
+	{
+		argument.help(text);
+		return *this;
+	}
+	
+	Argument defaults (string values)
+	{
+		argument.defaults(values);
+		return *this;
 	}
 }

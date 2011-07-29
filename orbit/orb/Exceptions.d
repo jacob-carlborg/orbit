@@ -36,3 +36,8 @@ class InvalidOptionException : OrbException
 {
 	mixin Constructor;
 }
+
+class InvalidArgumentException : OrbException
+{
+	mixin Constructor;
+}

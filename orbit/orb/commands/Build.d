@@ -8,19 +8,16 @@ module orbit.orb.commands.Build;
 
 import orbit.core._;
 import orbit.dsl.Specification;
+import Path = orbit.io.Path;
 import orbit.orbit.Archiver;
+import orbit.orbit.Orb;
 
 import orbit.orb.Command;
 
 class Build : Command
 {
-	private string name;
-	
-	this (string name, string summary = "")
-	{
-		super(name, summary);
-	}
-	
+	private string orbspecPath_;
+
 	this ()
 	{
 		super("build", "Build an orb from an orbspec");
@@ -28,8 +25,25 @@ class Build : Command
 	
 	void execute ()
 	{
-		auto spec = Specification.load("/Users/doob/development/d/orbit/test.orbspec");
-		scope archiver = new Archiver(spec, "/Users/doob/development/d/orbit/test.zip");
+		auto spec = Specification.load(orbspecPath);
+		scope archiver = new Archiver(spec, arguments["output"].value);
 		archiver.archive;
+	}
+	
+	protected override void setupArguments ()
+	{
+		arguments["output"].aliased('o').defaults(defaultOutput).help("The name of the output file.");
+	}
+	
+private:
+	
+	string orbspecPath ()
+	{
+		return orbspecPath_ = orbspecPath_.any() ? orbspecPath_ : Path.toAbsolute(arguments.first);
+	}
+	
+	string defaultOutput ()
+	{
+		return Path.parse(orbspecPath).path ~ "." ~ Orb.extension;
 	}
 }

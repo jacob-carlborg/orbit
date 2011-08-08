@@ -60,7 +60,10 @@ class Orb
 		loader.load(path);
 		auto metaDataPath = join(loader.temporaryPath, orbit.constants.orbMetaData);
 
-		return new Orb(orbit, Specification.load(metaDataPath));
+		auto orb = new Orb(orbit, Specification.load(metaDataPath));
+		orb.path_ = path;
+		
+		return orb;
 	}
 	
 	string fullName ()

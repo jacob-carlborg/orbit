@@ -73,7 +73,7 @@ abstract class Builder : OrbitObject
 		{
 			verbose("Output of the build process:", "\n");
 			Stdout.copy(process.stdout).flush;
-			// verbose();
+			// verbose("");
 			// verbose("Process ", process.programName, '(', process.pid, ')', " exited with:");
 			// verbose("reason: ", result.toString);
 			// verbose("status: ", result.status, "\n");

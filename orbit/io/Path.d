@@ -88,6 +88,11 @@ void validatePath (string path)
 		throw new IOException("File not found \"" ~ path ~ "\"");
 }
 
+string addExtension (string path, string extension)
+{
+	return parse(path).ext != extension ? path ~ "." ~ extension : path;
+}
+
 version (Posix):
 
 void permission (string path, string mode)

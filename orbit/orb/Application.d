@@ -6,6 +6,7 @@
  */
 module orbit.orb.Application;
 
+import tango.core.tools.TraceExceptions;
 import tango.io.Stdout;
 import tango.stdc.stdlib : EXIT_SUCCESS, EXIT_FAILURE;
 

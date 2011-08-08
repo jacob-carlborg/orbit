@@ -29,6 +29,8 @@ abstract class Command
 		this.summary = summary;
 		arguments = Arguments();
 		orbit = Orbit.defaultOrbit;
+
+		setupArguments;
 	}
 	
 	void invoke (string[] args ...)
@@ -77,6 +79,8 @@ struct Arguments
 	{
 		if (!arguments.parse(originalArgs))
 			throw new InvalidArgumentException("", __FILE__, __LINE__);
+
+		args = arguments(null).assigned;
 	}
 	
 	Argument opIndex (string name)
@@ -137,4 +141,28 @@ struct Argument
 		argument.defaults(values);
 		return *this;
 	}
+
+    Argument defaults (string delegate () value)
+    {
+        argument.defaults(value);
+        return *this;
+    }
+
+    Argument params ()
+    {
+        argument.params;
+        return *this;
+    }
+    
+    Argument params (int count)
+    {
+        argument.params(count);
+        return *this;
+    }
+    
+    Argument params (int min, int max)
+    {
+        argument.params(min, max);
+        return *this;
+    }
 }

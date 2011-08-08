@@ -16,8 +16,6 @@ import orbit.orb.Command;
 
 class Build : Command
 {
-	private string orbspecPath_;
-
 	this ()
 	{
 		super("build", "Build an orb from an orbspec");
@@ -26,24 +24,31 @@ class Build : Command
 	void execute ()
 	{
 		auto spec = Specification.load(orbspecPath);
-		scope archiver = new Archiver(spec, arguments["output"].value);
+		scope archiver = new Archiver(spec, output);
 		archiver.archive;
 	}
 	
 	protected override void setupArguments ()
 	{
-		arguments["output"].aliased('o').defaults(defaultOutput).help("The name of the output file.");
+		arguments["output"].aliased('o').params(1).defaults(&defaultOutput).help("The name of the output file.");
 	}
 	
 private:
 	
 	string orbspecPath ()
 	{
-		return orbspecPath_ = orbspecPath_.any() ? orbspecPath_ : Path.toAbsolute(arguments.first);
+		auto path = Path.toAbsolute(arguments.first);
+		return Path.addExtension(path, Specification.extension);
 	}
 	
 	string defaultOutput ()
 	{
-		return Path.parse(orbspecPath).path ~ "." ~ Orb.extension;
+		return Path.parse(orbspecPath).name;
 	}
+
+    string output ()
+    {
+        auto path = Path.toAbsolute(arguments["output"].value);
+        return Path.addExtension(path, Orb.extension);
+    }
 }

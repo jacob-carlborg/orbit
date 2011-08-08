@@ -30,6 +30,7 @@ class OptionParser
 	this ()
 	{
 		arguments = new Arguments;
+		arguments.passThrough = true;
 	}
 	
 	OptionParser separator (string[] args ...)

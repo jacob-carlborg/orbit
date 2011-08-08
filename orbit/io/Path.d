@@ -88,7 +88,7 @@ void validatePath (string path)
 		throw new IOException("File not found \"" ~ path ~ "\"");
 }
 
-string addExtension (string path, string extension)
+string setExtension (string path, string extension)
 {
 	return parse(path).ext != extension ? path ~ "." ~ extension : path;
 }

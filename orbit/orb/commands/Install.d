@@ -7,14 +7,13 @@
 module orbit.orb.commands.Install;
 
 import orbit.core._;
+import Path = orbit.io.Path;
 import orbit.orb.Command;
 import orbit.orbit.Installer;
 import orbit.orbit.Orb;
 
 class Install : Command
-{
-	private string name;
-	
+{	
 	this (string name, string summary = "")
 	{
 		super(name, summary);
@@ -27,14 +26,15 @@ class Install : Command
 	
 	void execute ()
 	{
-		auto orbPath = "/Users/doob/development/d/orbit/test.zip";
-		
 		scope installer = new Installer(Orb.load(orbPath));
 		installer.install;
-		
-		// name = args.first;
-		// auto ver = "";
-		// 
-		// Orbit.getDefault.install(name, ver);
+	}
+	
+private:
+
+	string orbPath ()
+	{
+		auto path = Path.toAbsolute(arguments.first);
+		return Path.setExtension(path, Orb.extension);
 	}
 }

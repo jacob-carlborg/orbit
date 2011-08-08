@@ -38,7 +38,7 @@ private:
 	string orbspecPath ()
 	{
 		auto path = Path.toAbsolute(arguments.first);
-		return Path.addExtension(path, Specification.extension);
+		return Path.setExtension(path, Specification.extension);
 	}
 	
 	string defaultOutput ()
@@ -49,6 +49,6 @@ private:
     string output ()
     {
         auto path = Path.toAbsolute(arguments["output"].value);
-        return Path.addExtension(path, Orb.extension);
+        return Path.setExtension(path, Orb.extension);
     }
 }

@@ -26,18 +26,35 @@ class Orb
 	}
 	
 	static const extension = "orb";
-	
-	const Specification specification;
 	const Orbit orbit;
-	const OrbVersion version_;
 	
-	string name;
-	string[] executables;
-
 	Builder.Tool buildTool;
 	
+	string summary;
+	OrbVersion version_;
+
+	string author;
+	string build;
+	string[] build_dependencies;
+	string date;
+	string description;
+	string dvm;
+	string email;
+	string[] executables;
+	string[] files;
+	string homepage;
+	string[] imports;
+	string[] libraries;
+	string name;
+	string orbit_version;
+	string[] platforms;
+	string package_type;
+	string[] runtime_dependencies;
+	string specification_version;
+	//string type;
+	
 	private
-	{
+	{		
 		string fullName_;
 		string target_;
 		string path_;
@@ -45,13 +62,15 @@ class Orb
 		Type type_ = Type.executable;
 	}
 	
-	this (Orbit orbit, Specification spec)
+	this (Orbit orbit = Orbit.defaultOrbit)
 	{
 		this.orbit = orbit;
-		specification = spec;
-		version_ = OrbVersion.parse(specification.version_);
-
-		setValues;
+	}
+	
+	this (Specification spec, Orbit orbit = Orbit.defaultOrbit)
+	{
+		this(orbit);
+		setValues(spec);
 	}
 	
 	static Orb load (string path, Orbit orbit = Orbit.defaultOrbit)
@@ -60,7 +79,7 @@ class Orb
 		loader.load(path);
 		auto metaDataPath = join(loader.temporaryPath, orbit.constants.orbMetaData);
 
-		auto orb = new Orb(orbit, Specification.load(metaDataPath));
+		auto orb = new Orb(Specification.load(metaDataPath), orbit);
 		orb.path_ = path;
 		
 		return orb;
@@ -74,17 +93,6 @@ class Orb
 	Type type ()
 	{
 		return type_;
-	}
-	
-	Orb[] dependencies ()
-	{
-		assert(false, "not implemented");
-		return [];
-	}
-	
-	string[] files ()
-	{
-		return specification.files;
 	}
 	
 	string[] buildArgs ()
@@ -114,12 +122,37 @@ class Orb
 		}
 	}
 	
+	string target (string target)
+	{
+		return target_ = target_;
+	}
+	
 private:
 	
-	void setValues ()
+	void setValues (Specification spec)
 	{
-		name = specification.name;
 		buildTool = orbit.spec.defaultBuildTool;
-		executables = specification.executables;
+		
+		summary = spec.summary;
+		version_ = OrbVersion.parse(spec.version_);
+
+		author = spec.author;
+		build = spec.build;
+		build_dependencies = spec.build_dependencies;
+		date = spec.date;
+		description = spec.description;
+		dvm = spec.dvm;
+		email = spec.email;
+		executables = spec.executables;
+		files = spec.files;
+		homepage = spec.homepage;
+		imports = spec.imports;
+		libraries = spec.libraries;
+		name = spec.name;
+		orbit_version = spec.orbit_version;
+		platforms = spec.platforms;
+		package_type = spec.package_type;
+		runtime_dependencies = spec.runtime_dependencies;
+		specification_version = spec.specification_version;
 	}
 }

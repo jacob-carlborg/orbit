@@ -41,6 +41,7 @@ class Specification
 		string[] executables_;
 		string[] files_;
 		string homepage_;
+		string[] imports_;
 		string[] libraries_;
 		string name_;
 		string orbit_version_;
@@ -259,6 +260,16 @@ class Specification
 	string homepage (string homepage)
 	{
 		return homepage_ = homepage;
+	}
+
+	string[] imports ()
+	{
+		return imports_;
+	}
+	
+	string[] imports (string[] imports)
+	{
+		return imports_ = imports;
 	}
 
 	string[] libraries ()

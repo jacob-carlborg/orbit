@@ -78,17 +78,9 @@ private:
 		if (Path.exists(fullInstallPath))
 			throw new OrbitException(`The path "` ~ fullInstallPath ~ `" already exists.`, __FILE__, __LINE__);
 
-		//moveBindings;
 		moveExecutables;
 		moveLibraries;
 		moveSources;
-	}
-	
-	void moveBindings ()
-	{
-		assert(false, "moveBindings, not implemented");
-		auto path = Path.join(fullInstallPath, orbit.constants.bindings);
-		moveSpecificFiles(orb.bindings, path);
 	}
 	
 	void moveExecutables ()
@@ -99,17 +91,17 @@ private:
 	
 	void moveLibraries ()
 	{
-		auto path = Path.join(fullInstallPath, orb.constants.lib);
-		moveSpecificFiles(orb.libraries);
+		auto path = Path.join(fullInstallPath, orbit.constants.lib);
+		moveSpecificFiles(orb.libraries, path);
 	}
 	
 	void moveSources ()
 	{
-		auto path = Path.join(fullInstallPath, orb.constants.imports);
-		moveSpecificFiles(orb.imports);
+		auto path = Path.join(fullInstallPath, orbit.constants.imports);
+		moveSpecificFiles(orb.files, path);
 	}
 	
-	void moveSpecificFiles (string[] files, destinationPath)
+	void moveSpecificFiles (string[] files, string destinationPath)
 	{
 		Path.createPath(destinationPath);
 

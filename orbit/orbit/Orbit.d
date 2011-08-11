@@ -205,6 +205,8 @@ abstract class Constants
 	string tmp = "tmp";
 	string specifications = "specifications";
 	string orbs = "orbs";
+	string lib = "lib";
+	string imports = "import";
 }
 
 class ConstantsPosix : Constants

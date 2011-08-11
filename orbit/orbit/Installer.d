@@ -22,7 +22,9 @@ class Installer : OrbitObject
 	private
 	{
 		string installPath_;
+		string fullInstallPath_;
 		string tmpPath_;
+		string tmpDataPath_;
 	}
 	
 	this (Orb orb, string installPath = "", Orbit orbit = Orbit.defaultOrbit)
@@ -59,24 +61,62 @@ private:
 		return tmpPath_ = tmpPath_.any() ? tmpPath_ : Path.join(orbit.path.tmp, Path.parse(orb.path).name);
 	}
 	
+	string fullInstallPath ()
+	{
+		return fullInstallPath_ = fullInstallPath_.any() ? fullInstallPath_ : Path.join(installPath, orb.fullName().toLower());
+	}
+	
+	string tmpDataPath ()
+	{
+		return tmpDataPath_ = tmpDataPath_.any() ? tmpDataPath_ : Path.join(tmpPath, orbit.constants.orbData);
+	}
+	
 	void moveFiles ()
 	{
 		verbose("Moving files:");
-		
-		auto fullInstallPath = Path.join(installPath, orb.fullName().toLower());
-		
+
 		if (Path.exists(fullInstallPath))
 			throw new OrbitException(`The path "` ~ fullInstallPath ~ `" already exists.`, __FILE__, __LINE__);
-		
+
+		//moveBindings;
+		moveExecutables;
+		moveLibraries;
+		moveSources;
+	}
+	
+	void moveBindings ()
+	{
+		assert(false, "moveBindings, not implemented");
+		auto path = Path.join(fullInstallPath, orbit.constants.bindings);
+		moveSpecificFiles(orb.bindings, path);
+	}
+	
+	void moveExecutables ()
+	{
 		auto path = Path.join(fullInstallPath, orbit.constants.bin);
-		auto tmpDataPath = Path.join(tmpPath, orbit.constants.orbData);
-		
-		Path.createPath(path);
-		
-		foreach (file ; orb.executables)
+		moveSpecificFiles(orb.executables, path);
+	}
+	
+	void moveLibraries ()
+	{
+		auto path = Path.join(fullInstallPath, orb.constants.lib);
+		moveSpecificFiles(orb.libraries);
+	}
+	
+	void moveSources ()
+	{
+		auto path = Path.join(fullInstallPath, orb.constants.imports);
+		moveSpecificFiles(orb.imports);
+	}
+	
+	void moveSpecificFiles (string[] files, destinationPath)
+	{
+		Path.createPath(destinationPath);
+
+		foreach (file ; files)
 		{
 			auto source = Path.join(tmpDataPath, file);
-			auto destination = Path.join(path, file);
+			auto destination = Path.join(destinationPath, file);
 
 			verbose("Source:", source);
 			verbose("Destination: ", destination);

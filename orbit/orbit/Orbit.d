@@ -245,6 +245,11 @@ class ConstantsDarwin : ConstantsPosix
 
 class ConstantsWindows : Constants
 {
+	string dylibExtension ()
+	{
+		return ".dll";
+	}
+	
 	string dylibPrefix ()
 	{
 		return "";

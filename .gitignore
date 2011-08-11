@@ -1,10 +1,11 @@
 .DS_Store
 dsss.last
 dsss_objs
-test.zip
+*.zip
 orb
 *.o
 *.a
 .classpath
 .project
 .settings
+*.orb

@@ -396,6 +396,7 @@ class Specification
 		name = specEnv.name;
 		summary = specEnv.summary;
 		version_ = specEnv.version_;
+		executables_ = specEnv.executables;
 		//files = specEnv.files;
 	}
 }

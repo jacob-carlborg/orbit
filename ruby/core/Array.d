@@ -14,6 +14,8 @@ import ruby.c.ruby;
 import ruby.core.Object;
 import ruby.core.String;
 
+import orbit.core._;
+
 struct Array
 {
 	mixin ObjectImpl;
@@ -77,7 +79,7 @@ struct Array
 	{
 		int result = 0;
 		
-		for (size_t i = 0; i < RARRAY_LEN(self); i++)
+		for (size_t i = 0; i < length; i++)
 		{
 			result = dg(RubyObject(RARRAY_PTR(self)[i]));
 			

@@ -2,6 +2,7 @@ name "Orbit"
 summary "Orbit is a package management framework for the D programming language."
 version "0.0.1"
 files Dir["**"/"*.d"]
+executables %w[orb]
 
 # author "Jacob Carlborg"
 # type :lib

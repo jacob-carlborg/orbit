@@ -19,8 +19,14 @@ template ObjectImpl ()
 	
 	VALUE self;
 	
+	invariant ()
+	{
+		assert(RTEST(self));
+	}
+	
 	static typeof(*this) opCall (VALUE rubyObject)
 	{
+		assert(RTEST(rubyObject), `Tried to create a new "` ~ typeof(*this).stringof ~ `" with an nil value.`);
 		typeof(*this) object;
 		object.self = rubyObject;
 		
@@ -29,6 +35,7 @@ template ObjectImpl ()
 	
 	static typeof(*this) opCall (RubyObject rubyObject)
 	{
+		assert(RTEST(rubyObject.self), `Tried to create a new "` ~ typeof(*this).stringof ~ `" with an nil value.`);
 		typeof(*this) object;
 		object.self = rubyObject.self;
 		
@@ -69,7 +76,10 @@ template ObjectImpl ()
 			else
 				rubyArgs ~= arg.self;
 
-		return RubyObject(rb_funcall2(self, rb_intern(name.toStringz()), rubyArgs.length, rubyArgs.ptr));
+		auto result = rb_funcall2(self, rb_intern(name.toStringz()), rubyArgs.length, rubyArgs.ptr);
+		assert(RTEST(result), `The method call "` ~ name ~ `" returned an invalid result.`);
+
+		return RubyObject();
 	}
 
 	RubyObject call (Args ...) (string name, Args args)
@@ -84,7 +94,10 @@ template ObjectImpl ()
 			else
 				rubyArgs ~= arg.self;
 
-		return RubyObject(rb_funcall3(self, rb_intern(name.toStringz()), rubyArgs.length, rubyArgs.ptr));
+		auto result = rb_funcall3(self, rb_intern(name.toStringz()), rubyArgs.length, rubyArgs.ptr);
+		assert(RTEST(result), `The method call "` ~ name ~ `" returned an invalid result.`);
+
+		return RubyObject(result);
 	}
 }
 

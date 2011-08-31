@@ -2,7 +2,6 @@
 dsss.last
 dsss_objs
 *.zip
-orb
 *.o
 *.a
 .classpath

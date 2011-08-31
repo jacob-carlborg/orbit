@@ -97,7 +97,7 @@ private:
 	
 	void moveSources ()
 	{
-		auto path = Path.join(fullInstallPath, orbit.constants.imports);
+		auto path = Path.join(fullInstallPath, orbit.constants.src);
 		moveSpecificFiles(orb.files, path);
 	}
 	

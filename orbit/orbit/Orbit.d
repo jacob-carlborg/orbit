@@ -207,6 +207,7 @@ abstract class Constants
 	string orbs = "orbs";
 	string lib = "lib";
 	string imports = "import";
+	string src = "src";
 }
 
 class ConstantsPosix : Constants

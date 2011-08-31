@@ -65,7 +65,7 @@ class CommandManager
 	private Command createCommand (string command)
 	{
 		auto classInfo = ClassInfo.find(command);
-		
+
 		if (!classInfo)
 			throw new MissingCommandException(`The command "` ~ command ~ `" was missing.`, __FILE__, __LINE__);
 		

@@ -9,3 +9,4 @@ orb
 .project
 .settings
 *.orb
+*.deps

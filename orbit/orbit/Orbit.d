@@ -208,6 +208,7 @@ abstract class Constants
 	string lib = "lib";
 	string imports = "import";
 	string src = "src";
+	string repositorySource = "file:///usr/local/orbit/repository";
 }
 
 class ConstantsPosix : Constants

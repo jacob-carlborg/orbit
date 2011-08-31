@@ -18,7 +18,7 @@ module SpecificationDsl
 
   accessor :author, :build, :build_dependencies, :date, 
            :description, :dvm, :email, :executables,
-           :files, :homepage, :libraries, :name,
+            :homepage, :libraries, :name,
            :orbit_version, :platforms, :package_type,
            :runtime_dependencies, :specification_version,
            :type
@@ -28,6 +28,12 @@ module SpecificationDsl
 
   def orb (name, version = nil)
     @runtime_dependencies << [name, version]
+  end
+  
+  # Ugly workaround for a problem that seems related to
+  # Ruby in combination with D and the Tango zip module
+  def files (value = nil)
+    value.nil? ? @files.join(",") : @files = value
   end
 end
 

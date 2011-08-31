@@ -184,67 +184,7 @@ class Specification
 
 	string[] files ()
 	{
-		// FIXME: this should work, seems to be a
-		// strange combination of Ruby and zip
-		//return files_; 
-		
-		return [
-			"orbit/core/_.d"[],
-			"orbit/core/Array.d",
-			"orbit/core/io.d",
-			"orbit/core/string.d",
-			"orbit/dsl/_.d",
-			"orbit/dsl/ruby/_.d",
-			"orbit/dsl/ruby/SpecificationEnviroment.d",
-			"orbit/dsl/Specification.d",
-			"orbit/io/Path.d",
-			"orbit/orb/Application.d",
-			"orbit/orb/Command.d",
-			"orbit/orb/CommandManager.d",
-			"orbit/orb/commands/_.d",
-			"orbit/orb/commands/Build.d",
-			"orbit/orb/commands/Install.d",
-			"orbit/orb/Exceptions.d",
-			"orbit/orb/Options.d",
-			"orbit/orb/Orb.d",
-			"orbit/orb/util/OptionParser.d",
-			"orbit/orbit/_.d",
-			"orbit/orbit/Archiver.d",
-			"orbit/orbit/Builder.d",
-			"orbit/orbit/DocGenerator.d",
-			"orbit/orbit/Exceptions.d",
-			"orbit/orbit/Installer.d",
-			"orbit/orbit/Loader.d",
-			"orbit/orbit/Orb.d",
-			"orbit/orbit/Orbit.d",
-			"orbit/orbit/OrbitObject.d",
-			"orbit/orbit/OrbVersion.d",
-			"orbit/orbit/Unarchiver.d",
-			"orbit/util/_.d",
-			"orbit/util/Singleton.d",
-			"orbit/util/Traits.d",
-			"orbit/util/Use.d",
-			"orbit/util/Version.d",
-			"ruby/c/config.d",
-			"ruby/c/defines.d",
-			"ruby/c/intern.d",
-			"ruby/c/io.d",
-			"ruby/c/oniguruma.d",
-			"ruby/c/ruby.d",
-			"ruby/c/st.d",
-			"ruby/core/Array.d",
-			"ruby/core/Binding.d",
-			"ruby/core/Environment.d",
-			"ruby/core/Hash.d",
-			"ruby/core/Object.d",
-			"ruby/core/String.d",
-			"ruby/util/Array.d",
-			"ruby/util/string.d",
-			"ruby/util/Traits.d",
-			"ruby/util/Version.d",
-			"dsss.conf",
-			"resources/specification_enviroment.rb"
-		];
+		return files_;
 	}
 
 	string[] files (string[] files)
@@ -397,6 +337,6 @@ class Specification
 		summary = specEnv.summary;
 		version_ = specEnv.version_;
 		executables_ = specEnv.executables;
-		//files = specEnv.files;
+		files_ = specEnv.files;
 	}
 }

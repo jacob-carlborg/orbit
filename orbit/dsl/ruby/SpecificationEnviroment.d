@@ -6,6 +6,8 @@
  */
 module orbit.dsl.ruby.SpecificationEnviroment;
 
+import tango.text.Util;
+
 import ruby.core.Object;
 import ruby.core.Binding;
 import ruby.core.String;
@@ -68,7 +70,10 @@ struct SpecificationEnviroment
 
 	string[] files ()
 	{
-		return Array(call("files")).toStringArray;
+		// ugly workaround for a problem that seems related to
+		// Ruby in combination with D and the Tango zip module
+		auto result = String(call("files")).toD;
+		return result.split(",");
 	}
 
 	string homepage ()

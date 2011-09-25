@@ -6,10 +6,15 @@
  */
 module orbit.orb.commands.Fetch;
 
+import ruby.c.ruby;
+
 import orbit.core._;
+import orbit.dsl.Specification;
 import Path = orbit.io.Path;
+import orbit.orbit.Archiver;
 import orbit.orbit.Fetcher;
 import orbit.orbit.Orb;
+import orbit.orbit.Repository;
 
 import orbit.orb.Command;
 
@@ -22,19 +27,18 @@ class Fetch : Command
 	
 	void execute ()
 	{
-		auto spec = Specification.load(orbspecPath);
+		/*auto spec = Specification.load(orbspecPath);
 		scope archiver = new Archiver(spec, output);
-		archiver.archive;
+		archiver.archive;*/
 		
-		auto fetcher = new Fetch;
-		fetcher.source = arguments["source"];
-		fetcher.fetch(arguments.first);
+		auto repository = Repository.instance(arguments["source"].value);		
+		auto fetcher = Fetcher.instance(repository);
 	}
 	
 	protected override void setupArguments ()
 	{
 		arguments["output"].aliased('o').params(1).defaults(&defaultOutput).help("The name of the output file.");
-		arguments["source"].aliased('s').params(1).defaults(orbit.constants.repositorySource).help("URL or local path used as the remote source for orbs")
+		arguments["source"].aliased('s').params(1).defaults(orbit.repository.source).help("URL or local path used as the remote source for orbs");
 	}
 
 private:

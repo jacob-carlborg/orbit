@@ -56,11 +56,3 @@ private:
 		//writer.putData(zipEntry, spec.toYaml);
 	}
 }
-
-class ArchiveException : OrbitException
-{
-	this (string msg, string file = "", long line = 0)
-	{
-		super(msg, file, line);
-	}
-}

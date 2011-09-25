@@ -7,12 +7,13 @@
 module orbit.orb.util.OptionParser;
 
 import tango.io.Stdout;
-import tango.text.Arguments;
 import tango.text.convert.Format;
 
 import orbit.core._;
 import orbit.orb.Exceptions;
 import orbit.util._;
+
+import orbit.orb.util.Arguments;
 
 class OptionParser
 {

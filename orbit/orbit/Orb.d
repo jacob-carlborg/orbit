@@ -119,6 +119,7 @@ class Orb
 			case Type.executable: return target_ = name ~ orbit.constants.exeExtension;
 			case Type.library: return target_ = orbit.constants.libPrefix ~ name ~ orbit.constants.libExtension;
 			case Type.source: return target_ = name;
+			default: return "";
 		}
 	}
 	

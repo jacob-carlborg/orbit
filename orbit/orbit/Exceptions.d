@@ -15,3 +15,23 @@ class OrbitException : Exception
 		super(message, file, line);
 	}
 }
+
+class RepositoryException : OrbitException
+{
+	const string orb;
+	const string source;
+	
+	this (string orb, string source, string message = "", string file = "", long line = 0)
+	{
+		this.orb = orb;
+		this.source = source;
+		auto msg = message.isPresent() ? message : toString;
+		
+		super(msg, file, line);
+	}
+	
+	string toString ()
+	{
+		return format(`The orb "`, orb, `" is not available in the repository "`, source, `".`);
+	}
+}

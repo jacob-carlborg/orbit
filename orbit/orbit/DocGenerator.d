@@ -6,6 +6,8 @@
  */
 module orbit.orbit.DocGenerator;
 
+import orbit.orbit.Orb;
+import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
 
 class DocGenerator : OrbitObject

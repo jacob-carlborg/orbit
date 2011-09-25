@@ -9,4 +9,5 @@ module orbit.orb.commands._;
 public:
 
 import orbit.orb.commands.Build;
+import orbit.orb.commands.Fetch;
 import orbit.orb.commands.Install;

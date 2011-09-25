@@ -13,7 +13,7 @@ import orbit.orbit.Orb;
 abstract class OrbitObject
 {
 	template Constructors ()
-	{		
+	{
 		this (Orb orb)
 		{
 			super(orb);

@@ -41,13 +41,18 @@ struct OrbVersion
 
 	static OrbVersion parse (string version_)
 	{
-		OrbVersion ver;
-		ver.custom = version_;
+		OrbVersion ver = OrbVersion.invalid;
 		
+		if (version_.isBlank())
+			return ver;
+
 		auto parts = version_.split(".");
 		
 		if (parts.length != 3)
+		{
+			ver.custom = version_;
 			return ver;
+		}
 		
 		ver.major = toInt(parts[0]);
 		ver.minor = toInt(parts[1]);
@@ -56,14 +61,29 @@ struct OrbVersion
 		return ver;
 	}
 	
+	static OrbVersion invalid ()
+	{
+		OrbVersion ver;
+		ver.major = invalidPart;
+		ver.minor = invalidPart;
+		ver.build = invalidPart;
+		
+		return ver;
+	}
+	
 	bool isCustom ()
 	{
-		return !isValid;
+		return major == invalidPart && minor == invalidPart && build == invalidPart && custom.isPresent();
 	}
 	
 	bool isStandard ()
 	{
-		return isValid;
+		return major > invalidPart && minor > invalidPart && build > invalidPart && custom.isBlank();
+	}
+	
+	bool isValid ()
+	{
+		return isCustom || isStandard;
 	}
 	
 	int opEquals (OrbVersion rhs)		
@@ -73,6 +93,9 @@ struct OrbVersion
 			
 		if (isStandard && rhs.isStandard)
 			return major == rhs.major && minor == rhs.minor && build == rhs.build;
+		
+		if (!isValid && !rhs.isValid)
+			return true;
 		
 		return false;
 	}
@@ -96,10 +119,5 @@ struct OrbVersion
 	static int toInt (string str)
 	{
 		return to!(int)(str, invalidPart);
-	}
-
-	bool isValid ()
-	{
-		return major > invalidPart && minor > invalidPart && build > invalidPart;
 	}
 }

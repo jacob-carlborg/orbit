@@ -6,7 +6,6 @@
  */
 module orbit.orb.Command;
 
-import TangoArgs = tango.text.Arguments;
 import tango.util.Convert;
 
 import orbit.orbit.Orbit;
@@ -14,6 +13,7 @@ import orbit.orbit.Orbit;
 import orbit.core._;
 import orbit.orb.Exceptions;
 import orbit.orb.Options;
+import StdArgs = orbit.orb.util.Arguments;
 
 abstract class Command
 {
@@ -54,7 +54,7 @@ struct Arguments
 {
 	private
 	{
-		TangoArgs.Arguments arguments;
+		StdArgs.Arguments arguments;
 		string[] originalArgs;
 		string[] args;
 	}
@@ -62,7 +62,7 @@ struct Arguments
 	static Arguments opCall ()
 	{
 		Arguments args;
-		args.arguments = new TangoArgs.Arguments;
+		args.arguments = new StdArgs.Arguments;
 		
 		return args;
 	}
@@ -111,7 +111,7 @@ struct Arguments
 
 struct Argument
 {
-	private TangoArgs.Arguments.Argument argument;
+	private StdArgs.Arguments.Argument argument;
 	
 	string value ()
 	{

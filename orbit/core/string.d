@@ -934,3 +934,49 @@ T[] replace (T) (T[] source, dchar match, dchar replacement)
 	
 	return source;
 }
+
+/**
+ * Returns true if the given string is blank. A string is considered blank if any of
+ * the following conditions are true:
+ * 
+ * $(UL
+ * 	$(LI The string is null)
+ * 	$(LI The length of the string is equal to 0)
+ * 	$(LI The string is equal to the empty string, "")
+ * )
+ * 
+ * Params:
+ *     str = the string to test if it's blank
+ *     
+ * Returns: $(D_KEYWORD true) if any of the above conditions are met
+ * 
+ * See_Also: isPresent 
+ */
+bool isBlank (T) (T[] str)
+{
+	return str is null || str.length == 0 || str == "";
+}
+
+/**
+ * Returns true if the given string is present. A string is conditions present if all
+ * of the following conditions are true:
+ * 
+ * $(UL
+ * 	$(LI The string is not null)
+ * 	$(LI The length of the string is greater than 0)
+ * 	$(LI The string is not equal to the empty string, "")
+ * )
+ * 
+ * The above conditions are basically the opposite of isBlank.
+ * 
+ * Params:
+ *     str = the string to test if it's present
+ *     
+ * Returns: $(D_KEYWORD true) if all of the above conditions are met
+ * 
+ * See_Also: isBlank
+ */
+bool isPresent (T) (T[] str)
+{
+	return !str.isBlank();
+}

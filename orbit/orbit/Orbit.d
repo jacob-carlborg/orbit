@@ -17,16 +17,14 @@ class Orbit
 {	
 	const env = Env();
 	const spec = Spec();
+	const repository = Repository();
 	
 	bool isVerbose;
 	void delegate (string[] ...) verboseHandler;
+	Path path;
+	Constants constants;
 	
-	private
-	{
-		static Orbit defaultOrbit_;
-		Path path_;
-		Constants constants_;
-	}
+	private static Orbit defaultOrbit_;
 	
 	static Orbit defaultOrbit ()
 	{
@@ -59,26 +57,6 @@ class Orbit
 		orbit.isVerbose = true;
 		
 		return orbit;
-	}
-	
-	Path path ()
-	{
-		return path_;
-	}
-	
-	private Path path (Path path)
-	{
-		return path_ = path;
-	}
-	
-	Constants constants ()
-	{
-		return constants_;
-	}
-	
-	private Constants constants (Constants constants)
-	{
-		return constants_ = constants;
 	}
 	
 	void verbose (string[] args ...)
@@ -191,6 +169,24 @@ struct Env
 	string home = "ORB_HOME";
 }
 
+struct Repository
+{	
+	string fileProtocol = "file://";
+	string orbs = "orbs";
+	
+	private string source_;
+	
+	string source ()
+	{
+		return source_ = source_.isPresent() ? source_ :  fileProtocol ~ "/usr/local/orbit/repository";
+	}
+	
+	string source (string source)
+	{
+		return source_ = source;
+	}
+}
+
 abstract class Constants
 {
 	abstract string dylibExtension ();
@@ -208,7 +204,6 @@ abstract class Constants
 	string lib = "lib";
 	string imports = "import";
 	string src = "src";
-	string repositorySource = "file:///usr/local/orbit/repository";
 }
 
 class ConstantsPosix : Constants

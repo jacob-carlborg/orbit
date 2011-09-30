@@ -72,8 +72,10 @@ struct SpecificationEnviroment
 	{
 		// ugly workaround for a problem that seems related to
 		// Ruby in combination with D and the Tango zip module
-		auto result = String(call("files")).toD;
-		return result.split(",");
+		//auto result = String(call("files")).toD;
+		//return result.split(",");
+		
+		return Array(call("files")).toStringArray;
 	}
 
 	string homepage ()

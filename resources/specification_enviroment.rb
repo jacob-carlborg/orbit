@@ -18,7 +18,7 @@ module SpecificationDsl
 
   accessor :author, :build, :build_dependencies, :date, 
            :description, :dvm, :email, :executables,
-            :homepage, :libraries, :name,
+           :files, :homepage, :libraries, :name,
            :orbit_version, :platforms, :package_type,
            :runtime_dependencies, :specification_version,
            :type
@@ -30,11 +30,11 @@ module SpecificationDsl
     @runtime_dependencies << [name, version]
   end
   
-  # Ugly workaround for a problem that seems related to
-  # Ruby in combination with D and the Tango zip module
-  def files (value = nil)
-    value.nil? ? @files.join(",") : @files = value
-  end
+  # # Ugly workaround for a problem that seems related to
+  # # Ruby in combination with D and the Tango zip module
+  # def files (value = nil)
+  #   value.nil? ? @files.join(",") : @files = value
+  # end
 end
 
 class SpecificationEnviroment

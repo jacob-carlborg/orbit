@@ -65,8 +65,16 @@ struct String
 		return rb_str_split(self, (delim ~ '\0').ptr);
 	}
 	
+	size_t length ()
+	{
+		return RSTRING_LEN(self);
+	}
+	
 	string toD ()
 	{
-		return self != Qnil ? fromStringz(StringValueCStr(self)) : null;
+		if (self == Qnil)
+			return null;
+			
+		return StringValuePtr(self)[0 .. length()];
 	}
 }

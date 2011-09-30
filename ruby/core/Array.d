@@ -88,14 +88,6 @@ struct Array
 				break;
 		}
 		
-		// for (size_t i = 0; i < length; i++)
-		// {
-		// 	result = dg(RubyObject(RARRAY_PTR(self)[i]));
-		// 	
-		// 	if (result)
-		// 		break;
-		// }
-		
 		return result;
 	}
 	
@@ -103,20 +95,10 @@ struct Array
 	{
 		string[] result;
 		result.reserve(length);
+		
+		foreach (e ; *this)
+			result ~= String(e).toD;
 
-		size_t len = RARRAY_LEN(self);
-		auto ptr = RARRAY_PTR(self);
-		
-		for (size_t i = 0; i < len; i++, ptr++)
-		{
-			auto str = *ptr;
-			size_t strLen = RSTRING_LEN(str);
-			auto f = StringValuePtr(str)[0 .. strLen].dup;
-			result ~= f;
-		}
-		
-		// foreach (e ; *this)
-		// 	result ~= String(e).toD;
-		return result.dup;
+		return result;
 	}
 }

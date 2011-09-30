@@ -29,12 +29,6 @@ module SpecificationDsl
   def orb (name, version = nil)
     @runtime_dependencies << [name, version]
   end
-  
-  # # Ugly workaround for a problem that seems related to
-  # # Ruby in combination with D and the Tango zip module
-  # def files (value = nil)
-  #   value.nil? ? @files.join(",") : @files = value
-  # end
 end
 
 class SpecificationEnviroment

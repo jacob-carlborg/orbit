@@ -70,11 +70,13 @@ struct String
 		return RSTRING_LEN(self);
 	}
 	
-	string toD ()
+	string toD (bool dupe = true)
 	{
 		if (self == Qnil)
 			return null;
 			
-		return StringValuePtr(self)[0 .. length()];
+		auto str = StringValuePtr(self)[0 .. length()];
+		
+		return dupe ? str.dup : str;
 	}
 }

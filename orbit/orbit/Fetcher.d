@@ -7,6 +7,7 @@
 module orbit.orbit.Fetcher;
 
 import orbit.core._;
+import Path = orbit.io.Path;
 import orbit.orbit.Repository;
 import orbit.orbit.OrbVersion;
 import orbit.orbit.Orbit;
@@ -45,16 +46,19 @@ abstract class Fetcher
 			return new RemoteFetcher(repository, orbit);
 	}
 	
-	abstract void fetch (string name, OrbVersion orbVersion = OrbVersion.invalid);
+	abstract void fetch (string name, string output = null, OrbVersion orbVersion = OrbVersion.invalid);
 }
 
 class LocalFetcher : Fetcher
 {
 	mixin Constructor;
 	
-	void fetch (string name, OrbVersion orbVersion = OrbVersion.invalid)
+	void fetch (string name, string output = null, OrbVersion orbVersion = OrbVersion.invalid)
 	{
 		auto address = repository.addressOfOrb(name, orbVersion);
+		
+		if (output.isBlank())
+			output = Path.join(Path.workingDirectory, name);
 	}
 }
 
@@ -62,7 +66,7 @@ class RemoteFetcher : Fetcher
 {
 	mixin Constructor;
 	
-	void fetch (string name, OrbVersion orbVersion = OrbVersion.invalid)
+	void fetch (string name, string output = null, OrbVersion orbVersion = OrbVersion.invalid)
 	{
 		
 	}

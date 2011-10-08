@@ -14,28 +14,29 @@ import Path = orbit.io.Path;
 import orbit.orbit.Archiver;
 import orbit.orbit.Fetcher;
 import orbit.orbit.Orb;
+import orbit.orbit.OrbVersion;
 import orbit.orbit.Repository;
 
 import orbit.orb.Command;
 
 class Fetch : Command
 {
+	private string defaultOrbVersion;
+	
 	this ()
 	{
-		super("fetch", "Download an orb and place it in the current directory");
+		super("fetch", "Download an orb and place it in the current directory.");
+		defaultOrbVersion = OrbVersion.invalid.toString;
 	}
 	
 	void execute ()
 	{
-		/*auto spec = Specification.load(orbspecPath);
-		scope archiver = new Archiver(spec, output);
-		archiver.archive;*/
-		
 		auto repository = Repository.instance(arguments["source"].value);		
 		auto fetcher = Fetcher.instance(repository);
-		
+	
 		auto orb = new Orb;
 		orb.name = arguments.first;
+		orb.version_ = OrbVersion.parse(arguments["version"].value);
 		
 		fetcher.fetch(orb, arguments["output"].value);
 	}
@@ -43,7 +44,8 @@ class Fetch : Command
 	protected override void setupArguments ()
 	{
 		arguments["output"].aliased('o').params(1).defaults(&defaultOutput).help("The name of the output file.");
-		arguments["source"].aliased('s').params(1).defaults(orbit.repository.source).help("URL or local path used as the remote source for orbs");
+		arguments["source"].aliased('s').params(1).defaults(orbit.repository.source).help("URL or local path used as the remote source for orbs.");
+		arguments["version"].aliased('v').params(1).defaults(defaultOrbVersion).help("Specify version of orb to fetch.");
 	}
 
 private:

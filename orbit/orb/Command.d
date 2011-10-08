@@ -118,6 +118,11 @@ struct Argument
 		auto value = argument.assigned;
 		return value.any() ? value[0] : "";
 	}
+	
+	bool hasValue ()
+	{
+		return argument.assigned().any();
+	}
 
 	T as (T) ()
 	{

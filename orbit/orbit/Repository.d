@@ -19,18 +19,20 @@ abstract class Repository
 	const string source;
 	const bool isLocal;
 	const bool isRemote;
+	const Api api;
 	
 	private
 	{
 		static Repository defaultRepository_;
 	}
 	
-	private this (string source, Orbit orbit, bool local)
+	private this (string source, Orbit orbit, bool local, Api api)
 	{
 		this.orbit = orbit;
 		this.source = source;
 		this.isLocal = local;
 		this.isRemote = !local;
+		this.api = api;
 	}
 	
 	static Repository instance (string source = "", Orbit orbit = Orbit.defaultOrbit)
@@ -67,13 +69,25 @@ abstract class Repository
 	{
 		return source;
 	}
+	
+static:
+	
+	abstract class Api
+	{
+		abstract OrbVersion latestVersion (string name);
+		
+		OrbVersion latestVersion (Orb orb)
+		{
+			return latestVersion(orb.name);
+		}
+	}
 }
 
 class LocalRepository : Repository
 {
 	private this (string source, Orbit orbit)
 	{
-		super(source, orbit, true);
+		super(source, orbit, true, new Api);
 	}
 	
 	string addressOfOrb (Orb orb)
@@ -90,13 +104,23 @@ class LocalRepository : Repository
 	{
 		return Path.join(arr);
 	}
+	
+static:
+	
+	class Api : Repository.Api
+	{
+		OrbVersion latestVersion (string name)
+		{
+			return OrbVersion.invalid;
+		}
+	}
 }
 
 class RemoteRepository : Repository
 {
 	private this (string source, Orbit orbit)
 	{
-		super(source, orbit, false);
+		super(source, orbit, false, new Api);
 	}
 	
 	string addressOfOrb (Orb orb)
@@ -108,11 +132,21 @@ class RemoteRepository : Repository
 		if (resource.isResponseOK)
 			return path;
 		
-		throw new RepositoryException(orb, this, "", __FILE__, __LINE__);
+		throw new RepositoryException(orb, this, null, __FILE__, __LINE__);
 	}
 	
 	string join (string[] arr)
 	{
 		return tango.text.Util.join(arr, "/");
+	}
+	
+static:
+	
+	class Api : Repository.Api
+	{
+		OrbVersion latestVersion (string name)
+		{
+			return OrbVersion.invalid;
+		}
 	}
 }

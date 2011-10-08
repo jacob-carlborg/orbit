@@ -63,7 +63,7 @@ abstract class Repository
 		return join([source, orbit.repository.orbs, orb.fullName]);
 	}
 	
-	abstract string join (string[] arr);
+	abstract string join (string[] arr ...);
 	
 	string toString ()
 	{
@@ -101,15 +101,15 @@ class LocalRepository : Repository
 		throw new RepositoryException(orb, this, null, __FILE__, __LINE__);
 	}
 	
-	string join (string[] arr)
+	string join (string[] arr ...)
 	{
 		return Path.join(arr);
 	}
 	
-	private void updateIndex ()
+	private void updateIndex (Orb orb)
 	{
 		scope index = new Index(this);
-		index.update;
+		index.update(orb);
 	}
 	
 	class Api : Repository.Api
@@ -118,7 +118,7 @@ class LocalRepository : Repository
 		{
 			auto dest = join(source, orbit.constants.orbs, orb.fullName);
 			Path.copy(orb.path, dest);
-			updateIndex;
+			updateIndex(orb);
 		}
 		
 		OrbVersion latestVersion (string name)
@@ -147,7 +147,7 @@ class RemoteRepository : Repository
 		throw new RepositoryException(orb, this, null, __FILE__, __LINE__);
 	}
 	
-	string join (string[] arr)
+	string join (string[] arr ...)
 	{
 		return tango.text.Util.join(arr, "/");
 	}
@@ -158,7 +158,12 @@ static:
 	{
 		OrbVersion latestVersion (string name)
 		{
-			return OrbVersion.invalid;
+			assert(0, "unimplemented");
+		}
+		
+		void upload (Orb orb)
+		{
+			assert(0, "unimplemented");
 		}
 	}
 }

@@ -6,14 +6,16 @@
  */
 module orbit.orbit.Index;
 
-import orbit.orbit.Repository;
 import tango.io.device.File;
 
 import orange.serialization._;
 import orange.serialization.archives._;
 
+import orbit.core._;
 import Path = orbit.io.Path;
+import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
+import orbit.orbit.Repository;
 
 class Index
 {
@@ -44,8 +46,8 @@ class Index
 		
 		else
 		{
-			orbs = serializer.deserialize!(Orb[][string])(File.get(path));
-			orbs[orb.name] = oldOrbs ~ orb;
+			//orbs = serializer.deserialize!(Orb[][string])(File.get(path));
+			orbs[orb.name] = oldOrbs(orb) ~ orb;
 		}
 		
 		write;
@@ -61,8 +63,8 @@ private:
 	void write ()
 	{
 		serializer.reset;
-		auto index = serializer.serialize(orbs);
-		File.set(path, index);
+		//auto index = serializer.serialize(orbs);
+		//File.set(path, index);
 	}
 	
 	Orb[] oldOrbs (Orb orb)

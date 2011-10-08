@@ -56,10 +56,15 @@ abstract class Repository
 		return defaultRepository_ ? defaultRepository_ : Repository.instance(Orbit.defaultOrbit.repository.source, Orbit.defaultOrbit);
 	}
 	
-	abstract string addressOfOrb (string name, OrbVersion orbVersion)
+	abstract string addressOfOrb (Orb orb)
 	{
-		auto fullName = name ~ "-" ~ orbVersion.toString;
-		return join([source, orbit.repository.orbs, fullName], "/");
+		println(orb.fullName);
+		return join([source, orbit.repository.orbs, orb.fullName], "/");
+	}
+	
+	string toString ()
+	{
+		return source;
 	}
 }
 
@@ -70,14 +75,14 @@ class LocalRepository : Repository
 		super(source, orbit, true);
 	}
 	
-	string addressOfOrb (string name, OrbVersion orbVersion)
+	string addressOfOrb (Orb orb)
 	{
-		auto path = super.addressOfOrb(name, orbVersion);
+		auto path = super.addressOfOrb(orb);
 		
 		if (Path.exists(path))
 			return path;
 		
-		throw new RepositoryException(path, source, null, __FILE__, __LINE__);
+		throw new RepositoryException(orb, this, null, __FILE__, __LINE__);
 	}
 }
 
@@ -88,15 +93,15 @@ class RemoteRepository : Repository
 		super(source, orbit, false);
 	}
 	
-	string addressOfOrb (string name, OrbVersion orbVersion)
+	string addressOfOrb (Orb orb)
 	{
-		auto path = super.addressOfOrb(name, orbVersion);
+		auto path = super.addressOfOrb(orb);
 		scope resource = new HttpGet(path);
 		resource.open;
 		
 		if (resource.isResponseOK)
 			return path;
 		
-		throw new RepositoryException(path, source, "", __FILE__, __LINE__);
+		throw new RepositoryException(orb, this, "", __FILE__, __LINE__);
 	}
 }

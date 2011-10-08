@@ -13,9 +13,9 @@ import orbit.core._;
 
 struct OrbVersion
 {
-	int major;
-	int minor;
-	int build;
+	int major = invalidPart;
+	int minor = invalidPart;
+	int build = invalidPart;
 	string custom;
 	
 	private static const invalidPart = -1;

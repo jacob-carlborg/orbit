@@ -128,6 +128,11 @@ class Orb
 		return target_ = target_;
 	}
 	
+	string toString ()
+	{
+		return fullName;
+	}
+	
 private:
 	
 	void setValues (Specification spec)

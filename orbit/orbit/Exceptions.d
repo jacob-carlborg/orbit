@@ -6,6 +6,8 @@
  */
 module orbit.orbit.Exceptions;
 
+import orbit.orbit.Orb;
+import orbit.orbit.Repository;
 import orbit.core.string;
 
 class OrbitException : Exception
@@ -18,25 +20,25 @@ class OrbitException : Exception
 
 class RepositoryException : OrbitException
 {
-	const string orb;
-	const string source;
+	const Orb orb;
+	const Repository repository;
 	
-	this (string orb, string source, string message = "", string file = "", long line = 0)
+	this (Orb orb, Repository repository, string message = "", string file = "", long line = 0)
 	{
 		this.orb = orb;
-		this.source = source;
+		this.repository = repository;
 		auto msg = message.isPresent() ? message : toString;
 		
 		super(msg, file, line);
 	}
 	
-	this (string orb, string source, string file, long line)
+	this (Orb orb, Repository repository, string file, long line)
 	{
-		this(orb, source, null, file, line);
+		this(orb, repository, null, file, line);
 	}
 	
 	string toString ()
 	{
-		return format(`The orb "{}" is not available in the repository "{}".`, orb, source);
+		return format(`The orb "{}" is not available in the repository "{}".`, orb, repository);
 	}
 }

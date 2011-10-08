@@ -33,7 +33,11 @@ class Fetch : Command
 		
 		auto repository = Repository.instance(arguments["source"].value);		
 		auto fetcher = Fetcher.instance(repository);
-		fetcher.fetch(arguments.first, arguments["output"].value);
+		
+		auto orb = new Orb;
+		orb.name = arguments.first;
+		
+		fetcher.fetch(orb, arguments["output"].value);
 	}
 	
 	protected override void setupArguments ()

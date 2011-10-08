@@ -55,10 +55,4 @@ private:
 		auto path = Path.join(Path.workingDirectory, arguments.first);
 		return Path.setExtension(path, Orb.extension);
 	}
-
-    string output ()
-    {
-        auto path = Path.toAbsolute(arguments["output"].value);
-        return Path.setExtension(path, Orb.extension);
-    }
 }

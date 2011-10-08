@@ -208,6 +208,7 @@ static:
 		string lib = "lib";
 		string imports = "import";
 		string src = "src";
+		string index = "index";
 	}
 
 	class ConstantsPosix : Constants

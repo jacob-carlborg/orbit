@@ -74,6 +74,7 @@ static:
 	
 	abstract class Api
 	{
+		abstract void upload (Orb orb);
 		abstract OrbVersion latestVersion (string name);
 		
 		OrbVersion latestVersion (Orb orb)
@@ -105,10 +106,21 @@ class LocalRepository : Repository
 		return Path.join(arr);
 	}
 	
-static:
+	private void updateIndex ()
+	{
+		scope index = new Index(this);
+		index.update;
+	}
 	
 	class Api : Repository.Api
 	{
+		void upload (Orb orb)
+		{
+			auto dest = join(source, orbit.constants.orbs, orb.fullName);
+			Path.copy(orb.path, dest);
+			updateIndex;
+		}
+		
 		OrbVersion latestVersion (string name)
 		{
 			return OrbVersion.invalid;

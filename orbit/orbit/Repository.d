@@ -38,14 +38,14 @@ abstract class Repository
 		orbit = orbit ? orbit : Orbit.defaultOrbit;
 		source = source.isPresent() ? source : orbit.repository.source;
 		
-		if (local(source))
+		if (local(source, orbit))
 			return new LocalRepository(source, orbit);
 		
 		else
 			return new RemoteRepository(source, orbit);
 	}
 	
-	private static bool local (string source)
+	private static bool local (string source, Orbit orbit)
 	{
 		auto len = orbit.repository.fileProtocol.length;
 		return source.length > len && source[0 .. len] == orbit.repository.fileProtocol;
@@ -77,7 +77,7 @@ class LocalRepository : Repository
 		if (Path.exists(path))
 			return path;
 		
-		throw new RepositoryException(path, source, "", __FILE__, __LINE__);
+		throw new RepositoryException(path, source, null, __FILE__, __LINE__);
 	}
 }
 
@@ -94,7 +94,7 @@ class RemoteRepository : Repository
 		scope resource = new HttpGet(path);
 		resource.open;
 		
-		if (!resource.isResponseOK)
+		if (resource.isResponseOK)
 			return path;
 		
 		throw new RepositoryException(path, source, "", __FILE__, __LINE__);

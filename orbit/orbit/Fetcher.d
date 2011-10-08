@@ -13,8 +13,6 @@ import orbit.orbit.OrbVersion;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
 
-private alias orbit.orbit.Repository.Repository Repository;
-
 abstract class Fetcher
 {
 	const Orbit orbit;
@@ -59,6 +57,9 @@ class LocalFetcher : Fetcher
 		
 		if (output.isBlank())
 			output = Path.join(Path.workingDirectory, name);
+		
+		println(name);
+		println(address);
 	}
 }
 

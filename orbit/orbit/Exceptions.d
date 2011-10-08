@@ -30,8 +30,13 @@ class RepositoryException : OrbitException
 		super(msg, file, line);
 	}
 	
+	this (string orb, string source, string file, long line)
+	{
+		this(orb, source, null, file, line);
+	}
+	
 	string toString ()
 	{
-		return format(`The orb "`, orb, `" is not available in the repository "`, source, `".`);
+		return format(`The orb "{}" is not available in the repository "{}".`, orb, source);
 	}
 }

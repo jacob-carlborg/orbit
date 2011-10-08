@@ -58,9 +58,10 @@ abstract class Repository
 	
 	abstract string addressOfOrb (Orb orb)
 	{
-		println(orb.fullName);
-		return join([source, orbit.repository.orbs, orb.fullName], "/");
+		return join([source, orbit.repository.orbs, orb.fullName]);
 	}
+	
+	abstract string join (string[] arr);
 	
 	string toString ()
 	{
@@ -84,6 +85,11 @@ class LocalRepository : Repository
 		
 		throw new RepositoryException(orb, this, null, __FILE__, __LINE__);
 	}
+	
+	string join (string[] arr)
+	{
+		return Path.join(arr);
+	}
 }
 
 class RemoteRepository : Repository
@@ -103,5 +109,10 @@ class RemoteRepository : Repository
 			return path;
 		
 		throw new RepositoryException(orb, this, "", __FILE__, __LINE__);
+	}
+	
+	string join (string[] arr)
+	{
+		return tango.text.Util.join(arr, "/");
 	}
 }

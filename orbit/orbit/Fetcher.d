@@ -58,9 +58,6 @@ class LocalFetcher : Fetcher
 		
 		if (output.isBlank())
 			output = Path.join(Path.workingDirectory, orb.name);
-		
-		println(orb.name);
-		println(address);
 	}
 }
 

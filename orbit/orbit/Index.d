@@ -15,6 +15,7 @@ import orbit.core._;
 import Path = orbit.io.Path;
 import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
+import orbit.orbit.OrbVersion;
 import orbit.orbit.Repository;
 
 class Index
@@ -25,7 +26,7 @@ class Index
 	{
 		const string path;
 		
-		Orb[][string] orbs;
+		Orb[string][string] orbs;
 		XmlArchive!() archive;
 		Serializer serializer;
 	}
@@ -46,8 +47,8 @@ class Index
 		
 		else
 		{
-			//orbs = serializer.deserialize!(Orb[][string])(File.get(path));
-			orbs[orb.name] = oldOrbs(orb) ~ orb;
+			orbs = serializer.deserialize!(typeof(orbs))(File.get(path));
+			orbs[orb.name][orb.version_.toString] = orb;
 		}
 		
 		write;
@@ -57,22 +58,22 @@ private:
 	
 	void create (Orb orb)
 	{
-		orbs = [orb.name : [orb]];
+		orbs = [orb.name : [orb.version_.toString : orb]];
 	}
 	
 	void write ()
 	{
 		serializer.reset;
-		//auto index = serializer.serialize(orbs);
-		//File.set(path, index);
+		auto index = serializer.serialize(orbs);
+		File.set(path, index);
 	}
 	
-	Orb[] oldOrbs (Orb orb)
-	{
-		if (auto oldOrbs = orb.name in orbs)
-			return *oldOrbs;
-		
-		else
-			return [];
-	}
+	// Orb[OrbVersion] oldOrbs (Orb orb)
+	// {
+	// 	if (auto oldOrbs = orb.name in orbs)
+	// 		return *oldOrbs;
+	// 	
+	// 	else
+	// 		return [];
+	// }
 }

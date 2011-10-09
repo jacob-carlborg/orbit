@@ -41,7 +41,10 @@ abstract class Repository
 		source = source.isPresent() ? source : orbit.repository.source;
 		
 		if (local(source, orbit))
-			return new LocalRepository(source, orbit);
+		{
+			size_t start = orbit.repository.fileProtocol.length;
+			return new LocalRepository(source[start .. $], orbit);
+		}
 		
 		else
 			return new RemoteRepository(source, orbit);
@@ -116,7 +119,10 @@ class LocalRepository : Repository
 	{
 		void upload (Orb orb)
 		{
+			
 			auto dest = join(source, orbit.constants.orbs, orb.fullName);
+			println(orb.path);
+			println(dest);
 			Path.copy(orb.path, dest);
 			updateIndex(orb);
 		}

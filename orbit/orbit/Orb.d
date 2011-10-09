@@ -6,6 +6,9 @@
  */
 module orbit.orbit.Orb;
 
+import orange.serialization.Serializable;
+import orange.serialization.Events;
+
 import orbit.core._;
 import orbit.dsl.Specification;
 import orbit.io.Path;
@@ -26,8 +29,7 @@ class Orb
 	}
 	
 	static const extension = "orb";
-	const Orbit orbit;
-	
+		
 	Builder.Tool buildTool;
 	
 	string summary;
@@ -59,12 +61,15 @@ class Orb
 		string target_;
 		string path_;
 
+		Orbit orbit_;
 		Type type_ = Type.executable;
 	}
 	
+	mixin NonSerialized!(orbit_, fullName_, target_, path_, type_);
+	
 	this (Orbit orbit = Orbit.defaultOrbit)
 	{
-		this.orbit = orbit;
+		orbit_ = orbit;
 	}
 	
 	this (Specification spec, Orbit orbit = Orbit.defaultOrbit)
@@ -72,6 +77,13 @@ class Orb
 		this(orbit);
 		setValues(spec);
 	}
+	
+	private void deserializing ()
+	{
+		orbit_ = Orbit.defaultOrbit;
+	}
+	
+	mixin OnDeserializing!(deserializing);
 	
 	static Orb load (string path, Orbit orbit = Orbit.defaultOrbit)
 	{
@@ -83,6 +95,11 @@ class Orb
 		orb.path_ = path;
 		
 		return orb;
+	}
+	
+	Orbit orbit ()
+	{
+		return orbit_;
 	}
 	
 	string fullName ()

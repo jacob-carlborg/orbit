@@ -704,3 +704,15 @@ bool any (T) (T[] arr)
 {
 	return arr.length > 0;
 }
+
+/// Returns the first element of the array
+T first (T) (T[] arr)
+{
+	return arr[0];
+}
+
+/// Returns the last element of the array
+T last (T) (T[] arr)
+{
+	return arr[$ - 1];
+}

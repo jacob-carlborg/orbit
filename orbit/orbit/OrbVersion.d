@@ -16,17 +16,8 @@ struct OrbVersion
 	int major = invalidPart;
 	int minor = invalidPart;
 	int build = invalidPart;
-	string custom;
 	
 	private static const invalidPart = -1;
-	
-	static OrbVersion opCall (string custom)
-	{
-		OrbVersion ver;
-		ver.custom = custom;
-		
-		return ver;
-	}
 	
 	static OrbVersion opCall (int major = 0, int minor = 0, int build = 0)
 	{
@@ -49,10 +40,7 @@ struct OrbVersion
 		auto parts = version_.split(".");
 		
 		if (parts.length != 3)
-		{
-			ver.custom = version_;
 			return ver;
-		}
 		
 		ver.major = toInt(parts[0]);
 		ver.minor = toInt(parts[1]);
@@ -71,47 +59,31 @@ struct OrbVersion
 		return ver;
 	}
 	
-	bool isCustom ()
-	{
-		return major == invalidPart && minor == invalidPart && build == invalidPart && custom.isPresent();
-	}
-	
-	bool isStandard ()
-	{
-		return major > invalidPart && minor > invalidPart && build > invalidPart && custom.isBlank();
-	}
-	
 	bool isValid ()
 	{
-		return isCustom || isStandard;
+		return major > invalidPart && minor > invalidPart && build > invalidPart;
 	}
 	
 	int opEquals (OrbVersion rhs)		
 	{
-		if (isCustom && rhs.isCustom)
-			return custom == rhs.custom;
-			
-		if (isStandard && rhs.isStandard)
-			return major == rhs.major && minor == rhs.minor && build == rhs.build;
-		
-		if (!isValid && !rhs.isValid)
-			return true;
-		
-		return false;
+		return major == rhs.major && minor == rhs.minor && build == rhs.build;
 	}
 	
 	int opCmp (OrbVersion rhs)
 	{
-		assert(false, "not implemented");
+		if (major != rhs.major)
+			return major - rhs.major;
+			
+		else if (minor != rhs.minor)
+			return minor - rhs.minor;
+			
+		else
+			return build - rhs.build;
 	}
 	
 	string toString ()
 	{
-		if (isCustom)
-			return custom;
-			
-		else
-			return format("{}.{}.{}", major, minor, build);
+		return format("{}.{}.{}", major, minor, build);
 	}
 	
 	private:

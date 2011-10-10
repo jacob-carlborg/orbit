@@ -47,11 +47,22 @@ class Index
 		
 		else
 		{
-			orbs = serializer.deserialize!(typeof(orbs))(File.get(path));
+			load;
 			orbs[orb.name][orb.version_.toString] = orb;
 		}
 		
 		write;
+	}
+	
+	OrbVersion latestVersion (string name)
+	{
+		if (!isLoaded)
+			load;
+			
+		auto versions = orbs[name].keys;
+		auto latest = versions.sort.last();
+		
+		return OrbVersion.parse(latest);
 	}
 	
 private:
@@ -66,6 +77,16 @@ private:
 		serializer.reset;
 		auto index = serializer.serialize(orbs);
 		File.set(path, index);
+	}
+	
+	void load ()
+	{
+		orbs = serializer.deserialize!(typeof(orbs))(File.get(path));
+	}
+	
+	bool isLoaded ()
+	{
+		return orbs !is null;
 	}
 	
 	// Orb[OrbVersion] oldOrbs (Orb orb)

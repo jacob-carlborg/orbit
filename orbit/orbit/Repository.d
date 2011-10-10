@@ -89,6 +89,8 @@ static:
 
 class LocalRepository : Repository
 {
+	private Index index_;
+	
 	private this (string source, Orbit orbit)
 	{
 		super(source, orbit, true, new Api);
@@ -109,27 +111,23 @@ class LocalRepository : Repository
 		return Path.join(arr);
 	}
 	
-	private void updateIndex (Orb orb)
+	private Index index ()
 	{
-		scope index = new Index(this);
-		index.update(orb);
+		return index_ = index_ ? index_ : new Index(this);
 	}
 	
 	class Api : Repository.Api
 	{
 		void upload (Orb orb)
 		{
-			
 			auto dest = join(source, orbit.constants.orbs, orb.fullName);
-			println(orb.path);
-			println(dest);
 			Path.copy(orb.path, dest);
-			updateIndex(orb);
+			index.update(orb);
 		}
 		
 		OrbVersion latestVersion (string name)
 		{
-			return OrbVersion.invalid;
+			return index.latestVersion(name);
 		}
 	}
 }

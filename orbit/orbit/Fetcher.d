@@ -55,6 +55,10 @@ class LocalFetcher : Fetcher
 	void fetch (Orb orb, string output = null)
 	{
 		auto source = repository.addressOfOrb(orb);
+		
+		if (output.isBlank())
+ 			output = Path.join(Path.workingDirectory, orb.name);
+		
 		println(address);
 		//Path.copy(source, output);
 	}

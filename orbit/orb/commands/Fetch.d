@@ -40,9 +40,9 @@ class Fetch : Command
 		
 		fetcher.fetch(orb, arguments["output"].value);
 		
-		// auto repository = Repository.instance("file:///Users/doob/Desktop/repository");
-		// auto orb = Orb.load("/Users/doob/development/eclipse_workspace/orbit/src/test.orb");
-		// repository.api.upload(orb);
+		/*auto repository = Repository.instance("file:///Users/doob/Desktop/repository");
+		auto orb = Orb.load("/Users/doob/development/eclipse_workspace/orbit/src/test.orb");
+		repository.api.upload(orb);*/
 	}
 	
 	protected override void setupArguments ()

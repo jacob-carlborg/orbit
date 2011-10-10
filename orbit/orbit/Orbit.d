@@ -182,7 +182,7 @@ static:
 		
 		string source ()
 		{
-			return source_ = source_.isPresent() ? source_ :  fileProtocol ~ "/usr/local/orbit/repository";
+			return source_ = source_.isPresent() ? source_ :  fileProtocol ~ "/Users/doob/Desktop/repository";
 		}
 		
 		string source (string source)
@@ -209,6 +209,7 @@ static:
 		string imports = "import";
 		string src = "src";
 		string index = "index";
+		string indexFormat = "xml";
 	}
 
 	class ConstantsPosix : Constants

@@ -93,6 +93,22 @@ string setExtension (string path, string extension)
 	return parse(path).ext != extension ? path ~ "." ~ extension : path;
 }
 
+string join (string[] paths ...)
+{
+	if (paths.length == 0)
+		return "";
+	
+	string result;
+	result ~= FS.stripped(paths[0]);
+	
+	foreach (path ; paths[1 .. $ - 1])
+		result ~= FS.paddedLeading(FS.stripped(path));
+	
+	result ~= FS.paddedLeading(paths[$ - 1]);
+	
+	return result;
+}
+
 version (Posix):
 
 void permission (string path, string mode)

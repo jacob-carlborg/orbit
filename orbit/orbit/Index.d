@@ -26,7 +26,7 @@ class Index
 	{
 		const string path;
 		
-		Orb[string][string] orbs;
+		Orb[OrbVersion][string] orbs;
 		XmlArchive!() archive;
 		Serializer serializer;
 	}
@@ -34,7 +34,9 @@ class Index
 	this (LocalRepository repository)
 	{
 		this.repository = repository;
-		this.path = repository.join(repository.source, repository.orbit.constants.index);
+		this.path = repository.join(repository.source,
+				repository.orbit.constants.index ~
+				"." ~ repository.orbit.constants.indexFormat);
 		
 		archive = new XmlArchive!();
 		serializer = new Serializer(archive);
@@ -48,7 +50,7 @@ class Index
 		else
 		{
 			load;
-			orbs[orb.name][orb.version_.toString] = orb;
+			orbs[orb.name][orb.version_] = orb;
 		}
 		
 		write;
@@ -58,18 +60,16 @@ class Index
 	{
 		if (!isLoaded)
 			load;
-			
+
 		auto versions = orbs[name].keys;
-		auto latest = versions.sort.last();
-		
-		return OrbVersion.parse(latest);
+		return versions.sort.last();
 	}
 	
 private:
 	
 	void create (Orb orb)
 	{
-		orbs = [orb.name : [orb.version_.toString : orb]];
+		orbs = [orb.name : [orb.version_ : orb]];
 	}
 	
 	void write ()

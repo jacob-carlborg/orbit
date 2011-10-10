@@ -54,27 +54,9 @@ class LocalFetcher : Fetcher
 	
 	void fetch (Orb orb, string output = null)
 	{
-		auto address = repository.addressOfOrb(orb);
+		auto source = repository.addressOfOrb(orb);
 		println(address);
-		// if (output.isBlank())
-		// 	output = Path.join(Path.workingDirectory, orb.name);
-		// 
-		// string source;
-		// 
-		// if (orb.version_.isValid)
-		// {
-		// 	auto source = repository.join(repository.source, orbit.constants.orbs, orb.fullName);
-		// 	Path.copy(source, output);
-		// }
-		// 
-		// else
-		// {
-		// 	orb.version_ = repository.latestVersion(orb);
-		// 	source = orb.fullName;
-		// 	orb.version_ = OrbVersion.invalid;
-		// 	
-		// 	Path.copy
-		// }
+		//Path.copy(source, output);
 	}
 }
 

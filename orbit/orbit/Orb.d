@@ -97,6 +97,11 @@ class Orb
 		return orb;
 	}
 	
+	static string buildFullName (string name, OrbVersion version_)
+	{
+		return name ~ "-" ~ version_.toString;
+	}
+	
 	Orbit orbit ()
 	{
 		return orbit_;
@@ -104,7 +109,7 @@ class Orb
 	
 	string fullName ()
 	{
-		return fullName_ = fullName_.any() ? fullName_ : name ~ "-" ~ version_.toString;
+		return fullName_ = fullName_.any() ? fullName_ : Orb.buildFullName(name, version_);
 	}
 	
 	Type type ()

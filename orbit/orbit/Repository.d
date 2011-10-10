@@ -24,6 +24,7 @@ abstract class Repository
 	private
 	{
 		static Repository defaultRepository_;
+		string orbsPath_;
 	}
 	
 	private this (string source, Orbit orbit, bool local, Api api)
@@ -61,11 +62,7 @@ abstract class Repository
 		return defaultRepository_ ? defaultRepository_ : Repository.instance(Orbit.defaultOrbit.repository.source, Orbit.defaultOrbit);
 	}
 	
-	abstract string addressOfOrb (Orb orb)
-	{
-		return join([source, orbit.repository.orbs, orb.fullName]);
-	}
-	
+	abstract string addressOfOrb (Orb orb);	
 	abstract string join (string[] arr ...);
 	
 	string toString ()
@@ -73,6 +70,14 @@ abstract class Repository
 		return source;
 	}
 	
+protected:
+	
+	string orbsPath ()
+	{
+		return orbsPath_ = orbsPath_.any() ? orbsPath_ : join([source, orbit.repository.orbs]);
+	}
+	
+public:
 static:
 	
 	abstract class Api
@@ -98,12 +103,23 @@ class LocalRepository : Repository
 	
 	string addressOfOrb (Orb orb)
 	{
-		auto path = super.addressOfOrb(orb);
+		string fullName;
+		
+		if (orb.version_.isValid)
+			fullName = orb.fullName;
+			
+		else
+		{
+			auto orbVersion = api.latestVersion(orb);
+			fullName = Orb.buildFullName(orb.name, orbVersion);
+		}
+		
+		auto path = join(orbsPath, fullName);
 		
 		if (Path.exists(path))
 			return path;
 		
-		throw new RepositoryException(orb, this, null, __FILE__, __LINE__);
+		throw new RepositoryException(orb, this, __FILE__, __LINE__);
 	}
 	
 	string join (string[] arr ...)
@@ -141,7 +157,7 @@ class RemoteRepository : Repository
 	
 	string addressOfOrb (Orb orb)
 	{
-		auto path = super.addressOfOrb(orb);
+		auto path = join(orbsPath, orb.fullName);
 		scope resource = new HttpGet(path);
 		resource.open;
 		

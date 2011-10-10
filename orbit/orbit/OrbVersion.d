@@ -64,23 +64,6 @@ struct OrbVersion
 		return major > invalidPart && minor > invalidPart && build > invalidPart;
 	}
 	
-	int opEquals (OrbVersion rhs)		
-	{
-		return major == rhs.major && minor == rhs.minor && build == rhs.build;
-	}
-	
-	int opCmp (OrbVersion rhs)
-	{
-		if (major != rhs.major)
-			return major - rhs.major;
-			
-		else if (minor != rhs.minor)
-			return minor - rhs.minor;
-			
-		else
-			return build - rhs.build;
-	}
-	
 	string toString ()
 	{
 		return format("{}.{}.{}", major, minor, build);

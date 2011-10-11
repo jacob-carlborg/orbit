@@ -3,5 +3,5 @@
 ./build.sh
 
 if [ "$?" = 0 ] ; then
-  ./orb "$@"
+  ./bin/orb "$@"
 fi

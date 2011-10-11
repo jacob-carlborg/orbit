@@ -102,6 +102,7 @@ private:
 		commandManager.register("build", "orbit.orb.commands.Build.Build");
 		commandManager.register("fetch", "orbit.orb.commands.Fetch.Fetch");
 		commandManager.register("install", "orbit.orb.commands.Install.Install");
+		commandManager.register("push", "orbit.orb.commands.Push.Push");
 	}
 	
 	void handleCommand (string command, string[] args)

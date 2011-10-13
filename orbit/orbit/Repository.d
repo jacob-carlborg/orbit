@@ -40,21 +40,13 @@ abstract class Repository
 	{
 		orbit = orbit ? orbit : Orbit.defaultOrbit;
 		source = source.isPresent() ? source : orbit.repository.source;
+		auto path = Path.toAbsolute(Path.normalize(source))
 		
-		if (local(source, orbit))
-		{
-			size_t start = orbit.repository.fileProtocol.length;
-			return new LocalRepository(source[start .. $], orbit);
-		}
+		if (Path.exists(path))
+			return new LocalRepository(path, orbit);
 		
 		else
 			return new RemoteRepository(source, orbit);
-	}
-	
-	private static bool local (string source, Orbit orbit)
-	{
-		auto len = orbit.repository.fileProtocol.length;
-		return source.length > len && source[0 .. len] == orbit.repository.fileProtocol;
 	}
 	
 	static Repository defaultRepository ()

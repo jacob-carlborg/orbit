@@ -43,9 +43,22 @@ class Fetch : Command
 	
 	protected override void setupArguments ()
 	{
-		arguments["output"].aliased('o').params(1).defaults(&defaultOutput).help("The name of the output file.");
-		arguments["source"].aliased('s').params(1).defaults(orbit.repository.source).help("URL or local path used as the remote source for orbs.");
-		arguments["version"].aliased('v').params(1).defaults(defaultOrbVersion).help("Specify version of orb to fetch.");
+		arguments["output"]
+			.aliased('o')
+			.params(1)
+			.defaults(&defaultOutput)
+			.help("The name of the output file.");
+			
+		arguments["source"]
+			.aliased('s')
+			.params(1)
+			.help("URL or local path used as the remote source for orbs.");
+			
+		arguments["version"]
+			.aliased('v')
+			.params(1)
+			.defaults(defaultOrbVersion)
+			.help("Specify version of orb to fetch.");
 	}
 
 private:

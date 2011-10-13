@@ -34,7 +34,6 @@ class Push : Command
 		arguments["source"]
 			.aliased('s')
 			.params(1)
-			.defaults("file:///Users/jacob/Desktop/repository")
 			.help("URL or local path used as the remote source for orbs.");
 	}
 	

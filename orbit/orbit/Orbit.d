@@ -174,15 +174,14 @@ static:
 	}
 
 	struct Repository
-	{	
-		string fileProtocol = "file://";
+	{
 		string orbs = "orbs";
 		
 		private string source_;
 		
 		string source ()
 		{
-			return source_ = source_.isPresent() ? source_ :  fileProtocol ~ "/Users/doob/Desktop/repository";
+			return source_ = source_.isPresent() ? source_ :  "/usr/local/orbit/repository";
 		}
 		
 		string source (string source)

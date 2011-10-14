@@ -40,7 +40,7 @@ abstract class Repository
 	{
 		orbit = orbit ? orbit : Orbit.defaultOrbit;
 		source = source.isPresent() ? source : orbit.repository.source;
-		auto path = Path.toAbsolute(Path.normalize(source))
+		auto path = Path.toAbsolute(Path.normalize(source));
 		
 		if (Path.exists(path))
 			return new LocalRepository(path, orbit);
@@ -128,7 +128,14 @@ class LocalRepository : Repository
 	{
 		void upload (Orb orb)
 		{
-			auto dest = join(source, orbit.constants.orbs, orb.fullName);
+			auto dest = join(source, orbit.constants.orbs);
+			
+			if (!Path.exists(dest))
+				Path.createPath(dest);
+			
+			dest = join(dest, orb.fullName);
+			dest = Path.setExtension(dest, Orb.extension);
+
 			Path.copy(orb.path, dest);
 			index.update(orb);
 		}

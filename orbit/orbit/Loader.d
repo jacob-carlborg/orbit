@@ -9,7 +9,7 @@ module orbit.orbit.Loader;
 import Zip = tango.util.compress.Zip : extractArchive;
 
 import orbit.core._;
-import orbit.io.Path;
+import Path = orbit.io.Path;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
 
@@ -43,12 +43,18 @@ class Loader
 		return temporaryPath_;
 	}
 	
-	void load (string orbPath, string tmpPath = "")
+	void load (string orbPath, string temporaryPath = "", bool cleanTemporaryPath = true)
 	{
 		orbPath_ = orbPath;
-		temporaryPath_ = tmpPath.any() ? tmpPath : defaultTmpPath;
+		temporaryPath_ = temporaryPath.any() ? temporaryPath : defaultTmpPath;
 		
-		extractArchive(orbPath, temporaryPath);
+		if (cleanTemporaryPath && Path.exists(temporaryPath_))
+		{
+			Path.remove(temporaryPath_, true);
+			Path.createPath(temporaryPath_);
+		}
+		
+		extractArchive(orbPath, temporaryPath_);
 	}
 	
 private:
@@ -63,7 +69,7 @@ private:
 	
 	string defaultTmpPath ()
 	{
-		return join(orbit.path.tmp, parse(orbPath).name);
+		return Path.join(orbit.path.tmp, Path.parse(orbPath).name);
 	}
 	
 	void verbose (string[] args ...)

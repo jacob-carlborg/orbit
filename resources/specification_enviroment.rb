@@ -21,7 +21,7 @@ module SpecificationDsl
            :files, :homepage, :libraries, :name,
            :orbit_version, :platforms, :package_type,
            :runtime_dependencies, :specification_version,
-           :type
+           :type, :bindir
 
   alias dependencies runtime_dependencies
   alias orbs runtime_dependencies

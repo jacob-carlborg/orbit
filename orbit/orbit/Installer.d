@@ -85,8 +85,13 @@ private:
 	
 	void moveExecutables ()
 	{
+		string prefix;
+		
+		if (orb.bindir.isPresent())
+			prefix = orb.bindir;
+
 		auto path = Path.join(fullInstallPath, orbit.constants.bin);
-		moveSpecificFiles(orb.executables, path);
+		moveSpecificFiles(orb.executables, path, prefix);
 	}
 	
 	void moveLibraries ()
@@ -101,13 +106,13 @@ private:
 		moveSpecificFiles(orb.files, path);
 	}
 	
-	void moveSpecificFiles (string[] files, string destinationPath)
+	void moveSpecificFiles (string[] files, string destinationPath, string filePrefix = "")
 	{
 		Path.createPath(destinationPath);
 
 		foreach (file ; files)
 		{
-			auto source = Path.join(tmpDataPath, file);
+			auto source = Path.join(tmpDataPath, filePrefix, file);
 			auto destination = Path.join(destinationPath, file);
 
 			verbose("Source:", source);

@@ -33,6 +33,7 @@ class Specification
 
 		string author_;
 		string build_;
+		string bindir_;
 		string[] build_dependencies_;
 		string date_;
 		string description_;
@@ -109,6 +110,16 @@ class Specification
 	string author (string author)
 	{
 		return author_ = author;
+	}
+	
+	string bindir ()
+	{
+		return bindir_;
+	}
+	
+	string bindir (string bindir)
+	{
+		return bindir_ = bindir;
 	}
 
 	string build ()
@@ -338,5 +349,6 @@ class Specification
 		version_ = specEnv.version_;
 		executables_ = specEnv.executables;
 		files_ = specEnv.files;
+		bindir_ = specEnv.bindir;
 	}
 }

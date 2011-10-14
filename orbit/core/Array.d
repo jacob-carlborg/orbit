@@ -716,3 +716,17 @@ T last (T) (T[] arr)
 {
 	return arr[$ - 1];
 }
+
+U[] map (T, U) (T[] arr, U delegate (T e) dg)
+{
+	if (arr.isEmpty())
+		return [];
+	
+	U[] newArr;
+	newArr.reserve(arr.length);
+	
+	foreach (e ; arr)
+		newArr ~= dg(e);
+		
+	return newArr;
+}

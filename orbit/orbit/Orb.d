@@ -36,6 +36,7 @@ class Orb
 	OrbVersion version_;
 
 	string author;
+	string bindir;
 	string build;
 	string[] build_dependencies;
 	string date;
@@ -165,6 +166,7 @@ private:
 		version_ = OrbVersion.parse(spec.version_);
 
 		author = spec.author;
+		bindir = spec.bindir;
 		build = spec.build;
 		build_dependencies = spec.build_dependencies;
 		date = spec.date;

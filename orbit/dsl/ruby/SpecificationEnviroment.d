@@ -32,6 +32,11 @@ struct SpecificationEnviroment
 	{
 		return String(call("author")).toD;
 	}
+	
+	string bindir ()
+	{
+		return String(call("bindir")).toD;
+	}
 
 	string build ()
 	{

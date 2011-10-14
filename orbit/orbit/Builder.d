@@ -49,11 +49,25 @@ abstract class Builder : OrbitObject
 		return newBuilder(Orbit.defaultOrbit, orb);
 	}
 	
-	abstract void build ();
+	final void build ()
+	{
+		setupBuildEnvironment;
+		doBuild;
+	}
+	
+	protected abstract void doBuild ();
 	
 	protected void execute (string command, string[] args ...)
 	{
 		execute(command ~ args);
+	}
+	
+	protected void setupBuildEnvironment ()
+	{
+		auto binPath = Path.join(workingDirectory, orb.bindir);
+
+		if (!Path.exists(binPath))
+			Path.createPath(binPath);
 	}
 	
 	protected void execute (string[] args ...)
@@ -102,7 +116,7 @@ class Dake : Builder
 		super(orb);
 	}
 
-	void build ()
+	void doBuild ()
 	{
 		execute("dake", orb.buildArgs);
 	}
@@ -120,7 +134,7 @@ class Cmake : Builder
 		super(orb);
 	}
 		
-	void build ()
+	void doBuild ()
 	{
 		assert(false); //execute("cmake", orb.buildArgs);
 	}
@@ -138,8 +152,9 @@ class Dsss : Builder
 		super(orb);
 	}
 	
-	void build ()
+	void doBuild ()
 	{
+		setupBuildEnvironment;
 		execute("dsss", "build"[] ~ orb.buildArgs);
 	}
 }
@@ -156,7 +171,7 @@ class Make : Builder
 		super(orb);
 	}
 	
-	void build ()
+	void doBuild ()
 	{
 		execute("make", orb.buildArgs);
 	}
@@ -174,7 +189,7 @@ class Rdmd : Builder
 		super(orb);
 	}
 	
-	void build ()
+	void doBuild ()
 	{
 		assert(false); //execute("rdmd --build-only", orb.buildArgs);
 	}
@@ -192,7 +207,7 @@ class Shell : Builder
 		super(orb);
 	}
 	
-	void build ()
+	void doBuild ()
 	{
 		execute(orb.buildArgs);
 	}

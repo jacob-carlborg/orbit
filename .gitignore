@@ -9,3 +9,4 @@ dsss_objs
 .settings
 *.orb
 *.deps
+tmp

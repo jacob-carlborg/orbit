@@ -96,7 +96,7 @@ class LocalRepository : Repository
 	string addressOfOrb (Orb orb)
 	{
 		string fullName;
-		
+
 		if (orb.version_.isValid)
 			fullName = orb.fullName;
 			
@@ -107,7 +107,8 @@ class LocalRepository : Repository
 		}
 		
 		auto path = join(orbsPath, fullName);
-		
+		path = Path.setExtension(path, Orb.extension);
+
 		if (Path.exists(path))
 			return path;
 		

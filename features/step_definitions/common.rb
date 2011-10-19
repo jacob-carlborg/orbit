@@ -20,3 +20,10 @@ Given /^an orb named "([^"]*)"$/ do |name|
   When %{I successfully run `orb build #{name}`}
   Then %{a file named "#{name}.orb" should exist}
 end
+
+Given /^an orb named "([^"]*)" in the repository "([^"]*)"$/ do |name, source|
+  Given %{an orb named "#{name}"}
+  When %{I successfully run `orb push #{name} -s #{source}`}
+  Then %{a file named "#{source}/index.xml" should exist}
+  And %{a file named "#{source}/orbs/#{name}-0.0.1.orb" should exist}
+end

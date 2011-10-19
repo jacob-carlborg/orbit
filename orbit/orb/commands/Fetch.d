@@ -22,6 +22,7 @@ import orbit.orb.Command;
 class Fetch : Command
 {
 	private string defaultOrbVersion;
+	Repository repository;
 	
 	this ()
 	{
@@ -31,14 +32,14 @@ class Fetch : Command
 	
 	void execute ()
 	{
-		auto repository = Repository.instance(arguments["source"].value);		
+		repository = Repository.instance(arguments["source"].value);
 		auto fetcher = Fetcher.instance(repository);
 	
 		auto orb = new Orb;
 		orb.name = arguments.first;
 		orb.version_ = OrbVersion.parse(arguments["version"].value);
 		
-		fetcher.fetch(orb, arguments["output"].value);
+		fetcher.fetch(orb, output);
 	}
 	
 	protected override void setupArguments ()
@@ -46,7 +47,6 @@ class Fetch : Command
 		arguments["output"]
 			.aliased('o')
 			.params(1)
-			.defaults(&defaultOutput)
 			.help("The name of the output file.");
 			
 		arguments["source"]
@@ -63,9 +63,15 @@ class Fetch : Command
 
 private:
 
-	string defaultOutput ()
+	string output ()
 	{
-		auto path = Path.join(Path.workingDirectory, arguments.first);
+		if (arguments["output"].hasValue)
+			return arguments["output"].value;
+		
+		auto orbVersion = repository.api.latestVersion(arguments.first);
+		auto name = Orb.buildFullName(arguments.first, orbVersion);
+		
+		auto path = Path.join(Path.workingDirectory, name);
 		return Path.setExtension(path, Orb.extension);
 	}
 }

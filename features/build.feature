@@ -1,7 +1,7 @@
 Feature: Build
 
   Background:
-    Given I have an orbspec "test"
+    Given an orbspec named "test"
 
   Scenario: Building an orb with extension
     When I successfully run `orb build test.orbspec`

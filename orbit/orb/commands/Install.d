@@ -30,6 +30,14 @@ class Install : Command
 		installer.install;
 	}
 	
+	protected override void setupArguments ()
+	{
+		arguments["source"]
+			.aliased('s')
+			.params(1)
+			.help("URL or local path used as the remote source for orbs.");
+	}
+	
 private:
 
 	string orbPath ()

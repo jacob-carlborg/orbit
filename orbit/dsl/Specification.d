@@ -350,5 +350,6 @@ class Specification
 		executables_ = specEnv.executables;
 		files_ = specEnv.files;
 		bindir_ = specEnv.bindir;
+		build_ = specEnv.build;
 	}
 }

@@ -8,6 +8,7 @@ Given /^an orbspec named "([^"]*)"$/ do |name|
     files %w[foo.d bar.d]
     executables %w[#{name}]
     bindir "bin"
+    build ""
   eos
 end
 

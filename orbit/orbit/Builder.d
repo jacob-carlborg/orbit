@@ -25,14 +25,31 @@ abstract class Builder : OrbitObject
 		make,
 		rdmd,
 		shell,
+		none
 	}
 	
 	string workingDirectory;
 	
 	mixin Constructors;
 	
+	static Tool toBuilder (string str)
+	{
+		switch (str)
+		{
+			case "dake": return Tool.dake;
+			case "cmake": return Tool.cmake;
+			case "dsss": return Tool.dsss;
+			case "make": return Tool.make;
+			case "rdmd": return Tool.rdmd;
+			case "shell": return Tool.shell;
+			default: return Tool.none;
+		}
+	}
+	
 	static Builder newBuilder (Orbit orbit, Orb orb)
-	{		
+	{
+		static Builder sourceBuilder;
+		
 		switch (orb.buildTool)
 		{
 			case Tool.dake: return new Dake(orbit, orb);
@@ -41,6 +58,9 @@ abstract class Builder : OrbitObject
 			case Tool.make: return new Make(orbit, orb);
 			case Tool.rdmd: return new Rdmd(orbit, orb);
 			case Tool.shell: return new Shell(orbit, orb);
+			
+			case Tool.none:
+				return sourceBuilder = sourceBuilder ? sourceBuilder : new Source(orbit, orb);
 		}
 	}
 	
@@ -106,15 +126,7 @@ abstract class Builder : OrbitObject
 
 class Dake : Builder
 {
-	this (Orbit orbit, Orb orb)
-	{
-		super(orbit, orb);
-	}
-	
-	this (Orb orb)
-	{
-		super(orb);
-	}
+	mixin Constructors;
 
 	void doBuild ()
 	{
@@ -124,15 +136,7 @@ class Dake : Builder
 
 class Cmake : Builder
 {
-	this (Orbit orbit, Orb orb)
-	{
-		super(orbit, orb);
-	}
-	
-	this (Orb orb)
-	{
-		super(orb);
-	}
+	mixin Constructors;
 		
 	void doBuild ()
 	{
@@ -142,15 +146,7 @@ class Cmake : Builder
 
 class Dsss : Builder
 {
-	this (Orbit orbit, Orb orb)
-	{
-		super(orbit, orb);
-	}
-	
-	this (Orb orb)
-	{
-		super(orb);
-	}
+	mixin Constructors;
 	
 	void doBuild ()
 	{
@@ -161,15 +157,7 @@ class Dsss : Builder
 
 class Make : Builder
 {
-	this (Orbit orbit, Orb orb)
-	{
-		super(orbit, orb);
-	}
-	
-	this (Orb orb)
-	{
-		super(orb);
-	}
+	mixin Constructors;
 	
 	void doBuild ()
 	{
@@ -179,15 +167,7 @@ class Make : Builder
 
 class Rdmd : Builder
 {
-	this (Orbit orbit, Orb orb)
-	{
-		super(orbit, orb);
-	}
-	
-	this (Orb orb)
-	{
-		super(orb);
-	}
+	mixin Constructors;
 	
 	void doBuild ()
 	{
@@ -197,18 +177,20 @@ class Rdmd : Builder
 
 class Shell : Builder
 {
-	this (Orbit orbit, Orb orb)
-	{
-		super(orbit, orb);
-	}
-	
-	this (Orb orb)
-	{
-		super(orb);
-	}
+	mixin Constructors;
 	
 	void doBuild ()
 	{
 		execute(orb.buildArgs);
+	}
+}
+
+class Source : Builder
+{
+	mixin Constructors;
+	
+	void doBuild ()
+	{
+		// do nothing
 	}
 }

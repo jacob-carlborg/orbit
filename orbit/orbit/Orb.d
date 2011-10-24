@@ -160,8 +160,12 @@ private:
 	
 	void setValues (Specification spec)
 	{
-		buildTool = orbit.spec.defaultBuildTool;
-		
+		if (!spec.build)
+			buildTool = orbit.spec.defaultBuildTool;
+			
+		else
+			buildTool = Builder.toBuilder(spec.build);
+
 		summary = spec.summary;
 		version_ = OrbVersion.parse(spec.version_);
 

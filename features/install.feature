@@ -7,4 +7,4 @@ Feature: Install
     Given an orb named "test" in the repository "repository"
     And a directory named "orbs"
     When I successfully run `orb install test -s repository`
-    Then a file named "orbs/orbit-0.0.1/bin/orb" should exist
+    Then a file named "orbs/test-0.0.1/bin/test" should exist

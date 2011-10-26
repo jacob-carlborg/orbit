@@ -4,6 +4,7 @@ version "0.0.1"
 files Dir["**"/"*.{d,rb,conf}"]
 executables %w[orb]
 bindir "bin"
+build "dsss"
 
 # author "Jacob Carlborg"
 # type :lib

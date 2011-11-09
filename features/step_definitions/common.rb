@@ -1,18 +1,18 @@
 Given /^an orbspec named "([^"]*)"$/ do |name|
   write_file "foo.d", 'module foo;'
   write_file "test.d", 'module test;'
+  write_file "dsss.conf", <<-eos
+    [test.d]
+    target = bin/#{name}
+  eos
   write_file "#{name}.orbspec", <<-eos
     name "#{name}"
     summary "#{name} orb"
     version "0.0.1"
-    files %w[test.d foo.d]
+    files %w[test.d foo.d dsss.conf]
     executables %w[#{name}]
     bindir "bin"
     build "dsss"
-  eos
-  
-  write_file "dsss.conf", <<-eos
-    [test]
   eos
 end
 
@@ -31,4 +31,8 @@ Given /^an orb named "([^"]*)" in the repository "([^"]*)"$/ do |name, source|
   When %{I successfully run `orb push #{name} -s #{source}`}
   Then %{a file named "#{source}/index.xml" should exist}
   And %{a file named "#{source}/orbs/#{name}-0.0.1.orb" should exist}
+end
+
+Given /^the environment variable "([^"]*)" is "([^"]*)"$/ do |variable, value|
+  set_env(variable, value)
 end

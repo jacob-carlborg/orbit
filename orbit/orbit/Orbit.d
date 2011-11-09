@@ -99,7 +99,7 @@ static:
 
 		string home ()
 		{
-			return home_ = home_.length > 0 ? home_ : Environment.get(orbit.env.home, defaultHome);
+			return home_ = home_.length > 0 ? home_ : toAbsolute(Environment.get(orbit.env.home, defaultHome));
 		}
 
 		string home (string home)

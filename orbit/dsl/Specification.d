@@ -184,8 +184,7 @@ class Specification
 
 	string[] executables ()
 	{
-		//return executables_;
-		return ["orb"];
+		return executables_;
 	}
 
 	string[] executables (string[] executables)

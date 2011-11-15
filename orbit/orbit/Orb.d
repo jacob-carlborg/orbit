@@ -64,6 +64,7 @@ class Orb
 
 		Orbit orbit_;
 		Type type_ = Type.executable;
+		bool loaded;
 	}
 	
 	mixin NonSerialized!(orbit_, fullName_, target_, path_, type_);
@@ -94,6 +95,7 @@ class Orb
 
 		auto orb = new Orb(Specification.load(metaDataPath), orbit);
 		orb.path_ = path;
+		orb.loaded = true;
 		
 		return orb;
 	}
@@ -106,6 +108,11 @@ class Orb
 	Orbit orbit ()
 	{
 		return orbit_;
+	}
+	
+	bool isLoaded ()
+	{
+		return loaded;
 	}
 	
 	string fullName ()
@@ -154,6 +161,13 @@ class Orb
 	string toString ()
 	{
 		return fullName;
+	}
+	
+	string defaultTempPath ()
+	{
+		auto name = version_.isValid ? fullName : this.name;
+		auto path = Path.join(orbit.path.tmp, name);
+		return Path.setExtension(path, Orb.extension);
 	}
 	
 private:

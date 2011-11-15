@@ -1,3 +1,4 @@
+@announce
 Feature: Install
 
   Background:

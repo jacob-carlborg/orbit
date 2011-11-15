@@ -11,9 +11,12 @@ import Path = orbit.io.Path;
 import orbit.orb.Command;
 import orbit.orbit.Installer;
 import orbit.orbit.Orb;
+import orbit.orbit.OrbVersion;
 
 class Install : Command
-{	
+{
+	private string defaultOrbVersion;
+	
 	this (string name, string summary = "")
 	{
 		super(name, summary);
@@ -22,10 +25,26 @@ class Install : Command
 	this ()
 	{
 		super("install", "Install an orb into the local repository");
+		defaultOrbVersion = OrbVersion.invalid.toString;
 	}
 	
 	void execute ()
 	{
+		println(orbPath);
+		println(Path.exists(orbPath));
+		println("********************************");
+		// if (!Path.exists(orbPath))
+		// {
+		// 	auto repository = Repository.instance(arguments["source"].value);
+		// 	auto fetcher = Fetcher.instance(repository);
+		// 	
+		// 	scope orb = new Orb;
+		// 	orb.name = orbPath
+		// 	orb.version_ = OrbVersion.parse(arguments["version"].value);
+		// 
+		// 	fetcher.fetch(orb, orb.defaultTempPath);
+		// }
+		
 		scope installer = new Installer(Orb.load(orbPath));
 		installer.install;
 	}
@@ -36,6 +55,12 @@ class Install : Command
 			.aliased('s')
 			.params(1)
 			.help("URL or local path used as the remote source for orbs.");
+			
+		arguments["version"]
+			.aliased('v')
+			.params(1)
+			.defaults(defaultOrbVersion)
+			.help("Specify version of orb to fetch.");
 	}
 	
 private:

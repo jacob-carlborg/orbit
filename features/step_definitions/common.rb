@@ -31,6 +31,7 @@ Given /^an orb named "([^"]*)" in the repository "([^"]*)"$/ do |name, source|
   When %{I successfully run `orb push #{name} -s #{source}`}
   Then %{a file named "#{source}/index.xml" should exist}
   And %{a file named "#{source}/orbs/#{name}-0.0.1.orb" should exist}
+  remove_file File.expand_path(name + ".orb")
 end
 
 Given /^the environment variable "([^"]*)" is "([^"]*)"$/ do |variable, value|

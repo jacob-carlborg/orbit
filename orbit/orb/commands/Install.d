@@ -9,9 +9,11 @@ module orbit.orb.commands.Install;
 import orbit.core._;
 import Path = orbit.io.Path;
 import orbit.orb.Command;
+import orbit.orbit.Fetcher;
 import orbit.orbit.Installer;
 import orbit.orbit.Orb;
 import orbit.orbit.OrbVersion;
+import orbit.orbit.Repository;
 
 class Install : Command
 {
@@ -30,21 +32,24 @@ class Install : Command
 	
 	void execute ()
 	{
+		auto orbPath = arguments.first;
 		println(orbPath);
 		println(Path.exists(orbPath));
 		println("********************************");
-		// if (!Path.exists(orbPath))
-		// {
-		// 	auto repository = Repository.instance(arguments["source"].value);
-		// 	auto fetcher = Fetcher.instance(repository);
-		// 	
-		// 	scope orb = new Orb;
-		// 	orb.name = orbPath
-		// 	orb.version_ = OrbVersion.parse(arguments["version"].value);
-		// 
-		// 	fetcher.fetch(orb, orb.defaultTempPath);
-		// }
 		
+		if (!Path.exists(orbPath))
+		{
+			auto repository = Repository.instance(arguments["source"].value);
+			auto fetcher = Fetcher.instance(repository);
+			
+			scope orb = new Orb;
+			orb.name = orbPath;
+			orb.version_ = OrbVersion.parse(arguments["version"].value);
+		
+			orbPath = orb.defaultTempPath;
+			fetcher.fetch(orb, orbPath);
+		}
+
 		scope installer = new Installer(Orb.load(orbPath));
 		installer.install;
 	}
@@ -61,13 +66,5 @@ class Install : Command
 			.params(1)
 			.defaults(defaultOrbVersion)
 			.help("Specify version of orb to fetch.");
-	}
-	
-private:
-
-	string orbPath ()
-	{
-		auto path = Path.toAbsolute(arguments.first);
-		return Path.setExtension(path, Orb.extension);
 	}
 }

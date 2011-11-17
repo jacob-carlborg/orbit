@@ -32,25 +32,10 @@ class Install : Command
 	
 	void execute ()
 	{
-		auto orbPath = arguments.first;
-		println(orbPath);
-		println(Path.exists(orbPath));
-		println("********************************");
+		scope orb = new Orb(arguments.first, arguments["version"].value);
+		orb = Orb.load(orb, arguments["source"].value);
 		
-		if (!Path.exists(orbPath))
-		{
-			auto repository = Repository.instance(arguments["source"].value);
-			auto fetcher = Fetcher.instance(repository);
-			
-			scope orb = new Orb;
-			orb.name = orbPath;
-			orb.version_ = OrbVersion.parse(arguments["version"].value);
-		
-			orbPath = orb.defaultTempPath;
-			fetcher.fetch(orb, orbPath);
-		}
-
-		scope installer = new Installer(Orb.load(orbPath));
+		scope installer = new Installer(orb);
 		installer.install;
 	}
 	

@@ -13,9 +13,11 @@ import orbit.core._;
 import orbit.dsl.Specification;
 import orbit.io.Path;
 import orbit.orbit.Builder;
+import orbit.orbit.Fetcher;
 import orbit.orbit.Loader;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbVersion;
+import orbit.orbit.Repository;
 
 class Orb
 {
@@ -74,6 +76,19 @@ class Orb
 		orbit_ = orbit;
 	}
 	
+	this (string name, string version_, Orbit orbit = Orbit.defaultOrbit)
+	{
+		this(name, OrbVersion.parse(version_), orbit);
+	}
+	
+	this (string name, OrbVersion version_, Orbit orbit = Orbit.defaultOrbit)
+	{
+		this(orbit);
+		
+		this.name = name;
+		this.version_ = version_;
+	}
+	
 	this (Specification spec, Orbit orbit = Orbit.defaultOrbit)
 	{
 		this(orbit);
@@ -98,6 +113,20 @@ class Orb
 		orb.loaded = true;
 		
 		return orb;
+	}
+	
+	static Orb load (Orb orb, string source = "", Orbit orbit = Orbit.defaultOrbit)
+	{
+		if (Path.exists(orb.path))
+			return Orb.load(orb.path, orbit);
+			
+		scope repository = Repository.instance(source);
+		scope fetcher = Fetcher.instance(repository);
+		auto orbPath = orb.defaultTempPath;
+		
+		fetcher.fetch(orb, orbPath);
+		
+		return Orb.load(orbPath, orbit);
 	}
 	
 	static string buildFullName (string name, OrbVersion version_)

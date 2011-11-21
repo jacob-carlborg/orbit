@@ -36,6 +36,7 @@ class Installer : OrbitObject
 	void install ()
 	{
 		clean;
+		installDependencies;
 		build;
 		moveFiles;
 	}
@@ -54,6 +55,17 @@ private:
 		auto builder = Builder.newBuilder(orbit, orb);
 		builder.workingDirectory = Path.join(tmpPath, orbit.constants.orbData);
 		builder.build;
+	}
+	
+	void installDependencies ()
+	{
+		scope dependencyHandler = new DependencyHandler(orb, orbit);
+		
+		foreach (orb ; dependencyHandler.dependencies)
+		{
+			scope installer = new Installer(orb, installPath, orbit);
+			installer.install;
+		}
 	}
 	
 	string tmpPath ()

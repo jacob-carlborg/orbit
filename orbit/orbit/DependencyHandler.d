@@ -6,6 +6,9 @@
  */
 module orbit.orbit.DependencyHandler;
 
+import tango.util.container.HashSet;
+
+import orbit.core.string;
 import orbit.orbit.Index;
 import orbit.orbit.Orb;
 import orbit.orbit.OrbitObject;
@@ -15,28 +18,35 @@ class DependencyHandler : OrbitObject;
 	private
 	{
 		const Index index;
-		Orb[] build_dependencies_;
+		HashSet!(string) buildDependencies_;
 	}
 	
 	this (Orb orb, Index index, Orbit orbit = Orbit.defaultOrbit)
 	{
 		super(orbit, orb);
 		this.index = index;
+		buildDependencies = new HashSet!(Orb);
 	}
 	
-	Orb[] build_dependencies ()
+	Orb[] buildDependencies ()
 	{	
+		collect(orb.buildDependencies);
 		return dependencies_;
 	}
 	
-	void collect ()
+	void collect (string[] dependencies)
 	{
-		auto deps = orb.build_dependencies;
-		build_dependencies_.reserve(deps.length);
+		buildDependencies_.reserve(dependencies.length);
 		
-		foreach (dep ; deps)
+		foreach (dep ; dependencies)
 		{
-			build_dependencies_ ~= Orb.load(dep, orbit);
+			scope orb = Orb.parse(dep);
+			orb = index[tmp];
+			
+			collect(orb.buildDependencies);
+			
+			if (!buildDependencies_.contains(dep))
+				buildDependencies_.add(dep);
 		}
 	}
 }

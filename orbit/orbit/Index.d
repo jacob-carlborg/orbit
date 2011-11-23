@@ -26,7 +26,7 @@ class Index
 	{
 		const string path;
 		
-		Orb[OrbVersion][string] orbs;
+		Orb[OrbVersion][string] orbs_;
 		XmlArchive!() archive;
 		Serializer serializer;
 	}
@@ -58,14 +58,26 @@ class Index
 	
 	OrbVersion latestVersion (string name)
 	{
-		if (!isLoaded)
-			load;
-
 		auto versions = orbs[name].keys;
 		return versions.sort.last();
 	}
 	
+	Orb opIndex (Orb orb)
+	{
+		return orbs[orb.name][orb.version_];
+	}
+	
 private:
+	
+	Orb[OrbVersion][string] orbs ()
+	{
+		return orbs_ = isLoaded ? orbs_ : load
+	}
+	
+	Orb[OrbVersion][string] orbs (Orb[OrbVersion][string] orbs)
+	{
+		return orbs_ = orbs;
+	}
 	
 	void create (Orb orb)
 	{
@@ -79,9 +91,9 @@ private:
 		File.set(path, index);
 	}
 	
-	void load ()
+	Orb[OrbVersion][string] load ()
 	{
-		orbs = serializer.deserialize!(typeof(orbs))(File.get(path));
+		return orbs = serializer.deserialize!(typeof(orbs))(File.get(path));
 	}
 	
 	bool isLoaded ()

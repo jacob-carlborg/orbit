@@ -129,6 +129,19 @@ class Orb
 		return Orb.load(orbPath, orbit);
 	}
 	
+	static Orb parse (string orb, Orbit orbit = Orbit.defaultOrbit)
+	{
+		auto orbParts = orb.split("-");
+		
+		if (orbParts.length == 1)
+			return new Orb(orbParts.first(), OrbVersion.invalid);
+		
+		auto name = orbParts[0 .. $ - 1].join("-");
+		auto version_ = OrbVersion.parse(orbParts[$ - 1]);
+		
+		return new Orb(name, version_, orbit);
+	}
+	
 	static string buildFullName (string name, OrbVersion version_)
 	{
 		return name ~ "-" ~ version_.toString;

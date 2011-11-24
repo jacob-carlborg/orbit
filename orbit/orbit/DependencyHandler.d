@@ -11,9 +11,10 @@ import tango.util.container.HashSet;
 import orbit.core.string;
 import orbit.orbit.Index;
 import orbit.orbit.Orb;
+import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
 
-class DependencyHandler : OrbitObject;
+class DependencyHandler : OrbitObject
 {
 	private
 	{
@@ -25,25 +26,23 @@ class DependencyHandler : OrbitObject;
 	{
 		super(orbit, orb);
 		this.index = index;
-		buildDependencies = new HashSet!(Orb);
+		buildDependencies_ = new HashSet!(string);
 	}
 	
-	Orb[] buildDependencies ()
+	string[] buildDependencies ()
 	{	
-		collect(orb.buildDependencies);
-		return dependencies_;
+		collectBuildDependencies(orb.buildDependencies);
+		return buildDependencies_.toArray;
 	}
 	
-	void collect (string[] dependencies)
-	{
-		buildDependencies_.reserve(dependencies.length);
-		
+	void collectBuildDependencies (string[] dependencies)
+	{	
 		foreach (dep ; dependencies)
 		{
 			scope orb = Orb.parse(dep);
-			orb = index[tmp];
+			orb = index[orb];
 			
-			collect(orb.buildDependencies);
+			collectBuildDependencies(orb.buildDependencies);
 			
 			if (!buildDependencies_.contains(dep))
 				buildDependencies_.add(dep);

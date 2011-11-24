@@ -6,12 +6,14 @@
  */
 module orbit.orbit.Orb;
 
+import tango.text.Util;
+
 import orange.serialization.Serializable;
 import orange.serialization.Events;
 
 import orbit.core._;
 import orbit.dsl.Specification;
-import orbit.io.Path;
+import Path = orbit.io.Path;
 import orbit.orbit.Builder;
 import orbit.orbit.Fetcher;
 import orbit.orbit.Loader;
@@ -40,7 +42,7 @@ class Orb
 	string author;
 	string bindir;
 	string build;
-	string[] build_dependencies;
+	string[] buildDependencies;
 	string date;
 	string description;
 	string dvm;
@@ -51,11 +53,11 @@ class Orb
 	string[] imports;
 	string[] libraries;
 	string name;
-	string orbit_version;
+	string orbitVersion;
 	string[] platforms;
-	string package_type;
-	string[] runtime_dependencies;
-	string specification_version;
+	string packageType;
+	string[] runtimeDependencies;
+	string specificationVersion;
 	//string type;
 	
 	private
@@ -106,7 +108,7 @@ class Orb
 	{
 		scope loader = new Loader(orbit);
 		loader.load(path);
-		auto metaDataPath = join(loader.temporaryPath, orbit.constants.orbMetaData);
+		auto metaDataPath = Path.join(loader.temporaryPath, orbit.constants.orbMetaData);
 
 		auto orb = new Orb(Specification.load(metaDataPath), orbit);
 		orb.path_ = path;
@@ -228,7 +230,7 @@ private:
 		author = spec.author;
 		bindir = spec.bindir;
 		build = spec.build;
-		build_dependencies = spec.build_dependencies;
+		buildDependencies = spec.build_dependencies;
 		date = spec.date;
 		description = spec.description;
 		dvm = spec.dvm;
@@ -239,10 +241,10 @@ private:
 		imports = spec.imports;
 		libraries = spec.libraries;
 		name = spec.name;
-		orbit_version = spec.orbit_version;
+		orbitVersion = spec.orbit_version;
 		platforms = spec.platforms;
-		package_type = spec.package_type;
-		runtime_dependencies = spec.runtime_dependencies;
-		specification_version = spec.specification_version;
+		packageType = spec.package_type;
+		runtimeDependencies = spec.runtime_dependencies;
+		specificationVersion = spec.specification_version;
 	}
 }

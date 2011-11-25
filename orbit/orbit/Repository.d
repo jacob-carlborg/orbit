@@ -20,7 +20,7 @@ abstract class Repository
 	const bool isLocal;
 	const bool isRemote;
 	const Api api;
-	private const Index index;
+	const Index index;
 	
 	private
 	{
@@ -72,7 +72,7 @@ abstract class Repository
 	static abstract class Api
 	{
 		abstract void upload (Orb orb);
-		abstract Orb[OrbVersion][string] index;
+		abstract Orb[OrbVersion][string] orbs ();
 		abstract OrbVersion latestVersion (string name);
 		
 		OrbVersion latestVersion (Orb orb)
@@ -116,8 +116,8 @@ class LocalRepository : Repository
 		return Path.join(arr);
 	}
 	
-	static class Api : Repository.Api
-	{
+	class Api : Repository.Api
+	{	
 		void upload (Orb orb)
 		{
 			auto dest = join(source, orbit.constants.orbs);
@@ -132,9 +132,9 @@ class LocalRepository : Repository
 			index.update(orb);
 		}
 		
-		Orb[OrbVersion][string] index ()
+		Orb[OrbVersion][string] orbs ()
 		{
-			return super.index.index;
+			return index.orbs;
 		}
 		
 		OrbVersion latestVersion (string name)
@@ -168,9 +168,14 @@ class RemoteRepository : Repository
 		return tango.text.Util.join(arr, "/");
 	}
 	
-	static class Api : Repository.Api
+	class Api : Repository.Api
 	{
 		OrbVersion latestVersion (string name)
+		{
+			assert(0, "unimplemented");
+		}
+		
+		Orb[OrbVersion][string] orbs ()
 		{
 			assert(0, "unimplemented");
 		}

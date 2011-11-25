@@ -16,10 +16,13 @@ import orbit.orbit.Exceptions;
 import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
+import orbit.orbit.Repository;
 import orbit.util.Use;
 
 class Installer : OrbitObject
 {	
+	const Repository repository;
+	
 	private
 	{
 		string installPath_;
@@ -28,10 +31,11 @@ class Installer : OrbitObject
 		string tmpDataPath_;
 	}
 	
-	this (Orb orb, string installPath = "", Orbit orbit = Orbit.defaultOrbit)
+	this (Orb orb, Repository repository, string installPath = "", Orbit orbit = Orbit.defaultOrbit)
 	{
 		super(orbit, orb);
 		installPath_ = installPath;
+		this.repository = repository;
 	}
 	
 	void install ()
@@ -60,11 +64,11 @@ private:
 	
 	void installDependencies ()
 	{
-		scope dependencyHandler = new DependencyHandler(orb, orbit);
-		
-		foreach (orb ; dependencyHandler.dependencies)
+		scope dependencyHandler = new DependencyHandler(orb, repository.index, orbit);
+
+		foreach (orb ; dependencyHandler.buildDependencies)
 		{
-			scope installer = new Installer(orb, installPath, orbit);
+			scope installer = new Installer(orb, repository, installPath, orbit);
 			installer.install;
 		}
 	}

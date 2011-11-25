@@ -20,7 +20,7 @@ import orbit.orbit.Repository;
 
 class Index
 {
-	const LocalRepository repository;
+	const Repository repository;
 	
 	private
 	{
@@ -31,7 +31,7 @@ class Index
 		Serializer serializer;
 	}
 	
-	this (LocalRepository repository)
+	this (Repository repository)
 	{
 		this.repository = repository;
 		this.path = repository.join(repository.source,
@@ -68,12 +68,12 @@ class Index
 		return orbs[orb.name][orb.version_];
 	}
 	
-private:
-	
 	Orb[OrbVersion][string] orbs ()
 	{
 		return orbs_ = isLoaded ? orbs_ : load;
 	}
+	
+private:
 	
 	Orb[OrbVersion][string] orbs (Orb[OrbVersion][string] orbs)
 	{
@@ -94,12 +94,12 @@ private:
 	
 	Orb[OrbVersion][string] load ()
 	{
-		return orbs = serializer.deserialize!(typeof(orbs_))(File.get(path));
+		return serializer.deserialize!(typeof(orbs_))(File.get(path));
 	}
 	
 	bool isLoaded ()
 	{
-		return orbs !is null;
+		return orbs_ !is null;
 	}
 	
 	// Orb[OrbVersion] oldOrbs (Orb orb)

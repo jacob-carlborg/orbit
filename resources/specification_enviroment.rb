@@ -27,6 +27,7 @@ module SpecificationDsl
   alias orbs runtime_dependencies
 
   def orb (name, version = nil)
+    @runtime_dependencies ||= []
     @runtime_dependencies << [name, version]
   end
 end

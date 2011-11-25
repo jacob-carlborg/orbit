@@ -19,33 +19,33 @@ class DependencyHandler : OrbitObject
 	private
 	{
 		const Index index;
-		HashSet!(string) buildDependencies_;
+		Orb[string] buildDependencies_;
 	}
 	
 	this (Orb orb, Index index, Orbit orbit = Orbit.defaultOrbit)
 	{
 		super(orbit, orb);
 		this.index = index;
-		buildDependencies_ = new HashSet!(string);
 	}
 	
-	string[] buildDependencies ()
-	{	
+	Orb[] buildDependencies ()
+	{
 		collectBuildDependencies(orb.buildDependencies);
-		return buildDependencies_.toArray;
+		return buildDependencies_.values;
 	}
 	
-	void collectBuildDependencies (string[] dependencies)
-	{	
+	private void collectBuildDependencies (string[] dependencies)
+	{
 		foreach (dep ; dependencies)
 		{
 			scope orb = Orb.parse(dep);
 			orb = index[orb];
 			
-			collectBuildDependencies(orb.buildDependencies);
-			
-			if (!buildDependencies_.contains(dep))
-				buildDependencies_.add(dep);
+			if (!(dep in buildDependencies_))
+			{
+				collectBuildDependencies(orb.buildDependencies);
+				buildDependencies_[dep] = orb;
+			}
 		}
 	}
 }

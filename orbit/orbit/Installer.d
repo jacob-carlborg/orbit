@@ -64,7 +64,7 @@ private:
 	
 	void installDependencies ()
 	{
-		scope dependencyHandler = new DependencyHandler(orb, repository.index, orbit);
+		scope dependencyHandler = new DependencyHandler(orb, repository, orbit);
 
 		foreach (orb ; dependencyHandler.buildDependencies)
 		{

@@ -74,6 +74,7 @@ abstract class Repository
 		abstract void upload (Orb orb);
 		abstract Orb[OrbVersion][string] orbs ();
 		abstract OrbVersion latestVersion (string name);
+		abstract Orb getOrb (Orb);
 		
 		OrbVersion latestVersion (Orb orb)
 		{
@@ -108,7 +109,7 @@ class LocalRepository : Repository
 		if (Path.exists(path))
 			return path;
 		
-		throw new RepositoryException(orb, this, __FILE__, __LINE__);
+		throw new MissingOrbException(orb, this, __FILE__, __LINE__);
 	}
 	
 	string join (string[] arr ...)
@@ -141,6 +142,11 @@ class LocalRepository : Repository
 		{
 			return index.latestVersion(name);
 		}
+		
+		Orb getOrb (Orb orb)
+		{
+			return index[orb];
+		}
 	}
 }
 
@@ -160,7 +166,7 @@ class RemoteRepository : Repository
 		if (resource.isResponseOK)
 			return path;
 		
-		throw new RepositoryException(orb, this, null, __FILE__, __LINE__);
+		throw new MissingOrbException(orb, this, null, __FILE__, __LINE__);
 	}
 	
 	string join (string[] arr ...)
@@ -181,6 +187,11 @@ class RemoteRepository : Repository
 		}
 		
 		void upload (Orb orb)
+		{
+			assert(0, "unimplemented");
+		}
+		
+		Orb getOrb (Orb orb)
 		{
 			assert(0, "unimplemented");
 		}

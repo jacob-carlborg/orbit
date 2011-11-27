@@ -20,16 +20,25 @@ class OrbitException : Exception
 
 class RepositoryException : OrbitException
 {
-	const Orb orb;
 	const Repository repository;
+	
+	this (Repository repository, string message = "", string file = "", long line = 0)
+	{
+		this.repository = repository;
+		super(message, file, line);
+	}
+}
+
+class MissingOrbException : RepositoryException
+{
+	const Orb orb;
 	
 	this (Orb orb, Repository repository, string message = "", string file = "", long line = 0)
 	{
 		this.orb = orb;
-		this.repository = repository;
-		auto msg = message.isPresent() ? message : toString;
+		auto msg = message.isPresent() ? message : createMessage(repository);
 		
-		super(msg, file, line);
+		super(repository, msg, file, line);
 	}
 	
 	this (Orb orb, Repository repository, string file, long line)
@@ -37,7 +46,7 @@ class RepositoryException : OrbitException
 		this(orb, repository, null, file, line);
 	}
 	
-	string toString ()
+	private string createMessage (Repository repository)
 	{
 		return format(`The orb "{}" is not available in the repository "{}".`, orb, repository);
 	}

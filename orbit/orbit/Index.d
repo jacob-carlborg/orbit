@@ -13,6 +13,7 @@ import orange.serialization.archives._;
 
 import orbit.core._;
 import Path = orbit.io.Path;
+import orbit.orbit.Exceptions;
 import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbVersion;
@@ -59,13 +60,23 @@ class Index
 	
 	OrbVersion latestVersion (string name)
 	{
-		auto versions = orbs[name].keys;
-		return versions.sort.last();
+		if (auto orb = name in orbs)
+		{
+			auto versions = orb.keys;
+			return versions.sort.last();
+		}
+		
+		auto orb = new Orb(name, OrbVersion.invalid, repository.orbit);
+		throw new MissingOrbException(orb, repository, __FILE__, __LINE__);
 	}
-	
+
 	Orb opIndex (Orb orb)
 	{
-		return orbs[orb.name][orb.version_];
+		if (auto t = orb.name in orbs)
+			if (auto o = orb.version_ in *t)
+				return *o;
+				
+		throw new MissingOrbException(orb, repository, __FILE__, __LINE__);
 	}
 	
 	Orb[OrbVersion][string] orbs ()
@@ -101,13 +112,4 @@ private:
 	{
 		return orbs_ !is null;
 	}
-	
-	// Orb[OrbVersion] oldOrbs (Orb orb)
-	// {
-	// 	if (auto oldOrbs = orb.name in orbs)
-	// 		return *oldOrbs;
-	// 	
-	// 	else
-	// 		return [];
-	// }
 }

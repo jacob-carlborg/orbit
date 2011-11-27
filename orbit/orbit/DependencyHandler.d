@@ -8,24 +8,25 @@ module orbit.orbit.DependencyHandler;
 
 import tango.util.container.HashSet;
 
-import orbit.core.string;
+import orbit.core._;
 import orbit.orbit.Index;
 import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
+import orbit.orbit.Repository;
 
 class DependencyHandler : OrbitObject
 {
 	private
 	{
-		const Index index;
+		const Repository repository;
 		Orb[string] buildDependencies_;
 	}
 	
-	this (Orb orb, Index index, Orbit orbit = Orbit.defaultOrbit)
+	this (Orb orb, Repository repository, Orbit orbit = Orbit.defaultOrbit)
 	{
 		super(orbit, orb);
-		this.index = index;
+		this.repository = repository;
 	}
 	
 	Orb[] buildDependencies ()
@@ -39,7 +40,11 @@ class DependencyHandler : OrbitObject
 		foreach (dep ; dependencies)
 		{
 			scope orb = Orb.parse(dep);
-			orb = index[orb];
+			
+			if (!orb.version_.isValid)
+				orb.version_ = repository.api.latestVersion(orb.name);
+			
+			orb = repository.api.getOrb(orb);
 			
 			if (!(dep in buildDependencies_))
 			{

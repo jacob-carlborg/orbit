@@ -204,7 +204,7 @@ class Orb
 	
 	string toString ()
 	{
-		return fullName;
+		return version_.isValid ? fullName : name;
 	}
 	
 	string defaultTempPath ()
@@ -230,7 +230,7 @@ private:
 		author = spec.author;
 		bindir = spec.bindir;
 		build = spec.build;
-		buildDependencies = spec.build_dependencies;
+		buildDependencies = spec.buildDependencies;
 		date = spec.date;
 		description = spec.description;
 		dvm = spec.dvm;
@@ -241,10 +241,10 @@ private:
 		imports = spec.imports;
 		libraries = spec.libraries;
 		name = spec.name;
-		orbitVersion = spec.orbit_version;
+		orbitVersion = spec.orbitVersion;
 		platforms = spec.platforms;
-		packageType = spec.package_type;
-		runtimeDependencies = spec.runtime_dependencies;
-		specificationVersion = spec.specification_version;
+		packageType = spec.packageType;
+		runtimeDependencies = spec.runtimeDependencies;
+		specificationVersion = spec.specificationVersion;
 	}
 }

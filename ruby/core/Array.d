@@ -14,8 +14,6 @@ import ruby.c.ruby;
 import ruby.core.Object;
 import ruby.core.String;
 
-import orbit.core._;
-
 struct Array
 {
 	mixin ObjectImpl;
@@ -93,6 +91,9 @@ struct Array
 	
 	string[] toStringArray ()
 	{
+		if (nil)
+			return null;
+		
 		string[] result;
 		result.reserve(length);
 		

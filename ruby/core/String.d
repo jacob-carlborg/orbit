@@ -72,7 +72,7 @@ struct String
 	
 	string toD (bool dupe = true)
 	{
-		if (self == Qnil)
+		if (nil)
 			return null;
 			
 		auto str = StringValuePtr(self)[0 .. length()];

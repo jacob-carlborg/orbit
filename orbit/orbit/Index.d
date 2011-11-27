@@ -50,9 +50,9 @@ class Index
 		
 		else
 		{
-			load;
-			auto orbs = orbs;
-			orbs[orb.name][orb.version_] = orb;
+			auto oldOrbs = orbs;
+			oldOrbs[orb.name][orb.version_] = orb;
+			orbs = oldOrbs;
 		}
 		
 		write;
@@ -105,7 +105,7 @@ private:
 	
 	Orb[OrbVersion][string] load ()
 	{
-		return serializer.deserialize!(typeof(orbs_))(File.get(path));
+		return serializer.deserialize!(Orb[OrbVersion][string])(File.get(path));
 	}
 	
 	bool isLoaded ()

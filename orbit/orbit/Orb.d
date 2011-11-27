@@ -71,7 +71,7 @@ class Orb
 		bool loaded;
 	}
 	
-	mixin NonSerialized!(orbit_, fullName_, target_, path_, type_);
+	mixin NonSerialized!(fullName_, target_, path_, orbit_, type_, loaded);
 	
 	this (Orbit orbit = Orbit.defaultOrbit)
 	{

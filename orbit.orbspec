@@ -5,6 +5,7 @@ files Dir["**"/"*.{d,rb,conf}"]
 executables %w[orb]
 bindir "bin"
 build "dsss"
+orb "orange"
 
 # author "Jacob Carlborg"
 # type :lib

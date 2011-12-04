@@ -110,6 +110,13 @@ class Orb
 		loader.load(path);
 		auto metaDataPath = Path.join(loader.temporaryPath, orbit.constants.orbMetaData);
 
+		auto currentWorkingDirectory = Path.workingDirectory;
+		
+		scope (exit)
+			Path.workingDirectory = currentWorkingDirectory;
+		
+		Path.workingDirectory = Path.join(loader.temporaryPath, orbit.constants.orbData);
+
 		auto orb = new Orb(Specification.load(metaDataPath), orbit);
 		orb.path_ = path;
 		orb.loaded = true;

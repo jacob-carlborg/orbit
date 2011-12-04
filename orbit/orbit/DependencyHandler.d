@@ -39,7 +39,7 @@ class DependencyHandler : OrbitObject
 	{
 		foreach (dep ; dependencies)
 		{
-			scope orb = Orb.parse(dep);
+			auto orb = Orb.parse(dep);
 			
 			if (!orb.version_.isValid)
 				orb.version_ = repository.api.latestVersion(orb.name);

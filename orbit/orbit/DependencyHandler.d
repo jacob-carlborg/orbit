@@ -46,10 +46,10 @@ class DependencyHandler : OrbitObject
 			
 			orb = repository.api.getOrb(orb);
 			
-			if (!(dep in buildDependencies_))
+			if (!(orb.fullName in buildDependencies_))
 			{
 				collectBuildDependencies(orb.buildDependencies);
-				buildDependencies_[dep] = orb;
+				buildDependencies_[orb.fullName] = orb;
 			}
 		}
 	}

@@ -75,7 +75,11 @@ private:
 	
 	string tmpPath ()
 	{
-		return tmpPath_ = tmpPath_.any() ? tmpPath_ : Path.join(orbit.path.tmp, Path.parse(orb.path).name);
+		if (tmpPath_.any())
+			return tmpPath_;
+			
+		tmpPath_ = orb.fullName().any() ? orb.fullName : orb.path;
+		return tmpPath_ = Path.join(orbit.path.tmp, tmpPath_);
 	}
 	
 	string fullInstallPath ()

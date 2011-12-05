@@ -124,18 +124,20 @@ class Orb
 		return orb;
 	}
 	
-	static Orb load (Orb orb, string source = "", Orbit orbit = Orbit.defaultOrbit)
+	static Orb load (Orb orb, Repository repository = Repository.defaultRepository, Orbit orbit = Orbit.defaultOrbit)
 	{
 		if (Path.exists(orb.path))
 			return Orb.load(orb.path, orbit);
-			
-		scope repository = Repository.instance(source);
+
 		scope fetcher = Fetcher.instance(repository);
-		auto orbPath = orb.defaultTempPath;
+
+		if (!orb.version_.isValid)
+			orb.version_ = repository.api.latestVersion(orb.name);
+
+		auto tmpOrbPath = orb.defaultTempPath;
+		fetcher.fetch(orb, tmpOrbPath);
 		
-		fetcher.fetch(orb, orbPath);
-		
-		return Orb.load(orbPath, orbit);
+		return Orb.load(tmpOrbPath, orbit);
 	}
 	
 	static Orb parse (string orb, Orbit orbit = Orbit.defaultOrbit)
@@ -168,7 +170,7 @@ class Orb
 	
 	string fullName ()
 	{
-		return fullName_ = fullName_.any() ? fullName_ : Orb.buildFullName(name, version_);
+		return version_.isValid ? Orb.buildFullName(name, version_) : name;
 	}
 	
 	Type type ()
@@ -216,8 +218,7 @@ class Orb
 	
 	string defaultTempPath ()
 	{
-		auto name = version_.isValid ? fullName : this.name;
-		auto path = Path.join(orbit.path.tmp, name);
+		auto path = Path.join(orbit.path.tmp, fullName);
 		return Path.setExtension(path, Orb.extension);
 	}
 	

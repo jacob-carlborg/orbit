@@ -33,9 +33,9 @@ class Install : Command
 	void execute ()
 	{
 		scope orb = new Orb(arguments.first, arguments["version"].value);
-		orb = Orb.load(orb, arguments["source"].value);
-		
 		scope repository = Repository.instance(arguments["source"].value);
+		
+		orb = Orb.load(orb, repository);
 		scope installer = new Installer(orb, repository);
 		
 		installer.install;

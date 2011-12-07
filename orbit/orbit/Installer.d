@@ -69,7 +69,9 @@ private:
 
 		foreach (orb ; dependencyHandler.buildDependencies)
 		{
-			scope installer = new Installer(orb, repository, installPath, orbit);
+			auto localOrb = Orb.load(orb, repository);
+			scope installer = new Installer(localOrb, repository, installPath, orbit);
+
 			installer.install;
 		}
 	}

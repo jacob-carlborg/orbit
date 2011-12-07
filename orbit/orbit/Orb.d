@@ -198,9 +198,9 @@ class Orb
 		switch (type)
 		{
 			case Type.bindings: return target_ = name;
-			case Type.dynamicLibrary: return target_ = orbit.constants.dylibPrefix ~ name ~ orbit.constants.dylibExtension;
-			case Type.executable: return target_ = name ~ orbit.constants.exeExtension;
-			case Type.library: return target_ = orbit.constants.libPrefix ~ name ~ orbit.constants.libExtension;
+			case Type.dynamicLibrary: return target_ = orbit.dylibName(name);
+			case Type.executable: return target_ = orbit.exeName(name);
+			case Type.library: return target_ = orbit.libName(name);
 			case Type.source: return target_ = name;
 			default: return "";
 		}

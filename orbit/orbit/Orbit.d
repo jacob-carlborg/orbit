@@ -64,6 +64,21 @@ class Orbit
 		if (isVerbose && verboseHandler)
 			verboseHandler(args);
 	}
+	
+	string libName (string name)
+	{
+		return setExtension(constants.libPrefix ~ name, constants.libExtension);
+	}
+	
+	string dylibName (string name)
+	{
+		return setExtension(constants.dylibPrefix ~ name, constants.dylibExtension);
+	}
+	
+	string exeName (string name)
+	{
+		return setExtension(name, constants.exeExtension);
+	}
 
 static:
 	
@@ -215,7 +230,7 @@ static:
 	{
 		string dylibExtension ()
 		{
-			return ".so";
+			return "so";
 		}
 		
 		string dylibPrefix ()
@@ -230,7 +245,7 @@ static:
 		
 	 	string libExtension ()
 		{
-			return ".a";
+			return "a";
 		}
 		
 		string libPrefix ()
@@ -243,7 +258,7 @@ static:
 	{
 		string dylibExtension ()
 		{
-			return ".dylib";
+			return "dylib";
 		}
 	}
 
@@ -251,7 +266,7 @@ static:
 	{
 		string dylibExtension ()
 		{
-			return ".dll";
+			return "dll";
 		}
 		
 		string dylibPrefix ()
@@ -261,12 +276,12 @@ static:
 		
 		string exeExtension ()
 		{
-			return ".exe";
+			return "exe";
 		}
 		
 		string libExtension ()
 		{
-			return ".lib";
+			return "lib";
 		}
 		
 		string libPrefix ()

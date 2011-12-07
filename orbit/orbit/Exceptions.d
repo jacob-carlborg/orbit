@@ -51,3 +51,22 @@ class MissingOrbException : RepositoryException
 		return format(`The orb "{}" is not available in the repository "{}".`, orb, repository);
 	}
 }
+
+class MissingLibraryException : OrbitException
+{
+	const string lib;
+	const string dylib;
+	
+	this (string lib, string dylib, string message, string file = "", long line = 0)
+	{
+		super(message, file, line);
+		this.lib = lib;
+		this.dylib = dylib;
+	}
+	
+	this (string lib, string dylib, string file = "", long line = 0)
+	{
+		auto message = format(`The required library, "{}" or "{}", could not be found.`, lib, dylib);
+		this(lib, dylib, message, file, line);
+	}
+}

@@ -17,6 +17,7 @@ import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
 import orbit.orbit.Repository;
+import orbit.util.Tuple;
 import orbit.util.Use;
 
 class Installer : OrbitObject
@@ -111,14 +112,50 @@ private:
 		if (orb.bindir.isPresent())
 			prefix = orb.bindir;
 
+		auto executables = orb.executables.map((string e) {
+			auto path = Path.parse(e);
+			auto file = orbit.exeName(path.file);
+
+			return Path.join(path.folder, file);
+		});
+
 		auto path = Path.join(fullInstallPath, orbit.constants.bin);
-		moveSpecificFiles(orb.executables, path, prefix);
+		moveSpecificFiles(executables, path, prefix);
 	}
 	
 	void moveLibraries ()
 	{
-		auto path = Path.join(fullInstallPath, orbit.constants.lib);
-		moveSpecificFiles(orb.libraries, path);
+		auto destinationPath = Path.join(fullInstallPath, orbit.constants.lib);
+		Path.createPath(destinationPath);
+		
+		Tuple!(string, string) libName (string lib, bool dynamic)
+		{
+			auto path = Path.parse(lib);
+			auto file = dynamic ? orbit.dylibName(path.file) : orbit.libName(path.file);
+			
+			return tuple(Path.join(path.folder, file), file);
+		}
+		
+		foreach (lib ; orb.libraries)
+		{
+			auto libTuple = libName(lib, false);
+			auto dylibTuple = libName(lib, true);
+			
+			auto libPath = Path.join(tmpDataPath, libTuple.values[0]);
+			auto dylibPath = Path.join(tmpDataPath, dylibTuple.values[0]);
+
+			auto libDestination = Path.join(destinationPath, libTuple.values[1]);
+			auto dylibDestination = Path.join(destinationPath, dylibTuple.values[1]);
+			
+			if (Path.exists(libPath))
+				moveSingleFile(libPath, libDestination);
+				
+			else if (Path.exists(dylibPath))
+				moveSingleFile(dylibPath, dylibDestination);
+				
+			else
+				throw new MissingLibraryException(libPath, dylibPath);
+		}
 	}
 	
 	void moveSources ()
@@ -129,18 +166,23 @@ private:
 	
 	void moveSpecificFiles (string[] files, string destinationPath, string filePrefix = "")
 	{
-		Path.createPath(destinationPath);
+		if (files.any())
+			Path.createPath(destinationPath);
 
 		foreach (file ; files)
 		{
 			auto source = Path.join(tmpDataPath, filePrefix, file);
 			auto destination = Path.join(destinationPath, file);
-
-			verbose("Source:", source);
-			verbose("Destination: ", destination);
-
-			Path.moveForce(source, destination);
+			moveSingleFile(source, destination);
 		}
+	}
+	
+	void moveSingleFile (string source, string destination)
+	{
+		verbose("Source:", source);
+		verbose("Destination: ", destination);
+
+		Path.moveForce(source, destination);
 	}
 	
 	void clean ()

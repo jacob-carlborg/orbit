@@ -12,13 +12,13 @@ import ruby.util.string;
 
 class Environment
 {
-	this ()
+	static this ()
 	{
 		ruby_init;
 		ruby_init_loadpath;
 	}
 	
-	void dispose ()
+	static ~this ()
 	{
 		ruby_cleanup(0);
 	}

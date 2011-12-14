@@ -28,7 +28,23 @@ abstract class Builder : OrbitObject
 		none
 	}
 	
+	template Constructors ()
+	{
+		this (Orb orb, DependencyHandler dependencyHandler)
+		{
+			super(orb);
+			this.dependencyHandler = dependencyHandler;
+		}
+
+		this (Orbit orbit, Orb orb, DependencyHandler dependencyHandler)
+		{
+			super(orbit, orb);
+			this.dependencyHandler = dependencyHandler;
+		}
+	}
+	
 	string workingDirectory;
+	private DependencyHandler dependencyHandler;
 	
 	mixin Constructors;
 	
@@ -46,36 +62,32 @@ abstract class Builder : OrbitObject
 		}
 	}
 	
-	static Builder newBuilder (Orbit orbit, Orb orb)
+	static Builder newBuilder (Orb orb, DependencyHandler dependencyHandler, Orbit orbit = Orbit.defaultOrbit)
 	{
 		static Builder sourceBuilder;
 		
 		switch (orb.buildTool)
 		{
-			case Tool.dake: return new Dake(orbit, orb);
-			case Tool.cmake: return new Cmake(orbit, orb);
-			case Tool.dsss: return new Dsss(orbit, orb);
-			case Tool.make: return new Make(orbit, orb);
-			case Tool.rdmd: return new Rdmd(orbit, orb);
-			case Tool.shell: return new Shell(orbit, orb);
+			case Tool.dake: return new Dake(orbit, orb, dependencyHandler);
+			case Tool.cmake: return new Cmake(orbit, orb, dependencyHandler);
+			case Tool.dsss: return new Dsss(orbit, orb, dependencyHandler);
+			case Tool.make: return new Make(orbit, orb, dependencyHandler);
+			case Tool.rdmd: return new Rdmd(orbit, orb, dependencyHandler);
+			case Tool.shell: return new Shell(orbit, orb, dependencyHandler);
 			
 			case Tool.none:
-				return sourceBuilder = sourceBuilder ? sourceBuilder : new Source(orbit, orb);
+				return sourceBuilder = sourceBuilder ? sourceBuilder : new Source(orbit, orb, dependencyHandler);
 		}
-	}
-	
-	static Builder newBuilder (Orb orb)
-	{
-		return newBuilder(Orbit.defaultOrbit, orb);
 	}
 	
 	final void build ()
 	{
 		setupBuildEnvironment;
-		doBuild;
+		execute(buildArgs ~ orb.buildArgs ~ dependencyArgs);
 	}
 	
-	protected abstract void doBuild ();
+	protected abstract string[] buildArgs ();
+	protected abstract string[] dependencyArgs ();
 	
 	protected void execute (string command, string[] args ...)
 	{
@@ -148,10 +160,18 @@ class Dsss : Builder
 {
 	mixin Constructors;
 	
-	void doBuild ()
+ 	string[] dependencyArgs ()
 	{
-		setupBuildEnvironment;
-		execute("dsss", "build"[] ~ orb.buildArgs);
+		return dependencyHandler.buildDependencies.map((Orb orb) {
+			auto libraries = orb.libraries.map()
+			
+			return "-I" ~ orb.importPath ~ " -L";
+		});
+	}
+	
+	string[] buildArgs ()
+	{
+		return ["dsss", "build"]
 	}
 }
 

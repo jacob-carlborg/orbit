@@ -222,6 +222,21 @@ class Orb
 		return Path.setExtension(path, Orb.extension);
 	}
 	
+	string importPath ()
+	{
+		return Path.join(orbit.path.orbs, fullName, orbit.constants.imports);
+	}
+	
+	string libPath ()
+	{
+		return Path.join(orbit.path.orbs, fullName, orbit.constants.lib);
+	}
+	
+	string binPath ()
+	{
+		return Path.join(orbit.path.orbs, fullName, orbit.constants.bin);
+	}
+	
 private:
 	
 	void setValues (Specification spec)

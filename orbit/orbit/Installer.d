@@ -30,6 +30,8 @@ class Installer : OrbitObject
 		string fullInstallPath_;
 		string tmpPath_;
 		string tmpDataPath_;
+
+		DependencyHandler dependencyHandler;
 	}
 	
 	this (Orb orb, Repository repository, string installPath = "", Orbit orbit = Orbit.defaultOrbit)
@@ -37,6 +39,7 @@ class Installer : OrbitObject
 		super(orbit, orb);
 		installPath_ = installPath;
 		this.repository = repository;
+		dependencyHandler = new DependencyHandler(orb, repository, orbit);
 	}
 	
 	void install ()
@@ -58,15 +61,13 @@ private:
 	{
 		verbose("Building:");
 		
-		auto builder = Builder.newBuilder(orbit, orb);
+		auto builder = Builder.newBuilder(orb, dependencyHandler, orbit);
 		builder.workingDirectory = Path.join(tmpPath, orbit.constants.orbData);
 		builder.build;
 	}
 	
 	void installDependencies ()
 	{
-		scope dependencyHandler = new DependencyHandler(orb, repository, orbit);
-
 		foreach (orb ; dependencyHandler.buildDependencies)
 		{
 			auto localOrb = Orb.load(orb, repository);

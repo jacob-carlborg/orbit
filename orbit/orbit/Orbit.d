@@ -160,7 +160,7 @@ static:
 		string tmp (string tmp)
 		{
 			return tmp_ = tmp;
-		}	
+		}
 	}
 	
 	class PathPosix : Path

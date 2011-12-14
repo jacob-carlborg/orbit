@@ -128,7 +128,9 @@ private:
 	void moveLibraries ()
 	{
 		auto destinationPath = Path.join(fullInstallPath, orbit.constants.lib);
-		Path.createPath(destinationPath);
+		
+		if (orb.libraries.any())
+			Path.createPath(destinationPath);
 		
 		Tuple!(string, string) libName (string lib, bool dynamic)
 		{

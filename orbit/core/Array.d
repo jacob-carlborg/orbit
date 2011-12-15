@@ -730,3 +730,27 @@ U[] map (T, U) (T[] arr, U delegate (T e) dg)
 		
 	return newArr;
 }
+
+string join (T) (T[] arr, string separator = "")
+{
+	switch (arr.length)
+	{
+		case 0: return "";
+		case 1: return arr[0];
+	}
+	
+	string result;
+	auto len = separator.length == 0 ? 1 : separator.length;
+	result.reserve(arr.length * len);
+	
+	foreach (i, e ; arr)
+	{
+		if (i == arr.length - 1)
+			result ~ e;
+			
+		else
+			result ~ e ~ separator;
+	}
+	
+	return separator;
+}

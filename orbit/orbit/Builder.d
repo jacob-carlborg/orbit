@@ -163,9 +163,9 @@ class Dsss : Builder
  	string[] dependencyArgs ()
 	{
 		return dependencyHandler.buildDependencies.map((Orb orb) {
-			auto libraries = orb.libraries.map()
+			auto libraries = orb.libraries.join(" -ll");
 			
-			return "-I" ~ orb.importPath ~ " -L";
+			return "-I" ~ orb.importPath ~ " -S" ~ orb.libPath ~ libraries;
 		});
 	}
 	

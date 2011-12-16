@@ -21,6 +21,8 @@ class Orbit
 	
 	bool isVerbose;
 	void delegate (string[] ...) verboseHandler;
+	void delegate (string[] ...) printHandler;
+	void delegate (int bytesLeft, int contentLength, int chunkSize) progress;
 	Path path;
 	Constants constants;
 	
@@ -51,9 +53,14 @@ class Orbit
 		}
 		
 		orbit.verboseHandler = (string[] args ...) {
-			println(args);
+			orbit.println(args);
 		};
 		
+		orbit.printHandler = (string[] args ...) {
+			orbit.print(args);
+		};
+		
+		orbit.progress = &orbit.progressHandler;
 		orbit.isVerbose = true;
 		
 		return orbit;
@@ -63,6 +70,16 @@ class Orbit
 	{
 		if (isVerbose && verboseHandler)
 			verboseHandler(args);
+	}
+	
+	void print (string[] args ...)
+	{
+		printHandler(args);
+	}
+	
+	void println (string[] args ...)
+	{
+		printHandler(args ~ "\n"[]);
 	}
 	
 	string libName (string name)
@@ -78,6 +95,41 @@ class Orbit
 	string exeName (string name)
 	{
 		return setExtension(name, constants.exeExtension);
+	}
+
+	private void progressHandler (int bytesLeft, int contentLength, int chunkSize)
+	{
+		version (Posix)
+		{
+			const clearLine = "\033[1K"; // clear backwards
+			const saveCursor = "\0337";
+			const restoreCursor = "\0338";
+		}
+		
+		else
+		{
+			const clearLine = "\r";
+			const saveCursor = "";
+			const restoreCursor = "";
+		}
+		
+		int width = contentLength * chunkSize;
+		int num = width;
+		int i = 0;
+		
+		print(clearLine, restoreCursor, saveCursor);
+		print("[");
+		
+		for ( ; i < (width - num); i++)
+			print("=");
+		
+		print(">");
+		
+		for ( ; i < width; i++)
+			print(" ");
+		
+		print("]");
+		print(format(" {}/{} KB", (contentLength - bytesLeft) / 1024, contentLength / 1024));
 	}
 
 static:

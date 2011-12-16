@@ -10,6 +10,7 @@ import tango.net.http.HttpGet;
 import tango.text.Util;
 
 import orbit.core._;
+import orbit.net.Http;
 import Path = orbit.io.Path;
 import orbit.orbit._;
 
@@ -87,7 +88,7 @@ protected:
 		return orbsPath_ = orbsPath_.any() ? orbsPath_ : join([source, orbit.repository.orbs]);
 	}
 	
-	Index indexPath ()
+	string indexPath ()
 	{
 		auto path = join(source, orbit.constants.index);
 		return Path.setExtension(path, orbit.constants.indexFormat);
@@ -173,8 +174,12 @@ class RemoteRepository : Repository
 	
 	string indexPath ()
 	{
-		scope resource = new HttpGet(super.indexPath);
-		resource.open;
+		auto destination = Path.join(orbit.path.tmp, orbit.constants.index);
+		destination = Path.setExtension(destination, orbit.constants.indexFormat);
+
+		Http.download(super.indexPath, destination);
+		
+		return destination;
 	}
 	
 	string addressOfOrb (Orb orb)

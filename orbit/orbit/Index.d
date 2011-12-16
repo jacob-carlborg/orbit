@@ -32,12 +32,10 @@ class Index
 		Serializer serializer;
 	}
 	
-	this (Repository repository)
+	this (Repository repository, string path)
 	{
 		this.repository = repository;
-		this.path = repository.join(repository.source,
-				repository.orbit.constants.index ~
-				"." ~ repository.orbit.constants.indexFormat);
+		this.path = path;
 		
 		archive = new XmlArchive!();
 		serializer = new Serializer(archive);

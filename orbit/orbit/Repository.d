@@ -35,7 +35,7 @@ abstract class Repository
 		this.isLocal = local;
 		this.isRemote = !local;
 		this.api = api;
-		index = new Index(this);
+		index = new Index(this, indexPath);
 	}
 	
 	static Repository instance (string source = "", Orbit orbit = Orbit.defaultOrbit)
@@ -80,10 +80,20 @@ abstract class Repository
 		return source;
 	}
 
-	protected string orbsPath ()
+protected:
+	
+	string orbsPath ()
 	{
 		return orbsPath_ = orbsPath_.any() ? orbsPath_ : join([source, orbit.repository.orbs]);
 	}
+	
+	Index indexPath ()
+	{
+		auto path = join(source, orbit.constants.index);
+		return Path.setExtension(path, orbit.constants.indexFormat);
+	}
+	
+public:
 	
 	static abstract class Api
 	{
@@ -159,6 +169,12 @@ class RemoteRepository : Repository
 	private this (string source, Orbit orbit)
 	{
 		super(source, orbit, false, new Api);
+	}
+	
+	string indexPath ()
+	{
+		scope resource = new HttpGet(super.indexPath);
+		resource.open;
 	}
 	
 	string addressOfOrb (Orb orb)

@@ -8,8 +8,10 @@ module orbit.orbit.Builder;
 
 import tango.sys.Process;
 import tango.io.Stdout;
+import tango.text.Util;
 
 import orbit.core._;
+import orbit.orbit.DependencyHandler;
 import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
@@ -32,13 +34,13 @@ abstract class Builder : OrbitObject
 	{
 		this (Orb orb, DependencyHandler dependencyHandler)
 		{
-			super(orb);
+			super(orb, dependencyHandler);
 			this.dependencyHandler = dependencyHandler;
 		}
 
 		this (Orbit orbit, Orb orb, DependencyHandler dependencyHandler)
 		{
-			super(orbit, orb);
+			super(orbit, orb, dependencyHandler);
 			this.dependencyHandler = dependencyHandler;
 		}
 	}
@@ -46,7 +48,17 @@ abstract class Builder : OrbitObject
 	string workingDirectory;
 	private DependencyHandler dependencyHandler;
 	
-	mixin Constructors;
+	this (Orb orb, DependencyHandler dependencyHandler)
+	{
+		super(orb);
+		this.dependencyHandler = dependencyHandler;
+	}
+
+	this (Orbit orbit, Orb orb, DependencyHandler dependencyHandler)
+	{
+		super(orbit, orb);
+		this.dependencyHandler = dependencyHandler;
+	}
 	
 	static Tool toBuilder (string str)
 	{
@@ -140,9 +152,14 @@ class Dake : Builder
 {
 	mixin Constructors;
 
-	void doBuild ()
+	string[] dependencyArgs ()
 	{
-		execute("dake", orb.buildArgs);
+		assert(0, "unimplemented");
+	}
+	
+	string[] buildArgs ()
+	{
+		assert(0, "unimplemented");
 	}
 }
 
@@ -150,9 +167,14 @@ class Cmake : Builder
 {
 	mixin Constructors;
 		
-	void doBuild ()
+	string[] dependencyArgs ()
 	{
-		assert(false); //execute("cmake", orb.buildArgs);
+		assert(0, "unimplemented");
+	}
+	
+	string[] buildArgs ()
+	{
+		assert(0, "unimplemented");
 	}
 }
 
@@ -160,18 +182,22 @@ class Dsss : Builder
 {
 	mixin Constructors;
 	
- 	string[] dependencyArgs ()
+	string[] dependencyArgs ()
 	{
-		return dependencyHandler.buildDependencies.map((Orb orb) {
-			auto libraries = orb.libraries.join(" -ll");
+		return dependencyHandler.buildDependencies().map((Orb orb) {
+			auto libraryFlag = " -ll";
+			auto libraries = orb.libraries.join(libraryFlag);
 			
-			return "-I" ~ orb.importPath ~ " -S" ~ orb.libPath ~ libraries;
+			if (libraries.isPresent())
+				libraries = libraryFlag ~ libraries;
+			
+			return "-I" ~ orb.srcPath ~ " -S" ~ orb.libPath ~ libraries;
 		});
 	}
 	
 	string[] buildArgs ()
 	{
-		return ["dsss", "build"]
+		return ["dsss", "build"];
 	}
 }
 
@@ -179,9 +205,14 @@ class Make : Builder
 {
 	mixin Constructors;
 	
-	void doBuild ()
+	string[] dependencyArgs ()
 	{
-		execute("make", orb.buildArgs);
+		assert(0, "unimplemented");
+	}
+	
+	string[] buildArgs ()
+	{
+		assert(0, "unimplemented");
 	}
 }
 
@@ -189,9 +220,14 @@ class Rdmd : Builder
 {
 	mixin Constructors;
 	
-	void doBuild ()
+	string[] dependencyArgs ()
 	{
-		assert(false); //execute("rdmd --build-only", orb.buildArgs);
+		assert(0, "unimplemented");
+	}
+	
+	string[] buildArgs ()
+	{
+		assert(0, "unimplemented");
 	}
 }
 
@@ -199,9 +235,14 @@ class Shell : Builder
 {
 	mixin Constructors;
 	
-	void doBuild ()
+	string[] dependencyArgs ()
 	{
-		execute(orb.buildArgs);
+		assert(0, "unimplemented");
+	}
+	
+	string[] buildArgs ()
+	{
+		assert(0, "unimplemented");
 	}
 }
 
@@ -209,8 +250,13 @@ class Source : Builder
 {
 	mixin Constructors;
 	
-	void doBuild ()
+	string[] dependencyArgs ()
 	{
-		// do nothing
+		assert(0, "unimplemented");
+	}
+	
+	string[] buildArgs ()
+	{
+		assert(0, "unimplemented");
 	}
 }

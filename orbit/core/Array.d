@@ -25,6 +25,10 @@ else
 
 import orbit.util.Traits;
 
+alias tango.core.Array.map map;
+alias tango.core.Array.filter filter;
+alias tango.core.Array.reduce reduce;
+
 /**
  * Inserts the specified element at the specified position in the array. Shifts the
  * element currently at that position (if any) and any subsequent elements to the right.
@@ -715,42 +719,4 @@ T first (T) (T[] arr)
 T last (T) (T[] arr)
 {
 	return arr[$ - 1];
-}
-
-U[] map (T, U) (T[] arr, U delegate (T e) dg)
-{
-	if (arr.isEmpty())
-		return [];
-	
-	U[] newArr;
-	newArr.reserve(arr.length);
-	
-	foreach (e ; arr)
-		newArr ~= dg(e);
-		
-	return newArr;
-}
-
-string join (T) (T[] arr, string separator = "")
-{
-	switch (arr.length)
-	{
-		case 0: return "";
-		case 1: return arr[0];
-	}
-	
-	string result;
-	auto len = separator.length == 0 ? 1 : separator.length;
-	result.reserve(arr.length * len);
-	
-	foreach (i, e ; arr)
-	{
-		if (i == arr.length - 1)
-			result ~ e;
-			
-		else
-			result ~ e ~ separator;
-	}
-	
-	return separator;
 }

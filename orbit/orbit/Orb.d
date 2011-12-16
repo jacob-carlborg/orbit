@@ -237,6 +237,11 @@ class Orb
 		return Path.join(orbit.path.orbs, fullName, orbit.constants.bin);
 	}
 	
+	string srcPath ()
+	{
+		return Path.join(orbit.path.orbs, fullName, orbit.constants.src);
+	}
+	
 private:
 	
 	void setValues (Specification spec)

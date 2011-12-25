@@ -49,6 +49,14 @@ static:
 		return buffer.slice;
 	}
 	
+	bool exists (string url)
+	{
+		scope resource = new HttpGet(path);
+		resource.open;
+		
+		return resource.isResponseOK;
+	}
+	
 private:
 	
 	void checkPageStatus (HttpGet page, string url)

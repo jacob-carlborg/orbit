@@ -186,10 +186,7 @@ class RemoteRepository : Repository
 	{
 		auto path = super.addressOfOrb(orb);
 		
-		scope resource = new HttpGet(path);
-		resource.open;
-		
-		if (resource.isResponseOK)
+		if (Http.exists(path))
 			return path;
 		
 		throw new MissingOrbException(orb, this, null, __FILE__, __LINE__);

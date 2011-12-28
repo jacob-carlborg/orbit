@@ -24,27 +24,27 @@ template ObjectImpl ()
 		//assert(RTEST(self));
 	}
 	
-	static typeof(*this) opCall (VALUE rubyObject)
+	static typeof(this) opCall (VALUE rubyObject)
 	{
 		//assert(RTEST(rubyObject), `Tried to create a new "` ~ typeof(*this).stringof ~ `" with an nil value.`);
-		typeof(*this) object;
+		typeof(this) object;
 		object.self = rubyObject;
 		
 		return object;
 	}
 	
-	static typeof(*this) opCall (RubyObject rubyObject)
+	static typeof(this) opCall (RubyObject rubyObject)
 	{
 		//assert(RTEST(rubyObject.self), `Tried to create a new "` ~ typeof(*this).stringof ~ `" with an nil value.`);
-		typeof(*this) object;
+		typeof(this) object;
 		object.self = rubyObject.self;
 		
 		return object;
 	}
 	
-	static typeof(*this) new_ (VALUE[] args ...)
+	static typeof(this) new_ (VALUE[] args ...)
 	{
-		return typeof(*this)(rb_class_new_instance(args.length, args.ptr, rb_path2class(this.stringof.ptr)));
+		return typeof(this)(rb_class_new_instance(cast(int)args.length, args.ptr, rb_path2class(this.stringof.ptr)));
 	}
 	
 	bool respond_to (ID method)
@@ -94,7 +94,7 @@ template ObjectImpl ()
 			else
 				rubyArgs ~= arg.self;
 
-		auto result = rb_funcall3(self, rb_intern(name.toStringz()), rubyArgs.length, rubyArgs.ptr);
+		auto result = rb_funcall3(self, rb_intern(name.toStringz()), cast(int)rubyArgs.length, rubyArgs.ptr);
 		//assert(RTEST(result), `The method call "` ~ name ~ `" returned an invalid result.`);
 
 		return RubyObject(result);

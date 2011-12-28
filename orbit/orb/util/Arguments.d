@@ -205,13 +205,13 @@ class Arguments
         public bool passThrough;
 
         private Stack!(Argument)        stack;          // args with params
-        private Argument[char[]]        args;           // the set of args
-        private Argument[char[]]        aliases;        // set of aliases
+        private Argument[string]        args;           // the set of args
+        private Argument[string]        aliases;        // set of aliases
         private char                    eq;             // '=' or ':'
-        private char[]                  sp,             // short prefix
+        private string                  sp,             // short prefix
                                         lp;             // long prefix
-        private char[][]                msgs = errmsg;  // error messages
-        private const char[][]          errmsg =        // default errors
+        private string[]                msgs = errmsg;  // error messages
+        private const string[]          errmsg =        // default errors
                 [
                 "argument '{0}' expects {2} parameter(s) but has {1}\n", 
                 "argument '{0}' expects {3} parameter(s) but has {1}\n", 
@@ -231,7 +231,7 @@ class Arguments
 
         ***********************************************************************/
         
-        this (char[] sp="-", char[] lp="--", char eq='=')
+        this (string sp="-", string lp="--", char eq='=')
         {
                 this.sp = sp;
                 this.lp = lp;
@@ -254,11 +254,11 @@ class Arguments
 
         ***********************************************************************/
         
-        final bool parse (char[] input, bool sloppy=false)
+        final bool parse (string input, bool sloppy=false)
         {
-                char[][] tmp;
+                string[] tmp;
                 foreach (s; quotes(input, " "))
-                         tmp ~= s;
+                         tmp ~= cast(string)s;
                 return parse (tmp, sloppy);
         }
 
@@ -277,7 +277,7 @@ class Arguments
 
         ***********************************************************************/
         
-        final bool parse (char[][] input, bool sloppy=false)
+        final bool parse (string[] input, bool sloppy=false)
         {
                 bool    done;
                 int     error;
@@ -329,7 +329,7 @@ class Arguments
         
         final Argument get (char name)
         {
-                return get ((&name)[0..1]);
+                return get (cast(string)(&name)[0..1]);
         }
 
         /***********************************************************************
@@ -342,11 +342,11 @@ class Arguments
                 
         ***********************************************************************/
         
-        final Argument get (char[] name)
+        final Argument get (string name)
         {
                 auto a = name in args;
                 if (a is null)
-                   {name=name.dup; return args[name] = new Argument(name);}
+                   {return args[name] = new Argument(name);}
                 return *a;
         }
 
@@ -375,14 +375,14 @@ class Arguments
                 ---
 
                 The messages are replacable with custom (i18n) versions
-                instead, using the errors(char[][]) method 
+                instead, using the errors(string[]) method 
 
         ***********************************************************************/
 
-        final char[] errors (char[] delegate(char[] buf, char[] fmt, ...) dg)
+        final string errors (char[] delegate(char[] buf, const(char)[] fmt, ...) dg)
         {
                 char[256] tmp;
-                char[] result;
+                string result;
                 foreach (arg; args)
                          if (arg.error)
                              result ~= dg (tmp, msgs[arg.error-1], arg.name, 
@@ -408,7 +408,7 @@ class Arguments
 
         ***********************************************************************/
 
-        final Arguments errors (char[][] errors)
+        final Arguments errors (string[] errors)
         {
                 if (errors.length is errmsg.length)
                     msgs = errors;
@@ -424,7 +424,7 @@ class Arguments
 
         ***********************************************************************/
 
-        final Arguments help (void delegate(char[] arg, char[] help) dg)
+        final Arguments help (void delegate(string arg, string help) dg)
         {
                 foreach (arg; args)
                          if (arg.text.ptr)
@@ -440,7 +440,7 @@ class Arguments
                 
         ***********************************************************************/
         
-        private bool argument (char[] s, char[] p, bool sloppy, bool flag)
+        private bool argument (string s, string p, bool sloppy, bool flag)
         {
                 if (s.length >= p.length && s[0..p.length] == p)
                    {
@@ -477,7 +477,7 @@ class Arguments
 
         ***********************************************************************/
         
-        private Argument enable (char[] elem, bool sloppy, bool flag=false)
+        private Argument enable (string elem, bool sloppy, bool flag=false)
         {
                 if (flag && elem.length > 1)
                    {
@@ -531,28 +531,28 @@ class Arguments
                 enum {None, ParamLo, ParamHi, Required, Requires, Conflict, Extra, Option, Invalid};
 
                 alias void   delegate() Invoker;
-                alias char[] delegate(char[] value) Inspector;
+                alias string delegate(string value) Inspector;
 
                 public int              min,            /// minimum params
                                         max,            /// maximum params
                                         error;          /// error condition
                 public  bool            set;            /// arg is present
-                public  char[]          aliases;        /// Array of aliases
+                public  string          aliases;        /// Array of aliases
                 private bool            req,            // arg is required
                                         cat,            // arg is smushable
                                         exp,            // implicit params
                                         fail;           // fail the parse
-                public  char[]          name,           // arg name
+                public  string          name,           // arg name
                                         text;           // help text
-                private char[]          bogus;          // name of conflict
-                private char[][]        values,         // assigned values
+                private string          bogus;          // name of conflict
+                private string[]        values,         // assigned values
                                         options,        // validation options
                                         deefalts;       // configured defaults
                 private Invoker         invoker;        // invocation callback
                 private Inspector       inspector;      // inspection callback
                 private Argument[]      dependees,      // who we require
                                         conflictees;    // who we conflict with
-                private char[] delegate () lazyDefault;
+                private string delegate () lazyDefault;
                 
                 /***************************************************************
               
@@ -560,7 +560,7 @@ class Arguments
 
                 ***************************************************************/
         
-                this (char[] name)
+                this (string name)
                 {
                         this.name = name;
                 }
@@ -571,7 +571,7 @@ class Arguments
 
                 ***************************************************************/
         
-                override char[] toString()
+                override string toString()
                 {
                         return name;
                 }
@@ -583,7 +583,7 @@ class Arguments
 
                 ***************************************************************/
         
-                final char[][] assigned ()
+                final string[] assigned ()
                 {
                         return values.length ? values : (lazyDefault ? [lazyDefault()] : deefalts);
                 }
@@ -598,7 +598,7 @@ class Arguments
         
                 final Argument aliased (char name)
                 {
-                        this.outer.aliases[(&name)[0..1].dup] = this;
+                        this.outer.aliases[(&name)[0..1].idup] = this;
                         this.aliases ~= name;
                         return this;
                 }
@@ -633,7 +633,7 @@ class Arguments
 
                 ***************************************************************/
         
-                final Argument requires (char[] other)
+                final Argument requires (string other)
                 {
                         return requires (this.outer.get(other));
                 }
@@ -646,7 +646,7 @@ class Arguments
         
                 final Argument requires (char other)
                 {
-                        return requires ((&other)[0..1]);
+                        return requires (cast(string)(&other)[0..1]);
                 }
 
                 /***************************************************************
@@ -667,7 +667,7 @@ class Arguments
 
                 ***************************************************************/
         
-                final Argument conflicts (char[] other)
+                final Argument conflicts (string other)
                 {
                         return conflicts (this.outer.get(other));
                 }
@@ -680,7 +680,7 @@ class Arguments
         
                 final Argument conflicts (char other)
                 {
-                        return conflicts ((&other)[0..1]);
+                        return conflicts (cast(string)(&other)[0..1]);
                 }
 
                 /***************************************************************
@@ -724,13 +724,13 @@ class Arguments
 
                 ***************************************************************/
         
-                final Argument defaults (char[] values)
+                final Argument defaults (string values)
                 {
                         this.deefalts ~= values;
                         return this;
                 }
                 
-                final Argument defaults (char[] delegate () value)
+                final Argument defaults (string delegate () value)
                 {
                     this.lazyDefault = value;
                     return this;
@@ -797,7 +797,7 @@ class Arguments
 
                 ***************************************************************/
         
-                final Argument title (char[] name)
+                final Argument title (string name)
                 {
                         this.name = name;
                         return this;
@@ -809,7 +809,7 @@ class Arguments
 
                 ***************************************************************/
         
-                final Argument help (char[] text)
+                final Argument help (string text)
                 {
                         this.text = text;
                         return this;
@@ -834,7 +834,7 @@ class Arguments
 
                 ***************************************************************/
         
-                final Argument restrict (char[][] options ...)
+                final Argument restrict (string[] options ...)
                 {
                         this.options = options;
                         return this;
@@ -868,7 +868,7 @@ class Arguments
 
                 ***************************************************************/
         
-                private void append (char[] value, bool explicit=false)
+                private void append (string value, bool explicit=false)
                 {       
                         // pop to an argument that can accept implicit parameters?
                         if (explicit is false)
@@ -1120,7 +1120,7 @@ debug (Arguments)
 
         void main()
         {
-                char[] crap = "crap";
+                string crap = "crap";
                 auto args = new Arguments;
 
                 args(null).title("root").params.help("root help");
@@ -1132,6 +1132,6 @@ debug (Arguments)
                       stdout (args.errors(&stdout.layout.sprint));
                 else
                    if (args.get('x'))
-                       args.help ((char[] a, char[] b){Stdout.formatln ("{}{}\n\t{}", args.lp, a, b);});
+                       args.help ((string a, string b){Stdout.formatln ("{}{}\n\t{}", args.lp, a, b);});
         }
 }

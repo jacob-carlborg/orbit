@@ -47,7 +47,7 @@ else
 	alias std.string.toStringz toStringz;
 	alias std.utf.toUTF16z toString16z;
 	
-	alias std.string.toString fromStringz;
+	alias std.conv.to!string fromStringz;
 }
 
 static if (ruby.util.Version.Tango && !PhobosCompatibility)
@@ -281,7 +281,7 @@ in
 }
 body
 {
-	return str[beginIndex .. endIndex].dup;
+	return str[beginIndex .. endIndex].idup;
 }
 
 /**
@@ -317,7 +317,7 @@ in
 }
 body
 {
-	return str[beginIndex .. endIndex].dup;
+	return str[beginIndex .. endIndex].idup;
 }
 
 /**
@@ -353,7 +353,7 @@ in
 }
 body
 {
-	return str[beginIndex .. endIndex].dup;
+	return str[beginIndex .. endIndex].idup;
 }
 
 /**
@@ -494,7 +494,7 @@ body
 			end = str.length;
 	}
 	
-	return str[pos .. end].dup;
+	return str[pos .. end].idup;
 }
 
 /**
@@ -539,7 +539,7 @@ body
 			end = str.length;
 	}
 	
-	return str[pos .. end].dup;
+	return str[pos .. end].idup;
 }
 
 /**
@@ -584,7 +584,7 @@ body
 			end = str.length;
 	}
 	
-	return str[pos .. end].dup;
+	return str[pos .. end].idup;
 }
 
 /**
@@ -597,72 +597,22 @@ body
  *     
  * Returns: the index of the substring or size_t.max when nothing was found
  */
-size_t find (string str, string sub, size_t start = 0)
+T find(T)(T str, T sub, size_t start = 0) if(std.traits.isSomeString(T))
 {
-	version (Tango)
-	{
-		size_t index = str.locatePattern(sub, start);
-		
-		if (index == str.length)
-			return size_t.max;
-		
-		return index;
-	}
-	
-	else
-		return std.string.find(str, sub, start);
-}
+    if(start > str.length)
+    {
+        return size_t.max;
+    }
 
-/**
- * Finds the first occurence of sub in str
- * 
- * Params:
- *     str = the string to find in
- *     sub = the substring to find
- *     start = where to start finding
- *     
- * Returns: the index of the substring or size_t.max when nothing was found
- */
-size_t find (wstring str, wstring sub, size_t start = 0)
-{
-	version (Tango)
-	{
-		size_t index = str.locatePattern(sub, start);
-		
-		if (index == str.length)
-			return size_t.max;
-		
-		return index;
-	}
-	
-	else
-		return std.string.find(str, sub, start);
-}
+    size_t ret = std.string.indexOf(str[start..$], sub);
 
-/**
- * Finds the first occurence of sub in str
- * 
- * Params:
- *     str = the string to find in
- *     sub = the substring to find
- *     start = where to start finding
- *     
- * Returns: the index of the substring or size_t.max when nothing was found
- */
-size_t find (dstring str, dstring sub, size_t start = 0)
-{
-	version (Tango)
-	{
-		size_t index = str.locatePattern(sub, start);
-		
-		if (index == str.length)
-			return size_t.max;
-		
-		return index;
-	}
-	
-	else
-		return std.string.find(str, sub, start);
+    //prevent overflow
+    if(ret != size_t.max)
+    {
+        //make index relative to string start
+        ret += start;
+    }
+    return ret;
 }
 
 /**
@@ -815,7 +765,7 @@ version (Phobos)
 	 */
 	dchar* toString32z (dstring str)
 	{
-		return (str ~ '\0').ptr;
+		return cast(dchar*)(str ~ '\0').ptr;
 	}
 	
 	/**
@@ -828,7 +778,7 @@ version (Phobos)
 	 */
 	wstring fromString16z (wchar* str)
 	{
-		return str[0 .. strlen(str)];
+		return str[0 .. strlen(str)].idup;
 	}
 	
 	/**
@@ -840,7 +790,7 @@ version (Phobos)
 	 */
 	dstring fromString32z (dchar* str)
 	{
-		return str[0 .. strlen(str)];
+		return str[0 .. strlen(str)].idup;
 	}
 	
 	/**

@@ -32,7 +32,7 @@ class Orb
 		source,
 	}
 	
-	static const extension = "orb";
+	static immutable string extension = "orb";
 		
 	Builder.Tool buildTool;
 	
@@ -145,12 +145,12 @@ class Orb
 		auto orbParts = orb.split("-");
 		
 		if (orbParts.length == 1)
-			return new Orb(orbParts.first(), OrbVersion.invalid);
+			return new Orb(cast(string)orbParts.first(), OrbVersion.invalid);
 		
 		auto name = orbParts[0 .. $ - 1].join("-");
-		auto version_ = OrbVersion.parse(orbParts[$ - 1]);
+		auto version_ = OrbVersion.parse(cast(string)orbParts[$ - 1]);
 		
-		return new Orb(name, version_, orbit);
+		return new Orb(cast(string)name, version_, orbit);
 	}
 	
 	static string buildFullName (string name, OrbVersion version_)
@@ -168,7 +168,7 @@ class Orb
 		return loaded;
 	}
 	
-	string fullName ()
+	string fullName () 
 	{
 		return version_.isValid ? Orb.buildFullName(name, version_) : name;
 	}
@@ -178,13 +178,13 @@ class Orb
 		return type_;
 	}
 	
-	string[] buildArgs ()
+	string[] buildArgs () const
 	{
 		//assert(false, "not implemented");
 		return null;
 	}
 	
-	string path ()
+	string path () const
 	{
 		return path_;
 	}

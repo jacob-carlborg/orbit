@@ -21,11 +21,11 @@ import orbit.orbit.Repository;
 
 class Index
 {
-	const Repository repository;
-	
+    @property Repository repository() { return repository_; }
 	private
 	{
-		const string path;
+        Repository repository_;
+		immutable string path;
 		
 		Orb[OrbVersion][string] orbs_;
 		XmlArchive!() archive;
@@ -34,14 +34,14 @@ class Index
 	
 	this (Repository repository, string path)
 	{
-		this.repository = repository;
+		this.repository_ = repository;
 		this.path = path;
 		
 		archive = new XmlArchive!();
 		serializer = new Serializer(archive);
 	}
 	
-	void update (Orb orb)
+	void update (Orb orb) 
 	{
 		if (!Path.exists(path))
 			create(orb);
@@ -56,7 +56,7 @@ class Index
 		write;
 	}
 	
-	OrbVersion latestVersion (string name)
+	OrbVersion latestVersion (string name) 
 	{
 		if (auto orb = name in orbs)
 		{
@@ -68,7 +68,7 @@ class Index
 		throw new MissingOrbException(orb, repository, __FILE__, __LINE__);
 	}
 
-	Orb opIndex (Orb orb)
+	Orb opIndex (Orb orb) 
 	{
 		if (auto t = orb.name in orbs)
 			if (auto o = orb.version_ in *t)
@@ -77,7 +77,7 @@ class Index
 		throw new MissingOrbException(orb, repository, __FILE__, __LINE__);
 	}
 	
-	Orb[OrbVersion][string] orbs ()
+	Orb[OrbVersion][string] orbs () 
 	{
 		return orbs_ = isLoaded ? orbs_ : load;
 	}
@@ -98,12 +98,12 @@ private:
 	{
 		serializer.reset;
 		auto index = serializer.serialize(orbs);
-		File.set(path, index);
+		File.set(cast(char[])path, cast(void[])index);
 	}
 	
 	Orb[OrbVersion][string] load ()
 	{
-		return serializer.deserialize!(Orb[OrbVersion][string])(File.get(path));
+		return serializer.deserialize!(Orb[OrbVersion][string])(cast(immutable(void)[])File.get(cast(char[])path));
 	}
 	
 	bool isLoaded ()

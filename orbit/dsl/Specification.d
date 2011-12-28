@@ -21,7 +21,7 @@ import Path = orbit.io.Path;
 
 class Specification
 {
-	static const extension = "orbspec";
+	static immutable string extension = "orbspec";
 	
 	string summary;
 	string version_;
@@ -61,7 +61,7 @@ class Specification
 		mixin RUBY_INIT_STACK;
 		scope env = new Environment;
 
-		auto content = cast(string) File.get(path);
+		auto content = cast(string) File.get(cast(char[])path);
 		env.eval(specEnvContent);
 
 		auto specEnv = SpecificationEnviroment.new_;
@@ -79,7 +79,7 @@ class Specification
 	private this (SpecificationEnviroment specEnv, string path)
 	{
 		this.specEnv = specEnv;
-		orbspecPath = Path.toAbsolute(path);
+		orbspecPath = cast(string)Path.toAbsolute(path);
 		setSpecValues;
 	}
 	
@@ -103,7 +103,7 @@ class Specification
 		foreach (file ; files)
 			yaml ~= format("    - {}\n", file);
 			
-		return yaml;
+		return cast(string)yaml;
 	}
 	
 	string toOrbspec ()

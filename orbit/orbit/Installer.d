@@ -22,10 +22,11 @@ import orbit.util.Use;
 
 class Installer : OrbitObject
 {	
-	const Repository repository;
-	
+    @property Repository repository() { return repository_; }
+
 	private
 	{
+        Repository repository_;
 		string installPath_;
 		string fullInstallPath_;
 		string tmpPath_;
@@ -38,7 +39,7 @@ class Installer : OrbitObject
 	{
 		super(orbit, orb);
 		installPath_ = installPath;
-		this.repository = repository;
+		this.repository_ = repository;
 		dependencyHandler = new DependencyHandler(orb, repository, orbit);
 	}
 	
@@ -88,7 +89,7 @@ private:
 	
 	string fullInstallPath ()
 	{
-		return fullInstallPath_ = fullInstallPath_.any() ? fullInstallPath_ : Path.join(installPath, orb.fullName().toLower());
+		return fullInstallPath_ = fullInstallPath_.any() ? fullInstallPath_ : Path.join(installPath, cast(string)orb.fullName().toLower());
 	}
 	
 	string tmpDataPath ()
@@ -116,10 +117,10 @@ private:
 			prefix = orb.bindir;
 
 		auto executables = orb.executables.map((string e) {
-			auto path = Path.parse(e);
-			auto file = orbit.exeName(path.file);
+			auto path = Path.parse(cast(char[])e);
+			auto file = orbit.exeName(cast(string)path.file);
 
-			return Path.join(path.folder, file);
+			return Path.join(cast(string)path.folder, file);
 		});
 
 		auto path = Path.join(fullInstallPath, orbit.constants.bin);
@@ -135,10 +136,10 @@ private:
 		
 		Tuple!(string, string) libName (string lib, bool dynamic)
 		{
-			auto path = Path.parse(lib);
-			auto file = dynamic ? orbit.dylibName(path.file) : orbit.libName(path.file);
+			auto path = Path.parse(cast(char[])lib);
+			auto file = dynamic ? orbit.dylibName(cast(string)path.file) : orbit.libName(cast(string)path.file);
 			
-			return tuple(Path.join(path.folder, file), file);
+			return tuple(Path.join(cast(string)path.folder, file), file);
 		}
 		
 		foreach (lib ; orb.libraries)
@@ -169,7 +170,7 @@ private:
 		moveSpecificFiles(orb.files, path);
 	}
 	
-	void moveSpecificFiles (string[] files, string destinationPath, string filePrefix = "")
+	void moveSpecificFiles (in string[] files, string destinationPath, string filePrefix = "")
 	{
 		if (files.any())
 			Path.createPath(destinationPath);

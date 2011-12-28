@@ -31,10 +31,10 @@ struct Use (ARGS...)
 		alias ReturnTypeOf!(ARGS[0]) ReturnType;
 		
 		static if (ARGS.length >= 2)
-			alias Tuple!(ReturnType delegate (ARGS), ARGS[1 .. $]) NEW_ARGS;
+			alias TypeTuple!(ReturnType delegate (ARGS), ARGS[1 .. $]) NEW_ARGS;
 			
 		else
-			alias Tuple!(ReturnType delegate (ARGS)) NEW_ARGS;
+			alias TypeTuple!(ReturnType delegate (ARGS)) NEW_ARGS;
 	}
 		
 	NEW_ARGS args;

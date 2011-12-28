@@ -45,7 +45,7 @@ int remove (string path, bool recursive = false)
 		
 	foreach (info ; children(path))
 	{
-		string fullPath = info.path ~ info.name;
+		string fullPath = cast(string)(info.path ~ info.name);
 		
 		if (isSymlink(fullPath))
 			continue;
@@ -74,7 +74,7 @@ void moveForce (string source, string destination)
 		createParentOnly = true;
 	
 	if (createParentOnly)
-		createPath(parse(destination).path);
+		createPath(parse(cast(char[])destination).path);
 
 	else
 		createPath(destination);
@@ -85,12 +85,12 @@ void moveForce (string source, string destination)
 void validatePath (string path)
 {
 	if (!exists(path))
-		throw new IOException("File not found \"" ~ path ~ "\"");
+		throw new tango.io.Path.IOException("File not found \"" ~ path ~ "\"");
 }
 
 string setExtension (string path, string extension)
 {
-	return parse(path).ext != extension ? path ~ "." ~ extension : path;
+	return parse(cast(char[])path).ext != extension ? path ~ "." ~ extension : path;
 }
 
 string join (string[] paths ...)
@@ -202,7 +202,7 @@ enum Others
 void permission (string path, ushort mode)
 {
 	if (chmod((path ~ '\0').ptr, mode) == -1)
-		throw new IOException(path ~ ": " ~ SysError.lastMsg);
+		throw new tango.io.Path.IOException(cast(string)(path ~ ": " ~ SysError.lastMsg));
 }
 
 private template permissions (alias reference)
@@ -237,7 +237,7 @@ private ushort permission (string path)
 	stat_t buffer;
 	
 	if (stat((path ~ '\0').ptr, &buffer) == -1)	
-		throw new IOException(path ~ ": " ~ SysError.lastMsg);
+		throw new tango.io.Path.IOException(cast(string)(path ~ ": " ~ SysError.lastMsg));
 	
-	return buffer.st_mode & 0777;
+	return buffer.st_mode & std.conv.octal!777;
 }

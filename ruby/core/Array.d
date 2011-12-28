@@ -80,7 +80,8 @@ struct Array
 		
 		for (size_t i = 0; i < length; i++, ptr++)
 		{
-			result = dg(RubyObject(*ptr));
+            RubyObject obj = *ptr;
+			result = dg(obj);
 			
 			if (result)
 				break;
@@ -97,7 +98,7 @@ struct Array
 		string[] result;
 		result.reserve(length);
 		
-		foreach (e ; *this)
+		foreach (e ; this)
 			result ~= String(e).toD;
 
 		return result;

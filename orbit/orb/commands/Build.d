@@ -47,22 +47,22 @@ private:
 			return orbspecPath_;
 		
 		auto path = Path.toAbsolute(arguments.first);
-		return orbspecPath_ = Path.setExtension(path, Specification.extension);
+		return orbspecPath_ = Path.setExtension(cast(string)path, Specification.extension);
 	}
 	
 	string defaultOutput ()
 	{
-		return Path.parse(orbspecPath).name;
+		return cast(string)Path.parse(cast(char[])orbspecPath).name;
 	}
 
     string output ()
     {
         auto path = Path.toAbsolute(arguments["output"].value);
-        return Path.setExtension(path, Orb.extension);
+        return cast(string)Path.setExtension(cast(string)path, Orb.extension);
     }
 
 	string workingDirectory ()
 	{
-		return Path.parse(orbspecPath).folder;
+		return cast(string)Path.parse(cast(char[])orbspecPath).folder;
 	}
 }

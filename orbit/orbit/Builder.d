@@ -78,7 +78,7 @@ abstract class Builder : OrbitObject
 	{
 		static Builder sourceBuilder;
 		
-		switch (orb.buildTool)
+		final switch (orb.buildTool)
 		{
 			case Tool.dake: return new Dake(orbit, orb, dependencyHandler);
 			case Tool.cmake: return new Cmake(orbit, orb, dependencyHandler);
@@ -95,7 +95,7 @@ abstract class Builder : OrbitObject
 	final void build ()
 	{
 		setupBuildEnvironment;
-		execute(buildArgs ~ orb.buildArgs ~ dependencyArgs);
+		execute(buildArgs() ~ orb.buildArgs() ~ dependencyArgs());
 	}
 	
 	protected abstract string[] buildArgs ();
@@ -135,7 +135,7 @@ abstract class Builder : OrbitObject
 			// verbose("Process ", process.programName, '(', process.pid, ')', " exited with:");
 			// verbose("reason: ", result.toString);
 			// verbose("status: ", result.status, "\n");
-			verbose(result.toString);
+			verbose(cast(string)(result.toString));
 		}
 	}
 	
@@ -191,7 +191,7 @@ class Dsss : Builder
 			if (libraries.isPresent())
 				libraries = libraryFlag ~ libraries;
 			
-			return "-I" ~ orb.srcPath ~ " -S" ~ orb.libPath ~ libraries;
+			return cast(string)("-I" ~ orb.srcPath ~ " -S" ~ orb.libPath ~ libraries);
 		});
 	}
 	

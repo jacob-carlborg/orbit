@@ -64,12 +64,12 @@ private:
 		verbose("Unpacking orb:");
 		verbose("Source: ", source);
 		verbose("Destination: ", dest);
-		Zip.extractArchive(source, dest);
+		Zip.extractArchive(cast(char[])source, cast(char[])dest);
 	}
 	
 	string defaultTmpPath ()
 	{
-		return Path.join(orbit.path.tmp, Path.parse(orbPath).name);
+		return Path.join(orbit.path.tmp, cast(string)Path.parse(cast(char[])orbPath).name);
 	}
 	
 	void verbose (string[] args ...)

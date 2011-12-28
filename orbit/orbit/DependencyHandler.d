@@ -17,16 +17,18 @@ import orbit.orbit.Repository;
 
 class DependencyHandler : OrbitObject
 {
-	private
+    @property Repository repository() { return repository_; }
+
+    private
 	{
-		const Repository repository;
+		Repository repository_;
 		Orb[string] buildDependencies_;
 	}
 	
 	this (Orb orb, Repository repository, Orbit orbit = Orbit.defaultOrbit)
 	{
 		super(orbit, orb);
-		this.repository = repository;
+		this.repository_ = repository;
 	}
 	
 	Orb[] buildDependencies ()

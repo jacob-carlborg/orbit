@@ -102,7 +102,7 @@ class OptionParser
 	
 	string toString ()
 	{
-		return format("{}\n{}", banner, buildHelpText);
+		return cast(string)format("{}\n{}", banner, buildHelpText);
 	}
 	
 	private void handleArgs (string[] args)

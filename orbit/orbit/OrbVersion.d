@@ -42,9 +42,9 @@ struct OrbVersion
 		if (parts.length != 3)
 			return ver;
 		
-		ver.major = toInt(parts[0]);
-		ver.minor = toInt(parts[1]);
-		ver.build = toInt(parts[2]);
+		ver.major = toInt(cast(string)parts[0]);
+		ver.minor = toInt(cast(string)parts[1]);
+		ver.build = toInt(cast(string)parts[2]);
 
 		return ver;
 	}

@@ -243,7 +243,7 @@ static if (is(typeof({ auto c= NFDBITS; })) && HAVE_RB_FD_INIT)
 	
 	void rb_fd_init_volatile (rb_fdset_t* v)
 	{
-		volatile auto tmp = v;
+		auto tmp = v;
 		rb_fd_init(tmp);
 	}
 	
@@ -278,7 +278,7 @@ else static if (Windows)
 	
 	void rb_fd_init_volatile (rb_fdset_t* v)
 	{
-		volatile auto tmp = v;
+		synchronized auto tmp = v;
 		return rb_fd_init(tmp);
 	}
 	
@@ -448,7 +448,7 @@ int ruby_cleanup (int);
 
 int ruby_cleanup_volatile (int v)
 {
-	volatile int tmp = v;
+	int tmp = v;
 	return ruby_cleanup(tmp);
 }
 
@@ -571,7 +571,7 @@ int rb_pipe (int *pipes);
 /* marshal.c */
 VALUE rb_marshal_dump (VALUE, VALUE);
 VALUE rb_marshal_load (VALUE);
-void rb_marshal_define_compat (VALUE newclass, VALUE oldclass, VALUE (*dumper) (VALUE), VALUE (*loader) (VALUE, VALUE));
+void rb_marshal_define_compat (VALUE newclass, VALUE oldclass, VALUE function(VALUE) dumper, VALUE function(VALUE, VALUE) loader);
 /* numeric.c */
 void rb_num_zerodiv ();
 const RB_NUM_COERCE_FUNCS_NEED_OPID = 1;
@@ -678,7 +678,7 @@ VALUE rb_random_int (VALUE rnd, VALUE max);
 uint rb_random_int32 (VALUE rnd);
 double rb_random_real (VALUE rnd);
 /* re.c */
-alias memcmp rb_memcmp;
+//alias memcmp rb_memcmp;
 int rb_memcicmp (in void*, in void*, c_long);
 void rb_match_busy (VALUE);
 VALUE rb_reg_nth_defined (int, VALUE);
@@ -847,7 +847,7 @@ VALUE rb_mutex_try_lock (VALUE mutex);
 VALUE rb_mutex_lock (VALUE mutex);
 VALUE rb_mutex_unlock (VALUE mutex);
 VALUE rb_mutex_sleep (VALUE self, VALUE timeout);
-VALUE rb_mutex_synchronize (VALUE mutex, VALUE (*func) (VALUE arg), VALUE arg);
+VALUE rb_mutex_synchronize (VALUE mutex, VALUE function(VALUE arg) func, VALUE arg);
 VALUE rb_barrier_new ();
 VALUE rb_barrier_wait (VALUE self);
 VALUE rb_barrier_release (VALUE self);

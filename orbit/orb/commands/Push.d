@@ -42,6 +42,6 @@ private:
 	string orbPath ()
 	{
 		auto path = Path.toAbsolute(arguments.first);
-		return Path.setExtension(path, Orb.extension);
+		return Path.setExtension(cast(string)path, Orb.extension);
 	}
 }

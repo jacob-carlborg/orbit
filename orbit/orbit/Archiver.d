@@ -16,7 +16,7 @@ import orbit.orbit._;
 
 class Archiver
 {
-	const string path;
+	string path;
 	const Specification spec;
 	const Orbit orbit;
 	
@@ -31,7 +31,7 @@ class Archiver
 	
 	void archive ()
 	{
-		writer = new ZipBlockWriter(path);
+		writer = new ZipBlockWriter(cast(char[])path);
 		writer.method = Method.Deflate;
 
 		foreach (file ; spec.files)
@@ -46,13 +46,13 @@ private:
 	void addFileToArchive (string path)
 	{
 		auto zipPath = Path.join(orbit.constants.orbData, path);
-		writer.putFile(ZipEntryInfo(zipPath), Path.toAbsolute(path));
+		writer.putFile(ZipEntryInfo(cast(char[])zipPath), cast(char[])Path.toAbsolute(path));
 	}
 	
 	void addMetaData ()
 	{
-		auto zipEntry = ZipEntryInfo(orbit.constants.orbMetaData);
-		writer.putFile(zipEntry, spec.orbspecPath);
+		auto zipEntry = ZipEntryInfo(cast(char[])orbit.constants.orbMetaData);
+		writer.putFile(zipEntry, cast(char[])spec.orbspecPath);
 		//writer.putData(zipEntry, spec.toYaml);
 	}
 }

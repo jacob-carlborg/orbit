@@ -48,7 +48,7 @@ else
 	alias std.string.toStringz toStringz;
 	alias std.utf.toUTF16z toString16z;
 	
-	alias std.string.toString fromStringz;
+	alias std.conv.to!string fromStringz;
 	
 	alias std.string.format format;
 }
@@ -284,7 +284,7 @@ in
 }
 body
 {
-	return str[beginIndex .. endIndex].dup;
+	return str[beginIndex .. endIndex];
 }
 
 /**
@@ -320,7 +320,7 @@ in
 }
 body
 {
-	return str[beginIndex .. endIndex].dup;
+	return str[beginIndex .. endIndex];
 }
 
 /**
@@ -356,7 +356,7 @@ in
 }
 body
 {
-	return str[beginIndex .. endIndex].dup;
+	return str[beginIndex .. endIndex];
 }
 
 /**
@@ -497,7 +497,7 @@ body
 			end = str.length;
 	}
 	
-	return str[pos .. end].dup;
+	return str[pos .. end];
 }
 
 /**
@@ -542,7 +542,7 @@ body
 			end = str.length;
 	}
 	
-	return str[pos .. end].dup;
+	return str[pos .. end];
 }
 
 /**
@@ -587,7 +587,7 @@ body
 			end = str.length;
 	}
 	
-	return str[pos .. end].dup;
+	return str[pos .. end];
 }
 
 /**
@@ -612,8 +612,13 @@ size_t find (string str, string sub, size_t start = 0)
 		return index;
 	}
 	
-	else
-		return std.string.find(str, sub, start);
+	else {
+        if (str.length < start) {
+            return size_t.max;
+        }
+            
+		return std.string.indexOf(str[start..$], sub);
+    }
 }
 
 /**
@@ -638,8 +643,12 @@ size_t find (wstring str, wstring sub, size_t start = 0)
 		return index;
 	}
 	
-	else
-		return std.string.find(str, sub, start);
+	else {
+        if (str.length < start) {
+            return size_t.max;
+        }
+		return std.string.indexOf(str[start..$], sub);
+    }
 }
 
 /**
@@ -664,8 +673,12 @@ size_t find (dstring str, dstring sub, size_t start = 0)
 		return index;
 	}
 	
-	else
-		return std.string.find(str, sub, start);
+	else {
+        if (str.length < start) {
+            return size_t.max;
+        }
+		return std.string.indexOf(str[start..$], sub);
+    }
 }
 
 /**
@@ -818,7 +831,7 @@ version (Phobos)
 	 */
 	dchar* toString32z (dstring str)
 	{
-		return (str ~ '\0').ptr;
+		return cast(dchar*)(str ~ '\0').ptr;
 	}
 	
 	/**
@@ -831,7 +844,7 @@ version (Phobos)
 	 */
 	wstring fromString16z (wchar* str)
 	{
-		return str[0 .. strlen(str)];
+		return cast(wstring)str[0 .. strlen(str)];
 	}
 	
 	/**
@@ -843,7 +856,7 @@ version (Phobos)
 	 */
 	dstring fromString32z (dchar* str)
 	{
-		return str[0 .. strlen(str)];
+		return cast(dstring)str[0 .. strlen(str)];
 	}
 	
 	/**

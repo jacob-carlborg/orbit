@@ -16,8 +16,14 @@ import orbit.orbit.OrbitObject;
 
 abstract class Fetcher
 {
-	const Orbit orbit;
-	const Repository repository;
+    @property Orbit orbit() { return orbit_; }
+    @property Repository repository() { return repository_; }
+
+    private 
+    {
+    	Orbit orbit_;
+    	Repository repository_;
+    }
 	
 	private template Constructor ()
 	{
@@ -29,8 +35,8 @@ abstract class Fetcher
 	
 	private this (Repository repository, Orbit orbit)
 	{
-		this.repository = repository;
-		this.orbit = orbit;
+		this.repository_ = repository;
+		this.orbit_ = orbit;
 	}
 	
 	static Fetcher instance (Repository repository = Repository.defaultRepository, Orbit orbit = Orbit.defaultOrbit)
@@ -57,7 +63,7 @@ class LocalFetcher : Fetcher
 		auto source = repository.addressOfOrb(orb);
 
 		if (output.isBlank())
- 			output = Path.join([Path.workingDirectory, orb.name]);
+ 			output = Path.join([cast(string)Path.workingDirectory, cast(string)orb.name]);
 		
 		Path.copy(source, output);
 	}

@@ -132,42 +132,42 @@ struct Argument
 	Argument aliased (char name)
 	{
 		argument.aliased(name);
-		return *this;
+		return this;
 	}
 	
 	Argument help (string text)
 	{
 		argument.help(text);
-		return *this;
+		return this;
 	}
 	
 	Argument defaults (string values)
 	{
 		argument.defaults(values);
-		return *this;
+		return this;
 	}
 
     Argument defaults (string delegate () value)
     {
         argument.defaults(value);
-        return *this;
+        return this;
     }
 
     Argument params ()
     {
         argument.params;
-        return *this;
+        return this;
     }
     
     Argument params (int count)
     {
         argument.params(count);
-        return *this;
+        return this;
     }
     
     Argument params (int min, int max)
     {
         argument.params(min, max);
-        return *this;
+        return this;
     }
 }

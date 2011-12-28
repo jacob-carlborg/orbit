@@ -71,7 +71,7 @@ private:
 		auto orbVersion = repository.api.latestVersion(arguments.first);
 		auto name = Orb.buildFullName(arguments.first, orbVersion);
 		
-		auto path = Path.join(Path.workingDirectory, name);
+		auto path = Path.join(cast(string)Path.workingDirectory, name);
 		return Path.setExtension(path, Orb.extension);
 	}
 }

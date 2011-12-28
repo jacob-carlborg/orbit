@@ -24,6 +24,7 @@ else
 }
 
 import orbit.util.Traits;
+import tango.core.Array;
 
 alias tango.core.Array.map map;
 alias tango.core.Array.filter filter;
@@ -686,11 +687,11 @@ bool endsWith (T) (T[] a, T[] b)
  *     
  * Returns: a new array containing $(D_PARAM arr) $(D_PARAM number) of times
  */
-T[] repeat (T) (T[] arr, int number)
+T[] repeat (T) (T[] arr, size_t number)
 {
 	T[] result;
 	
-	for (int i = 0; i <= number; i++)
+	for (size_t i = 0; i <= number; i++)
 		result ~= arr;
 	
 	return result;

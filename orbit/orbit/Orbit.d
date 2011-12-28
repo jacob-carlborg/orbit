@@ -66,33 +66,33 @@ class Orbit
 		return orbit;
 	}
 	
-	void verbose (string[] args ...)
+	void verbose (string[] args ...) const
 	{
 		if (isVerbose && verboseHandler)
 			verboseHandler(args);
 	}
 	
-	void print (string[] args ...)
+	void print (string[] args ...) const
 	{
 		printHandler(args);
 	}
 	
-	void println (string[] args ...)
+	void println (string[] args ...) const
 	{
 		printHandler(args ~ "\n"[]);
 	}
 	
-	string libName (string name)
+	string libName (string name) const
 	{
 		return setExtension(constants.libPrefix ~ name, constants.libExtension);
 	}
 	
-	string dylibName (string name)
+	string dylibName (string name) const
 	{
 		return setExtension(constants.dylibPrefix ~ name, constants.dylibExtension);
 	}
 	
-	string exeName (string name)
+	string exeName (string name) const
 	{
 		return setExtension(name, constants.exeExtension);
 	}
@@ -160,13 +160,19 @@ static:
 		{
 			this.constants = constants;
 			this.orbit = orbit;
+
+			home_ = cast(string)toAbsolute(Environment.get(cast(const(char)[])orbit.env.home, cast(char[])defaultHome));
+            bin_ = join(home, constants.bin);
+			orbs_ = join(home, constants.orbs);
+            specifications_ = join(home, constants.specifications);
+            tmp_ = join(home, constants.tmp);
 		}
 		
 		abstract string defaultHome ();
 
-		string home ()
+		string home () const
 		{
-			return home_ = home_.length > 0 ? home_ : toAbsolute(Environment.get(orbit.env.home, defaultHome));
+			return home_;
 		}
 
 		string home (string home)
@@ -174,9 +180,9 @@ static:
 			return home_ = home;
 		}
 		
-		string bin ()
+		string bin () const
 		{
-			return bin_ = bin_.length > 0 ? bin_ : join(home, constants.bin);
+			return bin_;
 		}
 		
 		string bin (string bin)
@@ -184,9 +190,9 @@ static:
 			return bin_ = bin;
 		}
 		
-		string orbs ()
+		string orbs () const
 		{
-			return orbs_ = orbs_.length > 0 ? orbs_ : join(home, constants.orbs);
+			return orbs_;
 		}
 		
 		string orbs (string orbs)
@@ -194,19 +200,19 @@ static:
 			return orbs_ = orbs;
 		}
 		
-		string specifications ()
+		string specifications () const
 		{
-			return specifications_ = specifications_.length > 0 ? specifications_ : join(home, constants.specifications);
-		}
+			return specifications_;
+        }
 		
 		string specifications (string specifications)
 		{
 			return specifications_ = specifications;
 		}
 		
-		string tmp ()
+		string tmp () const
 		{
-			return tmp_ = tmp_.length > 0 ? tmp_ : join(home, constants.tmp);
+			return tmp_;
 		}
 		
 		string tmp (string tmp)
@@ -259,11 +265,11 @@ static:
 
 	abstract class Constants
 	{
-		abstract string dylibExtension ();
-		abstract string dylibPrefix ();
-		abstract string exeExtension ();
-		abstract string libExtension ();
-		abstract string libPrefix ();
+		abstract string dylibExtension () const;
+		abstract string dylibPrefix () const;
+		abstract string exeExtension () const;
+		abstract string libExtension () const;
+		abstract string libPrefix () const;
 		
 		string orbData = "data";
 		string orbMetaData = "metadata";
@@ -280,27 +286,27 @@ static:
 
 	class ConstantsPosix : Constants
 	{
-		string dylibExtension ()
+		string dylibExtension () const
 		{
 			return "so";
 		}
 		
-		string dylibPrefix ()
+		string dylibPrefix () const
 		{
 			return "lib";
 		}
 		
-		string exeExtension ()
+		string exeExtension () const
 		{
 			return "";
 		}
 		
-	 	string libExtension ()
+	 	string libExtension () const
 		{
 			return "a";
 		}
 		
-		string libPrefix ()
+		string libPrefix () const
 		{
 			return "lib";
 		}
@@ -308,7 +314,7 @@ static:
 
 	class ConstantsDarwin : ConstantsPosix
 	{
-		string dylibExtension ()
+		string dylibExtension () const
 		{
 			return "dylib";
 		}
@@ -316,27 +322,27 @@ static:
 
 	class ConstantsWindows : Constants
 	{
-		string dylibExtension ()
+		string dylibExtension () const
 		{
 			return "dll";
 		}
 		
-		string dylibPrefix ()
+		string dylibPrefix () const
 		{
 			return "";
 		}
 		
-		string exeExtension ()
+		string exeExtension () const
 		{
 			return "exe";
 		}
 		
-		string libExtension ()
+		string libExtension () const
 		{
 			return "lib";
 		}
 		
-		string libPrefix ()
+		string libPrefix () const
 		{
 			return "";
 		}

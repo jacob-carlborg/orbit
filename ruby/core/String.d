@@ -40,19 +40,19 @@ struct String
 	String opCat (in char* src, c_long length)
 	{
 		self = rb_str_cat(self, src, length);
-		return *this;
+		return this;
 	}
 	
 	String opCat (VALUE other)
 	{
 		self = rb_str_concat(self, other);
-		return *this;
+		return this;
 	}
 	
 	String opCat (string src)
 	{
 		self = rb_str_cat(self, src.ptr, src.length);
-		return *this;
+		return this;
 	}
 	
 	VALUE split (in char* delim)
@@ -77,6 +77,6 @@ struct String
 			
 		auto str = StringValuePtr(self)[0 .. length()];
 		
-		return dupe ? str.dup : str;
+		return dupe ? cast(string)str.dup : cast(string)str;
 	}
 }

@@ -24,9 +24,16 @@ abstract class OrbitObject
 			super(orbit, orb);
 		}
 	}
+
+
+    @property Orbit orbit() { return orbit_; }
+    @property Orb orb() { return orb_; }
 	
-	const Orbit orbit;
-	const Orb orb;
+    private 
+    {
+	    Orbit orbit_;
+	    Orb orb_;
+    }
 	
 	this (Orb orb)
 	{
@@ -35,12 +42,12 @@ abstract class OrbitObject
 	
 	this (Orbit orbit, Orb orb)
 	{
-		this.orb = orb;
-		this.orbit = orbit ? orbit : Orbit.defaultOrbit;
+		this.orb_ = orb;
+		this.orbit_ = orbit ? orbit : Orbit.defaultOrbit;
 	}
 	
 	void verbose (string[] args ...)
 	{
-		orbit.verbose(args);
+		orbit_.verbose(args);
 	}
 }

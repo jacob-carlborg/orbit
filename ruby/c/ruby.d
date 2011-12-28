@@ -7,7 +7,7 @@
 module ruby.c.ruby;
 
 import tango.stdc.config;
-import tango.stdc.limits;
+import core.stdc.limits;
 import tango.stdc.string;
 import tango.stdc.stdarg;
 
@@ -692,7 +692,7 @@ struct RString
 			union
 			{
 				c_long capa;
-				VALUE shared;
+				VALUE _shared;
 			}
 		}
 		
@@ -746,7 +746,7 @@ struct RArray
 			union
 			{
 				c_long capa;
-				VALUE shared;
+				VALUE _shared;
 			}
 			
 			VALUE* ptr;
@@ -1497,12 +1497,12 @@ VALUE rb_require (in char*);
 
 version (D_LP64)
 {
-	void ruby_init_stack (VALUE*, void*);
+	void ruby_init_stack (VALUE*);
 	
 	void ruby_init_stack_ (VALUE* addr)
 	{
-		volatile auto tmp = addr;
-		ruby_init_stack(tmp, rb_ia64_bsp);
+		auto tmp = addr;
+		ruby_init_stack(tmp);
 	}
 }
 
@@ -1512,7 +1512,7 @@ else
 	
 	void ruby_init_stack_ (VALUE* addr)
 	{
-		volatile auto tmp = addr;
+		auto tmp = addr;
 		ruby_init_stack(tmp);
 	}
 }
@@ -1528,93 +1528,93 @@ void *ruby_options (int, char**);
 int ruby_run_node (void*);
 int ruby_exec_node (void*);
 
-extern VALUE rb_mKernel;
-extern VALUE rb_mComparable;
-extern VALUE rb_mEnumerable;
-extern VALUE rb_mErrno;
-extern VALUE rb_mFileTest;
-extern VALUE rb_mGC;
-extern VALUE rb_mMath;
-extern VALUE rb_mProcess;
-extern VALUE rb_mWaitReadable;
-extern VALUE rb_mWaitWritable;
+extern __gshared VALUE rb_mKernel;
+extern __gshared VALUE rb_mComparable;
+extern __gshared VALUE rb_mEnumerable;
+extern __gshared VALUE rb_mErrno;
+extern __gshared VALUE rb_mFileTest;
+extern __gshared VALUE rb_mGC;
+extern __gshared VALUE rb_mMath;
+extern __gshared VALUE rb_mProcess;
+extern __gshared VALUE rb_mWaitReadable;
+extern __gshared VALUE rb_mWaitWritable;
 
-extern VALUE rb_cBasicObject;
-extern VALUE rb_cObject;
-extern VALUE rb_cArray;
-extern VALUE rb_cBignum;
-extern VALUE rb_cBinding;
-extern VALUE rb_cClass;
-extern VALUE rb_cCont;
-extern VALUE rb_cDir;
-extern VALUE rb_cData;
-extern VALUE rb_cFalseClass;
-extern VALUE rb_cEncoding;
-extern VALUE rb_cEnumerator;
-extern VALUE rb_cFile;
-extern VALUE rb_cFixnum;
-extern VALUE rb_cFloat;
-extern VALUE rb_cHash;
-extern VALUE rb_cInteger;
-extern VALUE rb_cIO;
-extern VALUE rb_cMatch;
-extern VALUE rb_cMethod;
-extern VALUE rb_cModule;
-extern VALUE rb_cNameErrorMesg;
-extern VALUE rb_cNilClass;
-extern VALUE rb_cNumeric;
-extern VALUE rb_cProc;
-extern VALUE rb_cRandom;
-extern VALUE rb_cRange;
-extern VALUE rb_cRational;
-extern VALUE rb_cComplex;
-extern VALUE rb_cRegexp;
-extern VALUE rb_cStat;
-extern VALUE rb_cString;
-extern VALUE rb_cStruct;
-extern VALUE rb_cSymbol;
-extern VALUE rb_cThread;
-extern VALUE rb_cTime;
-extern VALUE rb_cTrueClass;
-extern VALUE rb_cUnboundMethod;
+extern __gshared VALUE rb_cBasicObject;
+extern __gshared VALUE rb_cObject;
+extern __gshared VALUE rb_cArray;
+extern __gshared VALUE rb_cBignum;
+extern __gshared VALUE rb_cBinding;
+extern __gshared VALUE rb_cClass;
+extern __gshared VALUE rb_cCont;
+extern __gshared VALUE rb_cDir;
+extern __gshared VALUE rb_cData;
+extern __gshared VALUE rb_cFalseClass;
+extern __gshared VALUE rb_cEncoding;
+extern __gshared VALUE rb_cEnumerator;
+extern __gshared VALUE rb_cFile;
+extern __gshared VALUE rb_cFixnum;
+extern __gshared VALUE rb_cFloat;
+extern __gshared VALUE rb_cHash;
+extern __gshared VALUE rb_cInteger;
+extern __gshared VALUE rb_cIO;
+extern __gshared VALUE rb_cMatch;
+extern __gshared VALUE rb_cMethod;
+extern __gshared VALUE rb_cModule;
+extern __gshared VALUE rb_cNameErrorMesg;
+extern __gshared VALUE rb_cNilClass;
+extern __gshared VALUE rb_cNumeric;
+extern __gshared VALUE rb_cProc;
+extern __gshared VALUE rb_cRandom;
+extern __gshared VALUE rb_cRange;
+extern __gshared VALUE rb_cRational;
+extern __gshared VALUE rb_cComplex;
+extern __gshared VALUE rb_cRegexp;
+extern __gshared VALUE rb_cStat;
+extern __gshared VALUE rb_cString;
+extern __gshared VALUE rb_cStruct;
+extern __gshared VALUE rb_cSymbol;
+extern __gshared VALUE rb_cThread;
+extern __gshared VALUE rb_cTime;
+extern __gshared VALUE rb_cTrueClass;
+extern __gshared VALUE rb_cUnboundMethod;
 
-extern VALUE rb_eException;
-extern VALUE rb_eStandardError;
-extern VALUE rb_eSystemExit;
-extern VALUE rb_eInterrupt;
-extern VALUE rb_eSignal;
-extern VALUE rb_eFatal;
-extern VALUE rb_eArgError;
-extern VALUE rb_eEOFError;
-extern VALUE rb_eIndexError;
-extern VALUE rb_eStopIteration;
-extern VALUE rb_eKeyError;
-extern VALUE rb_eRangeError;
-extern VALUE rb_eIOError;
-extern VALUE rb_eRuntimeError;
-extern VALUE rb_eSecurityError;
-extern VALUE rb_eSystemCallError;
-extern VALUE rb_eThreadError;
-extern VALUE rb_eTypeError;
-extern VALUE rb_eZeroDivError;
-extern VALUE rb_eNotImpError;
-extern VALUE rb_eNoMemError;
-extern VALUE rb_eNoMethodError;
-extern VALUE rb_eFloatDomainError;
-extern VALUE rb_eLocalJumpError;
-extern VALUE rb_eSysStackError;
-extern VALUE rb_eRegexpError;
-extern VALUE rb_eEncodingError;
-extern VALUE rb_eEncCompatError;
+extern __gshared VALUE rb_eException;
+extern __gshared VALUE rb_eStandardError;
+extern __gshared VALUE rb_eSystemExit;
+extern __gshared VALUE rb_eInterrupt;
+extern __gshared VALUE rb_eSignal;
+extern __gshared VALUE rb_eFatal;
+extern __gshared VALUE rb_eArgError;
+extern __gshared VALUE rb_eEOFError;
+extern __gshared VALUE rb_eIndexError;
+extern __gshared VALUE rb_eStopIteration;
+extern __gshared VALUE rb_eKeyError;
+extern __gshared VALUE rb_eRangeError;
+extern __gshared VALUE rb_eIOError;
+extern __gshared VALUE rb_eRuntimeError;
+extern __gshared VALUE rb_eSecurityError;
+extern __gshared VALUE rb_eSystemCallError;
+extern __gshared VALUE rb_eThreadError;
+extern __gshared VALUE rb_eTypeError;
+extern __gshared VALUE rb_eZeroDivError;
+extern __gshared VALUE rb_eNotImpError;
+extern __gshared VALUE rb_eNoMemError;
+extern __gshared VALUE rb_eNoMethodError;
+extern __gshared VALUE rb_eFloatDomainError;
+extern __gshared VALUE rb_eLocalJumpError;
+extern __gshared VALUE rb_eSysStackError;
+extern __gshared VALUE rb_eRegexpError;
+extern __gshared VALUE rb_eEncodingError;
+extern __gshared VALUE rb_eEncCompatError;
 
-extern VALUE rb_eScriptError;
-extern VALUE rb_eNameError;
-extern VALUE rb_eSyntaxError;
-extern VALUE rb_eLoadError;
+extern __gshared VALUE rb_eScriptError;
+extern __gshared VALUE rb_eNameError;
+extern __gshared VALUE rb_eSyntaxError;
+extern __gshared VALUE rb_eLoadError;
 
-extern VALUE rb_eMathDomainError;
+extern __gshared VALUE rb_eMathDomainError;
 
-extern VALUE rb_stdin, rb_stdout, rb_stderr;
+extern __gshared VALUE rb_stdin, rb_stdout, rb_stderr;
 
 VALUE rb_class_of (VALUE obj)
 {
@@ -1720,6 +1720,8 @@ const RB_EVENT_HOOKS_HAVE_CALLBACK_DATA = true;
 
 void rb_add_event_hook (rb_event_hook_func_t func, rb_event_flag_t events, VALUE data);
 int rb_remove_event_hook (rb_event_hook_func_t func);
+
+void* rb_ia64_bsp();
 
 /* locale insensitive functions */
 

@@ -640,10 +640,11 @@ body
  *     a = the array to reserve allocated storage for
  *     capacity = the amount of allocated storage to be reserved
  */
-void reserve (T) (ref T[] a, size_t amount = 0)
+/*void reserve (T) (ref T[] a, size_t amount = 0)
 {
 	a = (new T[amount])[0 .. 0]; 
 }
+*/
 
 /**
  * Returns true if a begins with b

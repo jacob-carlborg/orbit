@@ -16,27 +16,34 @@ import orbit.orbit._;
 
 abstract class Repository
 {
-	const Orbit orbit;
-	const string source;
-	const bool isLocal;
-	const bool isRemote;
-	const Api api;
-	const Index index;
+    @property Orbit orbit() { return orbit; }
+    @property string source() { return source_; }
+    @property bool isLocal() { return isLocal_; }
+    @property bool isRemote() { return isRemote_; }
+    @property Api api() { return api_; }
+    @property Index index() { return index_; }
 	
 	private
 	{
 		static Repository defaultRepository_;
 		string orbsPath_;
+        Orbit orbit_;
+        string source_;
+        bool isLocal_;
+        bool isRemote_;
+        Api api_;
+        Index index_;
 	}
 	
 	private this (string source, Orbit orbit, bool local, Api api)
 	{
-		this.orbit = orbit;
-		this.source = source;
-		this.isLocal = local;
-		this.isRemote = !local;
-		this.api = api;
-		index = new Index(this, indexPath);
+		this.orbit_ = orbit;
+		this.source_ = source;
+		this.isLocal_ = local;
+		this.isRemote_ = !local;
+		this.api_ = api;
+		this.index_ = new Index(this, indexPath);
+        this.orbsPath_ = join([source, orbit.repository.orbs]);
 	}
 	
 	static Repository instance (string source = "", Orbit orbit = Orbit.defaultOrbit)
@@ -46,10 +53,10 @@ abstract class Repository
 		auto path = Path.toAbsolute(Path.normalize(source));
 		
 		if (Path.exists(path))
-			return new LocalRepository(path, orbit);
+			return new LocalRepository(cast(string)path, orbit);
 		
 		else
-			return new RemoteRepository(source, orbit);
+			return new RemoteRepository(cast(string)source, orbit);
 	}
 	
 	static Repository defaultRepository ()
@@ -59,7 +66,7 @@ abstract class Repository
 	
 	abstract string join (string[] arr ...);
 	
-	abstract string addressOfOrb (Orb orb)
+	abstract string addressOfOrb (Orb orb) 
 	{
 		string fullName;
 		
@@ -72,7 +79,7 @@ abstract class Repository
 			fullName = Orb.buildFullName(orb.name, orbVersion);
 		}
 		
-		auto path = join(orbsPath, orb.fullName);
+		auto path = join(orbsPath(), orb.fullName);
 		return Path.setExtension(path, Orb.extension);
 	}
 	
@@ -83,9 +90,9 @@ abstract class Repository
 
 protected:
 	
-	string orbsPath ()
+	@property string orbsPath ()
 	{
-		return orbsPath_ = orbsPath_.any() ? orbsPath_ : join([source, orbit.repository.orbs]);
+		return orbsPath_;
 	}
 	
 	string indexPath ()
@@ -103,7 +110,7 @@ public:
 		abstract OrbVersion latestVersion (string name);
 		abstract Orb getOrb (Orb);
 		
-		OrbVersion latestVersion (Orb orb)
+		OrbVersion latestVersion (Orb orb) 
 		{
 			return latestVersion(orb.name);
 		}
@@ -117,7 +124,7 @@ class LocalRepository : Repository
 		super(source, orbit, true, new Api);
 	}
 	
-	string addressOfOrb (Orb orb)
+	string addressOfOrb (Orb orb) 
 	{
 		auto path = super.addressOfOrb(orb);
 
@@ -134,31 +141,31 @@ class LocalRepository : Repository
 	
 	class Api : Repository.Api
 	{	
-		void upload (Orb orb)
+		void upload (Orb orb) 
 		{
-			auto dest = join(source, orbit.constants.orbs);
+			auto dest = Path.join(cast(string)source, cast(string)orbit.constants.orbs);
 			
 			if (!Path.exists(dest))
 				Path.createPath(dest);
 			
-			dest = join(dest, orb.fullName);
+			dest = Path.join(cast(string)dest, cast(string)orb.fullName);
 			dest = Path.setExtension(dest, Orb.extension);
 
 			Path.copy(orb.path, dest);
 			index.update(orb);
 		}
 		
-		Orb[OrbVersion][string] orbs ()
+		Orb[OrbVersion][string] orbs () 
 		{
 			return index.orbs;
 		}
 		
-		OrbVersion latestVersion (string name)
+		OrbVersion latestVersion (string name) 
 		{
 			return index.latestVersion(name);
 		}
 		
-		Orb getOrb (Orb orb)
+		Orb getOrb (Orb orb) 
 		{
 			return index[orb];
 		}
@@ -174,7 +181,7 @@ class RemoteRepository : Repository
 	
 	string indexPath ()
 	{
-		auto destination = Path.join(orbit.path.tmp, orbit.constants.index);
+		auto destination = Path.join(orbit.path.tmp(), orbit.constants.index);
 		destination = Path.setExtension(destination, orbit.constants.indexFormat);
 
 		Http.download(super.indexPath, destination);
@@ -182,7 +189,7 @@ class RemoteRepository : Repository
 		return destination;
 	}
 	
-	string addressOfOrb (Orb orb)
+	string addressOfOrb (Orb orb) 
 	{
 		auto path = super.addressOfOrb(orb);
 		
@@ -197,27 +204,27 @@ class RemoteRepository : Repository
 	
 	string join (string[] arr ...)
 	{
-		return tango.text.Util.join(arr, "/");
+		return cast(string)tango.text.Util.join(arr, "/");
 	}
 	
 	class Api : Repository.Api
 	{
-		OrbVersion latestVersion (string name)
+		OrbVersion latestVersion (string name) 
 		{
 			assert(0, "unimplemented");
 		}
 		
-		Orb[OrbVersion][string] orbs ()
+		Orb[OrbVersion][string] orbs () const
 		{
 			assert(0, "unimplemented");
 		}
 		
-		void upload (Orb orb)
+		void upload (Orb orb) const
 		{
 			assert(0, "unimplemented");
 		}
 		
-		Orb getOrb (Orb orb)
+		Orb getOrb (Orb orb) 
 		{
 			assert(0, "unimplemented");
 		}

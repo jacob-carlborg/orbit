@@ -72,7 +72,7 @@ abstract class Repository
 			fullName = Orb.buildFullName(orb.name, orbVersion);
 		}
 		
-		auto path = join(orbsPath, orb.fullName);
+		auto path = join(orbsPath, fullName);
 		return Path.setExtension(path, Orb.extension);
 	}
 	

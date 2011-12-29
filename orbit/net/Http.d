@@ -51,7 +51,7 @@ static:
 	
 	bool exists (string url)
 	{
-		scope resource = new HttpGet(path);
+		scope resource = new HttpGet(url);
 		resource.open;
 		
 		return resource.isResponseOK;

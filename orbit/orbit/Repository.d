@@ -79,7 +79,7 @@ abstract class Repository
 			fullName = Orb.buildFullName(orb.name, orbVersion);
 		}
 		
-		auto path = join(orbsPath(), orb.fullName);
+		auto path = join(orbsPath(), fullName);
 		return Path.setExtension(path, Orb.extension);
 	}
 	
@@ -193,10 +193,7 @@ class RemoteRepository : Repository
 	{
 		auto path = super.addressOfOrb(orb);
 		
-		scope resource = new HttpGet(path);
-		resource.open;
-		
-		if (resource.isResponseOK)
+		if (Http.exists(path))
 			return path;
 		
 		throw new MissingOrbException(orb, this, null, __FILE__, __LINE__);

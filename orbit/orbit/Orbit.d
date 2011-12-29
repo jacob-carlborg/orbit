@@ -52,14 +52,11 @@ class Orbit
 			orbit.path = new PathWindows(orbit.constants, orbit);
 		}
 		
-		orbit.verboseHandler = (string[] args ...) {
-			orbit.println(args);
-		};
-		
 		orbit.printHandler = (string[] args ...) {
-			orbit.print(args);
+			.print(args);
 		};
 		
+		orbit.verboseHandler = &orbit.println;
 		orbit.progress = &orbit.progressHandler;
 		orbit.isVerbose = true;
 		

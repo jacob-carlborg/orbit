@@ -12,7 +12,7 @@ import orbit.core.string;
 
 class OrbitException : Exception
 {
-	this (string message, string file = "", long line = 0)
+	this (string message, string file = "", size_t line = 0)
 	{
 		super(message, file, line);
 	}
@@ -22,7 +22,7 @@ class RepositoryException : OrbitException
 {
 	const Repository repository;
 	
-	this (Repository repository, string message = "", string file = "", long line = 0)
+	this (Repository repository, string message = "", string file = "", size_t line = 0)
 	{
 		this.repository = repository;
 		super(message, file, line);
@@ -33,7 +33,7 @@ class MissingOrbException : RepositoryException
 {
 	const Orb orb;
 	
-	this (Orb orb, Repository repository, string message = "", string file = "", long line = 0)
+	this (Orb orb, Repository repository, string message = "", string file = "", size_t line = 0)
 	{
 		this.orb = orb;
 		auto msg = message.isPresent() ? message : createMessage(repository);
@@ -41,7 +41,7 @@ class MissingOrbException : RepositoryException
 		super(repository, msg, file, line);
 	}
 	
-	this (Orb orb, Repository repository, string file, long line)
+	this (Orb orb, Repository repository, string file, size_t line)
 	{
 		this(orb, repository, null, file, line);
 	}
@@ -57,14 +57,14 @@ class MissingLibraryException : OrbitException
 	const string lib;
 	const string dylib;
 	
-	this (string lib, string dylib, string message, string file = "", long line = 0)
+	this (string lib, string dylib, string message, string file = "", size_t line = 0)
 	{
 		super(message, file, line);
 		this.lib = lib;
 		this.dylib = dylib;
 	}
 	
-	this (string lib, string dylib, string file = "", long line = 0)
+	this (string lib, string dylib, string file = "", size_t line = 0)
 	{
 		auto message = format(`The required library, "{}" or "{}", could not be found.`, lib, dylib);
 		this(lib, dylib, message, file, line);

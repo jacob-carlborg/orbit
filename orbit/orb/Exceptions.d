@@ -13,7 +13,7 @@ class OrbException : OrbitException
 {
 	template Constructor ()
 	{
-		this (string message, string file, long line)
+		this (string message, string file, size_t line)
 		{
 			super(message, file, line);
 		}

@@ -16,7 +16,7 @@ import orbit.orbit._;
 
 abstract class Repository
 {
-    @property Orbit orbit() { return orbit; }
+    @property Orbit orbit() { return orbit_; }
     @property string source() { return source_; }
     @property bool isLocal() { return isLocal_; }
     @property bool isRemote() { return isRemote_; }
@@ -43,7 +43,7 @@ abstract class Repository
 		this.isRemote_ = !local;
 		this.api_ = api;
 		this.index_ = new Index(this, indexPath);
-        this.orbsPath_ = join([source, orbit.repository.orbs]);
+		this.orbsPath_ = join([source, orbit.repository.orbs]);
 	}
 	
 	static Repository instance (string source = "", Orbit orbit = Orbit.defaultOrbit)
@@ -53,10 +53,10 @@ abstract class Repository
 		auto path = Path.toAbsolute(Path.normalize(source));
 		
 		if (Path.exists(path))
-			return new LocalRepository(cast(string)path, orbit);
+			return new LocalRepository(cast(string) path, orbit);
 		
 		else
-			return new RemoteRepository(cast(string)source, orbit);
+			return new RemoteRepository(cast(string) source.idup, orbit);
 	}
 	
 	static Repository defaultRepository ()

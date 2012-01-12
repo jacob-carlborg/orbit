@@ -66,7 +66,7 @@ struct OrbVersion
 	
 	string toString ()
 	{
-		return format("{}.{}.{}", major, minor, build);
+		return cast(string) format("{}.{}.{}", major, minor, build);
 	}
 	
 	private:

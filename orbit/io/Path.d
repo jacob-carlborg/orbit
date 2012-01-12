@@ -6,6 +6,8 @@
  */
 module orbit.io.Path;
 
+import std.conv;
+
 import tango.core.Exception;
 public import tango.io.Path;
 import tango.stdc.posix.sys.stat;

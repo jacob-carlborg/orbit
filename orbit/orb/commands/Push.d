@@ -25,8 +25,8 @@ class Push : Command
 	{
 		scope repository = Repository.instance(arguments["source"].value);
 		scope orb = Orb.load(orbPath);
-		println(orb.version_);
-		//repository.api.upload(orb);
+
+		repository.api.upload(orb);
 	}
 	
 	protected override void setupArguments ()

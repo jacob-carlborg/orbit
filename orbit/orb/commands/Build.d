@@ -36,7 +36,7 @@ class Build : Command
 	
 	protected override void setupArguments ()
 	{
-		arguments["output"].aliased('o').params(1).defaults(&defaultOutput).help("The name of the output file.");
+		arguments.output.aliased('o').params(1).defaults(&defaultOutput).help("The name of the output file.");
 	}
 	
 private:
@@ -57,7 +57,7 @@ private:
 
     string output ()
     {
-        auto path = Path.toAbsolute(arguments["output"].value);
+        auto path = Path.toAbsolute(arguments.output);
         return cast(string)Path.setExtension(cast(string)path, Orb.extension);
     }
 

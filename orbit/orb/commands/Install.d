@@ -32,8 +32,8 @@ class Install : Command
 	
 	void execute ()
 	{
-		scope orb = new Orb(arguments.first, arguments["version"].value);
-		scope repository = Repository.instance(arguments["source"].value);
+		scope orb = new Orb(arguments.first, arguments["version"]);
+		scope repository = Repository.instance(arguments.source);
 		
 		orb = Orb.load(orb, repository);
 		scope installer = new Installer(orb, repository);
@@ -43,7 +43,7 @@ class Install : Command
 	
 	protected override void setupArguments ()
 	{
-		arguments["source"]
+		arguments.source
 			.aliased('s')
 			.params(1)
 			.help("URL or local path used as the remote source for orbs.");

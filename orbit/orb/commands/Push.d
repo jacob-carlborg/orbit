@@ -23,7 +23,7 @@ class Push : Command
 	
 	void execute ()
 	{
-		scope repository = Repository.instance(arguments["source"].value);
+		scope repository = Repository.instance(arguments.source);
 		scope orb = Orb.load(orbPath);
 
 		repository.api.upload(orb);
@@ -31,7 +31,7 @@ class Push : Command
 	
 	protected override void setupArguments ()
 	{
-		arguments["source"]
+		arguments.source
 			.aliased('s')
 			.params(1)
 			.help("URL or local path used as the remote source for orbs.");

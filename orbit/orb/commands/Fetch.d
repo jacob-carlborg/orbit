@@ -32,24 +32,24 @@ class Fetch : Command
 	
 	void execute ()
 	{
-		repository = Repository.instance(arguments["source"].value);
+		repository = Repository.instance(arguments.source);
 		auto fetcher = Fetcher.instance(repository);
 	
 		auto orb = new Orb;
 		orb.name = arguments.first;
-		orb.version_ = OrbVersion.parse(arguments["version"].value);
+		orb.version_ = OrbVersion.parse(arguments["version"]);
 		
 		fetcher.fetch(orb, output);
 	}
 	
 	protected override void setupArguments ()
 	{
-		arguments["output"]
+		arguments.output
 			.aliased('o')
 			.params(1)
 			.help("The name of the output file.");
 			
-		arguments["source"]
+		arguments.source
 			.aliased('s')
 			.params(1)
 			.help("URL or local path used as the remote source for orbs.");
@@ -65,8 +65,8 @@ private:
 
 	string output ()
 	{
-		if (arguments["output"].hasValue)
-			return arguments["output"].value;
+		if (arguments.output.hasValue)
+			return arguments.output;
 		
 		auto orbVersion = repository.api.latestVersion(arguments.first);
 		auto name = Orb.buildFullName(arguments.first, orbVersion);

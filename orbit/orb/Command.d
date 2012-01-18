@@ -88,6 +88,11 @@ struct Arguments
 		return Argument(arguments[name]);
 	}
 	
+	Argument opDispatch (string name) ()
+	{
+		return this[name];
+	}
+	
 	string first ()
 	{
 		return opIndex(0);
@@ -112,6 +117,7 @@ struct Arguments
 struct Argument
 {
 	private StdArgs.Arguments.Argument argument;
+	alias value this;
 	
 	string value ()
 	{

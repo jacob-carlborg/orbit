@@ -178,19 +178,24 @@ class LocalRepository : Repository
 
 class RemoteRepository : Repository
 {
+	private string indexPath_;
+	
 	private this (string source, Orbit orbit)
 	{
 		super(source, orbit, false, new Api);
 	}
 	
-	string indexPath ()
+	@property string indexPath ()
 	{
+		if (indexPath_.any())
+			return indexPath_;
+		
 		auto destination = Path.join(orbit.path.tmp(), orbit.constants.index);
 		destination = Path.setExtension(destination, orbit.constants.indexFormat);
 
 		Http.download(super.indexPath, destination);
 		
-		return destination;
+		return indexPath_ = destination;
 	}
 	
 	string addressOfOrb (Orb orb) 

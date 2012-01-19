@@ -22,6 +22,7 @@ import orbit.orbit.Repository;
 class Index
 {
     @property Repository repository() { return repository_; }
+
 	private
 	{
         Repository repository_;
@@ -98,12 +99,12 @@ private:
 	{
 		serializer.reset;
 		auto index = serializer.serialize(orbs);
-		File.set(cast(char[])path, cast(void[])index);
+		File.set(cast(char[]) path, cast(void[]) index);
 	}
 	
 	Orb[OrbVersion][string] load ()
 	{
-		return serializer.deserialize!(Orb[OrbVersion][string])(cast(immutable(void)[])File.get(cast(char[])path));
+		return serializer.deserialize!(Orb[OrbVersion][string])(cast(string) File.get(cast(char[]) path));
 	}
 	
 	bool isLoaded ()

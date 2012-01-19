@@ -56,7 +56,7 @@ abstract class Repository
 			return new LocalRepository(cast(string) path, orbit);
 		
 		else
-			return new RemoteRepository(cast(string) source.idup, orbit);
+			return new RemoteRepository(source, orbit);
 	}
 	
 	static Repository defaultRepository ()

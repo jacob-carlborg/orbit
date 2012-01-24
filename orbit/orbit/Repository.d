@@ -105,6 +105,13 @@ public:
 	
 	static abstract class Api
 	{
+		private Index index;
+		
+		this (Index index)
+		{
+			this.index = index;
+		}
+		
 		abstract void upload (Orb orb);
 
 		Orb[OrbVersion][string] orbs ()
@@ -126,8 +133,6 @@ public:
 		{
 			return latestVersion(orb.name);
 		}
-		
-		protected @property abstract Index index ();
 	}
 }
 
@@ -155,6 +160,11 @@ class LocalRepository : Repository
 	
 	class Api : Repository.Api
 	{
+		this ()
+		{
+			super(index);
+		}
+		
 		void upload (Orb orb) 
 		{
 			auto dest = Path.join(cast(string)source, cast(string)orbit.constants.orbs);
@@ -167,11 +177,6 @@ class LocalRepository : Repository
 
 			Path.copy(orb.path, dest);
 			index.update(orb);
-		}
-		
-		protected @property Index index ()
-		{
-			return this.outer.index;
 		}
 	}
 }
@@ -215,14 +220,14 @@ class RemoteRepository : Repository
 	
 	class Api : Repository.Api
 	{
-		void upload (Orb orb) const
+		this ()
+		{
+			super(index);
+		}
+		
+		void upload (Orb orb)
 		{
 			assert(0, "unimplemented");
-		}
-	
-		protected @property Index index ()
-		{
-			return this.outer.index;
 		}
 	}
 }

@@ -772,7 +772,7 @@ T[] replace (T) (T[] source, dchar match, dchar replacement)
  * 
  * See_Also: isPresent 
  */
-bool isBlank (T) (T[] str)
+@property bool isBlank (T) (T[] str)
 {
 	return str is null || str.length == 0 || str == "";
 }
@@ -796,7 +796,7 @@ bool isBlank (T) (T[] str)
  * 
  * See_Also: isBlank
  */
-bool isPresent (T) (T[] str)
+@property bool isPresent (T) (T[] str)
 {
 	return !str.isBlank();
 }

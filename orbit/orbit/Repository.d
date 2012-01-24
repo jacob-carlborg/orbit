@@ -105,28 +105,28 @@ public:
 	
 	static abstract class Api
 	{
-		private Index index;
+		private Index index_;
 		
 		this (Index index)
 		{
-			this.index = index;
+			this.index_ = index;
 		}
 		
 		abstract void upload (Orb orb);
 
 		Orb[OrbVersion][string] orbs ()
 		{
-			return index.orbs;
+			return index_.orbs;
 		}
 		
 		OrbVersion latestVersion (string name)
 		{
-			return index.latestVersion(name);
+			return index_.latestVersion(name);
 		}
 		
 		Orb getOrb (Orb orb)
 		{
-			return index[orb];
+			return index_[orb];
 		}
 		
 		OrbVersion latestVersion (Orb orb)

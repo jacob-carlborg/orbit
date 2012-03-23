@@ -29,23 +29,88 @@ static:
 
 	void[] download (string url, float timeout = 30f, Orbit orbit = Orbit.defaultOrbit)
 	{
-		scope page = new HttpGet(url);
-		page.setTimeout(timeout);
+		// scope page = new HttpGet(url);
+		// page.setTimeout(timeout);
+		// auto buffer = page.open;
+		// 
+		// checkPageStatus(page, url);
+		// 
+		// int contentLength = page.getResponseHeaders.getInt(HttpHeader.ContentLength);
+		// int bytesLeft = contentLength;
+		// int chunkSize = bytesLeft / 40;
+		// 
+		// while (bytesLeft > 0)
+		// {
+		// 	buffer.load(chunkSize > bytesLeft ? bytesLeft : chunkSize);
+		// 	bytesLeft -= chunkSize;
+		// 	orbit.progress(bytesLeft, contentLength, chunkSize);
+		// }
+		// 
+		// return buffer.slice;
+		
+		auto page = new HttpGet(url);
+		page.setTimeout(30f);
 		auto buffer = page.open;
 		
-		checkPageStatus(page, url);
+		scope(exit)
+			page.close;
 		
+		checkPageStatus(page, url);
+
+		// load in chunks in order to display progress
 		int contentLength = page.getResponseHeaders.getInt(HttpHeader.ContentLength);
+
+		enum int width = 40;
+		int num = width;
+
+		version (Posix)
+		{
+			const clearLine = "\033[1K"; // clear backwards
+			const saveCursor = "\0337";
+			const restoreCursor = "\0338";
+		}
+		
+		else
+		{
+			const clearLine = "\r";
+			
+			// Leaving these empty string causes a linker error:
+			// http://d.puremagic.com/issues/show_bug.cgi?id=4315
+			const saveCursor = "\0";
+			const restoreCursor = "\0";
+		}
+		
+		print(saveCursor);
+
 		int bytesLeft = contentLength;
-		int chunkSize = bytesLeft / 40;
+		int chunkSize = bytesLeft / num;
 		
 		while (bytesLeft > 0)
 		{
 			buffer.load(chunkSize > bytesLeft ? bytesLeft : chunkSize);
 			bytesLeft -= chunkSize;
-			orbit.progress(bytesLeft, contentLength, chunkSize);
+			int i = 0;
+			
+			print(clearLine ~ restoreCursor ~ saveCursor);
+			print("[");
+			
+			for ( ; i < (width - num); i++)
+				print("=");
+
+			print('>');
+			
+			for ( ; i < width; i++) 
+				print(" ");
+			
+			print("]");
+			print(" ", (contentLength - bytesLeft) / 1024, "/", contentLength / 1024, " KB");
+			
+			num--;
 		}
-		
+			
+		println(restoreCursor);
+		println();
+
 		return buffer.slice;
 	}
 	

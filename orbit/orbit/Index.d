@@ -64,7 +64,7 @@ class Index
 			auto versions = orb.keys;
 			return versions.sort.last();
 		}
-		
+
 		auto orb = new Orb(name, OrbVersion.invalid, repository.orbit);
 		throw new MissingOrbException(orb, repository, __FILE__, __LINE__);
 	}
@@ -104,7 +104,7 @@ private:
 	
 	Orb[OrbVersion][string] load ()
 	{
-		return serializer.deserialize!(Orb[OrbVersion][string])(cast(string) File.get(cast(char[]) path));
+		return serializer.deserialize!(Orb[OrbVersion][string])(cast(Serializer.Data) File.get(cast(char[]) path));
 	}
 	
 	bool isLoaded ()

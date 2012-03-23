@@ -21,28 +21,27 @@ abstract class Repository
     @property bool isLocal() { return isLocal_; }
     @property bool isRemote() { return isRemote_; }
     @property Api api() { return api_; }
-    @property Index index() { return index_; }
 	
 	private
 	{
 		static Repository defaultRepository_;
+		
+		Orbit orbit_;
+		string source_;
 		string orbsPath_;
-        Orbit orbit_;
-        string source_;
         bool isLocal_;
         bool isRemote_;
         Api api_;
         Index index_;
 	}
 	
-	private this (string source, Orbit orbit, bool local, Api api)
+	private this (string source, Orbit orbit, bool local)
 	{
 		this.orbit_ = orbit;
 		this.source_ = source;
 		this.isLocal_ = local;
 		this.isRemote_ = !local;
 		this.api_ = api;
-		this.index_ = new Index(this, indexPath);
 		this.orbsPath_ = join([source, orbit.repository.orbs]);
 	}
 	
@@ -62,6 +61,15 @@ abstract class Repository
 	static Repository defaultRepository ()
 	{
 		return defaultRepository_ ? defaultRepository_ : Repository.instance(Orbit.defaultOrbit.repository.source, Orbit.defaultOrbit);
+	}
+	
+	@property Index index ()
+	{
+		if (index_)
+			return index_;
+
+		auto p = indexPath;
+		return index_ = new Index(this, p);
 	}
 	
 	abstract string join (string[] arr ...);
@@ -140,7 +148,8 @@ class LocalRepository : Repository
 {
 	private this (string source, Orbit orbit)
 	{
-		super(source, orbit, true, new Api);
+		super(source, orbit, true);
+		api_ = new Api;
 	}
 	
 	string addressOfOrb (Orb orb) 
@@ -187,14 +196,15 @@ class RemoteRepository : Repository
 	
 	private this (string source, Orbit orbit)
 	{
-		super(source, orbit, false, new Api);
+		super(source, orbit, false);
+		api_ = new Api;
 	}
 	
 	@property string indexPath ()
 	{
 		if (indexPath_.any())
 			return indexPath_;
-		
+
 		auto destination = Path.join(orbit.path.tmp(), orbit.constants.index);
 		destination = Path.setExtension(destination, orbit.constants.indexFormat);
 

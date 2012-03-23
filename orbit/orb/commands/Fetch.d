@@ -23,6 +23,7 @@ class Fetch : Command
 {
 	private string defaultOrbVersion;
 	Repository repository;
+	private Orb orb;
 	
 	this ()
 	{
@@ -35,9 +36,9 @@ class Fetch : Command
 		repository = Repository.instance(arguments.source);
 		auto fetcher = Fetcher.instance(repository);
 	
-		auto orb = new Orb;
+		orb = new Orb;
 		orb.name = arguments.first;
-		orb.version_ = OrbVersion.parse(arguments["version"]);
+		orb.version_ = version_();
 		
 		fetcher.fetch(orb, output);
 	}
@@ -68,10 +69,17 @@ private:
 		if (arguments.output.hasValue)
 			return arguments.output;
 		
-		auto orbVersion = repository.api.latestVersion(arguments.first);
-		auto name = Orb.buildFullName(arguments.first, orbVersion);
-		
-		auto path = Path.join(cast(string)Path.workingDirectory, name);
+		auto path = Path.join(cast(string)Path.workingDirectory, orb.fullName);
 		return Path.setExtension(path, Orb.extension);
+	}
+	
+	OrbVersion version_ ()
+	{
+		auto ver = OrbVersion.parse(arguments["version"]);
+		
+		if (ver.isValid)
+			return ver;
+
+		return repository.api.latestVersion(orb.name);
 	}
 }

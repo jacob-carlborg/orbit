@@ -77,16 +77,10 @@ class RemoteFetcher : Fetcher
 	void fetch (Orb orb, string output = null)
 	{
 		auto source = repository.addressOfOrb(orb);
-		auto tmpOutput = Path.join(orbit.path.tmp, orb.name);
-		
-		println(source);
-		println(tmpOutput);
-		
-		//Http.download(source, tmpOutput);
-		
+
 		if (output.isBlank)
 			output = Path.join(cast(string) Path.workingDirectory, orb.name);
-			println(output);
-		//Path.rename(tmpOutput, output);
+		
+		Http.download(source, output);
 	}
 }

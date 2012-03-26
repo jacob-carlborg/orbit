@@ -22,7 +22,7 @@ class Orbit
 	bool isVerbose;
 	void delegate (string[] ...) verboseHandler;
 	void delegate (string[] ...) printHandler;
-	void delegate (int bytesLeft, int contentLength, int chunkSize) progress;
+	ProgressHandler progress;
 	Path path;
 	Constants constants;
 	
@@ -53,11 +53,12 @@ class Orbit
 		}
 		
 		orbit.printHandler = (string[] args ...) {
-			.print(args);
+			foreach (arg ; args)
+				.print(arg);
 		};
 		
 		orbit.verboseHandler = &orbit.println;
-		orbit.progress = &orbit.progressHandler;
+		orbit.progress = new DefaultProgressHandler(orbit);
 		orbit.isVerbose = true;
 		
 		return orbit;
@@ -92,41 +93,6 @@ class Orbit
 	string exeName (string name) const
 	{
 		return setExtension(name, constants.exeExtension);
-	}
-
-	private void progressHandler (int bytesLeft, int contentLength, int chunkSize)
-	{
-		version (Posix)
-		{
-			const clearLine = "\033[1K"; // clear backwards
-			const saveCursor = "\0337";
-			const restoreCursor = "\0338";
-		}
-		
-		else
-		{
-			const clearLine = "\r";
-			const saveCursor = "";
-			const restoreCursor = "";
-		}
-		
-		int width = contentLength * chunkSize;
-		int num = width;
-		int i = 0;
-		
-		print(clearLine, restoreCursor, saveCursor);
-		print("[");
-		
-		for ( ; i < (width - num); i++)
-			print("=");
-		
-		print(">");
-		
-		for ( ; i < width; i++)
-			print(" ");
-		
-		print("]");
-		print(format(" {}/{} KB", (contentLength - bytesLeft) / 1024, contentLength / 1024));
 	}
 
 static:
@@ -348,5 +314,93 @@ static:
 	struct Spec
 	{
 		Builder.Tool defaultBuildTool = Builder.Tool.dsss;
+	}
+
+	abstract class ProgressHandler
+	{
+		private Orbit orbit_;
+		
+		this (Orbit orbit)
+		{
+			orbit_ = orbit;
+		}
+
+		void start (int length, int chunkSize, int width);
+		void opCall (int bytesLeft);
+		void end ();
+		
+		@property Orbit orbit ()
+		{
+			return orbit_;
+		}
+	}
+	
+	class DefaultProgressHandler : ProgressHandler
+	{
+		this (Orbit orbit)
+		{
+			super(orbit);
+		}
+		
+		private
+		{
+			int num;
+			int width;
+			int chunkSize;
+			int contentLength;
+			
+			version (Posix)
+				enum
+				{
+					clearLine = "\033[1K", // clear backwards
+					saveCursor = "\0337",
+					restoreCursor = "\0338"
+				}
+				
+			else
+				enum
+				{
+					clearLine = "\r",
+					saveCursor = "",
+					restoreCursor = ""
+				}
+		}
+		
+		void start (int contentLength, int chunkSize, int width)
+		{
+			this.chunkSize = chunkSize;
+			this.contentLength = contentLength;
+			this.width = width;
+			this.num = width;
+			
+			orbit.print(saveCursor);
+		}
+		
+		void opCall (int bytesLeft)
+		{
+			int i = 0;
+
+			orbit.print(clearLine ~ restoreCursor ~ saveCursor);
+			orbit.print("[");
+
+			for ( ; i < (width - num); i++)
+				orbit.print("=");
+
+			orbit.print(">");
+
+			for ( ; i < width; i++)
+				orbit.print(" ");
+
+			orbit.print("]");
+			orbit.print(format(" {}/{} KB", (contentLength - bytesLeft) / 1024, contentLength / 1024));
+
+			num--;
+		}
+		
+		void end ()
+		{
+			orbit.println(restoreCursor);
+			orbit.println();
+		}
 	}
 }

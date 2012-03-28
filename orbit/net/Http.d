@@ -30,7 +30,7 @@ static:
 	void[] download (string url, float timeout = 30f, Orbit orbit = Orbit.defaultOrbit)
 	{
 		scope page = new HttpGet(url);
-		page.setTimeout(30f);
+		page.setTimeout(timeout);
 		auto buffer = page.open;
 		
 		checkPageStatus(page, url);
@@ -40,7 +40,6 @@ static:
 		enum width = 40;
 		int bytesLeft = contentLength;
 		int chunkSize = bytesLeft / width;
-		int num = width;
 		
 		orbit.progress.start(contentLength, chunkSize, width);
 		
@@ -54,6 +53,30 @@ static:
 		orbit.progress.end();
 
 		return buffer.slice;
+	}
+	
+	void upload (T) (string url, T[] content, float timeout = 30f, Orbit orbit = Orbit.defaultOrbit)
+	{
+		scope page = new HttpPost(url);
+		page.setTimeout(timeout);
+		auto buffer = page.open;
+		
+		checkPageStatus(page, url);
+		
+		enum width = 40;
+		int bytesLeft = content.length * T.sizeof;
+		int chunkSize = bytesLeft / width;
+		
+		orbit.progress.start(bytesLeft, chunkSize, width);
+		
+		while (bytesLeft > 0)
+		{
+			auto chunk = chunkSize > bytesLeft ? bytesLeft : chunkSize;
+			bytesLeft -= buffer.write(content[0 .. chunk / T.sizeof]);
+			orbit.progress(bytesLeft);
+		}
+		
+		orbit.progress.end();
 	}
 	
 	bool exists (string url)

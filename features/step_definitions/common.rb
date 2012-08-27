@@ -36,26 +36,26 @@ Given /^an orbspec named "([^"]*)" with a dependency on "([^"]*)"$/ do |name, de
 end
 
 Given /^a repository named "([^"]*)"$/ do |name|
-    Given %{a directory named "#{name}"}
+    step %{a directory named "#{name}"}
 end
 
 Given /^an orb named "([^"]*)"$/ do |name|
-  Given %{an orbspec named "#{name}"}
-  When %{I successfully run `orb build #{name}`}
-  Then %{a file named "#{name}.orb" should exist}
+  step %{an orbspec named "#{name}"}
+  step %{I successfully run `orb build #{name}`}
+  step %{a file named "#{name}.orb" should exist}
 end
 
 Given /^an orb named "([^"]*)" with a dependency on "([^"]*)"$/ do |name, dependency|
-  Given %{an orbspec named "#{name}" with a dependency on "#{dependency}"}
-  When %{I successfully run `orb build #{name}`}
-  Then %{a file named "#{name}.orb" should exist}
+  step %{an orbspec named "#{name}" with a dependency on "#{dependency}"}
+  step %{I successfully run `orb build #{name}`}
+  step %{a file named "#{name}.orb" should exist}
 end
 
 Given /^an orb named "([^"]*)" in the repository "([^"]*)"$/ do |name, source|
-  Given %{an orb named "#{name}"}
-  When %{I successfully run `orb push #{name} -s #{source}`}
-  Then %{a file named "#{source}/index.xml" should exist}
-  And %{a file named "#{source}/orbs/#{name}-0.0.1.orb" should exist}
+  step %{an orb named "#{name}"}
+  step %{I successfully run `orb push #{name} -s #{source}`}
+  step %{a file named "#{source}/index.xml" should exist}
+  step %{a file named "#{source}/orbs/#{name}-0.0.1.orb" should exist}
   remove_file(name + ".orb")
 end
 
@@ -64,9 +64,9 @@ Given /^the environment variable "([^"]*)" is "([^"]*)"$/ do |variable, value|
 end
 
 Given /^an orb named "([^"]*)" with a dependency on "([^"]*)" in the repository "([^"]*)"$/ do |name, dependency, source|
-  Given %{an orb named "#{name}" with a dependency on "#{dependency}"}
-  When %{I successfully run `orb push #{name} -s #{source}`}
-  Then %{a file named "#{source}/index.xml" should exist}
-  And %{a file named "#{source}/orbs/#{name}-0.0.1.orb" should exist}
+  step %{an orb named "#{name}" with a dependency on "#{dependency}"}
+  step %{I successfully run `orb push #{name} -s #{source}`}
+  step %{a file named "#{source}/index.xml" should exist}
+  step %{a file named "#{source}/orbs/#{name}-0.0.1.orb" should exist}
   remove_file(name + ".orb")
 end

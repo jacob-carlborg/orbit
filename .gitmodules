@@ -1,3 +1,6 @@
 [submodule "orange"]
 	path = orange
 	url = git://github.com/jacob-carlborg/orange.git
+[submodule "mambo"]
+	path = mambo
+	url = git://github.com/jacob-carlborg/mambo.git

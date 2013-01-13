@@ -8,7 +8,7 @@ module orbit.orbit.Builder;
 
 import tango.sys.Process;
 import tango.io.Stdout;
-import tango.text.Util;
+//import tango.text.Util;
 
 import mambo.core._;
 import orbit.orbit.DependencyHandler;
@@ -144,7 +144,7 @@ abstract class Builder : OrbitObject
 	
 	private string[] cleanArgs (string[] args)
 	{
-		if (args.any() && args[0].empty())
+		if (args.any && args[0].isEmpty)
 			return args[0 .. $ - 1];
 
 		return args;
@@ -187,7 +187,7 @@ class Dsss : Builder
 	
 	override string[] dependencyArgs ()
 	{
-		return dependencyHandler.buildDependencies().map((Orb orb) {
+		return dependencyHandler.buildDependencies().map!((orb) {
 			auto libraryFlag = " -ll";
 			auto libraries = orb.libraries.join(libraryFlag);
 			
@@ -195,7 +195,7 @@ class Dsss : Builder
 				libraries = libraryFlag ~ libraries;
 			
 			return cast(string)("-I" ~ orb.srcPath ~ " -S" ~ orb.libPath ~ libraries);
-		});
+		}).toArray;
 	}
 	
 	override string[] buildArgs ()

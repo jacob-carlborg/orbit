@@ -32,7 +32,7 @@ class Install : Command
 	
 	override void execute ()
 	{
-		scope orb = new Orb(arguments.first, arguments["version"]);
+		auto orb = new Orb(arguments.first, arguments["version"]);
 		scope repository = Repository.instance(arguments.source);
 		
 		orb = Orb.load(orb, repository);

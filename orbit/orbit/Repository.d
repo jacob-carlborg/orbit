@@ -159,7 +159,7 @@ class LocalRepository : Repository
 		if (Path.exists(path))
 			return path;
 		
-		throw new MissingOrbException(orb, this, __FILE__, __LINE__);
+		throw new MissingOrbException(orb, this);
 	}
 	
 	override string join (string[] arr ...)
@@ -220,7 +220,7 @@ class RemoteRepository : Repository
 		if (Http.exists(path))
 			return path;
 		
-		throw new MissingOrbException(orb, this, null, __FILE__, __LINE__);
+		throw new MissingOrbException(orb, this, null);
 	}
 	
 	override string join (string[] arr ...)

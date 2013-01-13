@@ -79,7 +79,7 @@ class Specification
 	private this (SpecificationEnviroment specEnv, string path)
 	{
 		this.specEnv = specEnv;
-		orbspecPath = cast(string)Path.toAbsolute(path);
+		orbspecPath = Path.toAbsolute(path.toMutable).assumeUnique;
 		setSpecValues;
 	}
 	

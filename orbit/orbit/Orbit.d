@@ -11,7 +11,9 @@ import tango.sys.Environment;
 import mambo.core._;
 import orbit.io.Path;
 import orbit.orbit.Builder;
-import mambo.util._;
+//import mambo.util._;
+
+private alias orbit.io.Path.join joinPath;
 
 class Orbit
 {	
@@ -125,10 +127,10 @@ static:
 			this.orbit = orbit;
 
 			home_ = cast(string)toAbsolute(Environment.get(cast(const(char)[])orbit.env.home, cast(char[])defaultHome));
-            bin_ = join(home, constants.bin);
-			orbs_ = join(home, constants.orbs);
-            specifications_ = join(home, constants.specifications);
-            tmp_ = join(home, constants.tmp);
+            bin_ = joinPath(home, constants.bin);
+			orbs_ = joinPath(home, constants.orbs);
+            specifications_ = joinPath(home, constants.specifications);
+            tmp_ = joinPath(home, constants.tmp);
 		}
 		
 		abstract string defaultHome ();
@@ -392,7 +394,7 @@ static:
 				orbit.print(" ");
 
 			orbit.print("]");
-			orbit.print(format(" {}/{} KB", (contentLength - bytesLeft) / 1024, contentLength / 1024));
+			orbit.print(format(" {}/{} KB", (contentLength - bytesLeft) / 1024, contentLength / 1024).assumeUnique);
 
 			num--;
 		}

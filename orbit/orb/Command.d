@@ -13,7 +13,7 @@ import orbit.orbit.Orbit;
 import mambo.core._;
 import orbit.orb.Exceptions;
 import orbit.orb.Options;
-import StdArgs = orbit.orb.util.Arguments;
+import StdArgs = mambo.arguments.internal.Arguments;
 
 abstract class Command
 {
@@ -70,7 +70,7 @@ struct Arguments
 	string opIndex (size_t index)
 	{
 		if (index > args.length - 1 || empty)
-			throw new MissingArgumentException("Missing argument(s)", __FILE__, __LINE__);
+			throw new MissingArgumentException("Missing argument(s)");
 
 		return args[index];
 	}
@@ -78,9 +78,9 @@ struct Arguments
 	void parse ()
 	{
 		if (!arguments.parse(originalArgs))
-			throw new InvalidArgumentException("", __FILE__, __LINE__);
+			throw new InvalidArgumentException("");
 
-		args = arguments(null).assigned;
+		args = cast(string[]) arguments(null).assigned;
 	}
 	
 	Argument opIndex (string name)
@@ -121,8 +121,8 @@ struct Argument
 	
 	string value ()
 	{
-		auto value = argument.assigned;
-		return value.any() ? value[0] : "";
+		auto value = argument.assigned.assumeUnique;
+		return value.any ? value[0] : "";
 	}
 	
 	bool hasValue ()

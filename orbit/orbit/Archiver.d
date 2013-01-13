@@ -46,7 +46,7 @@ private:
 	void addFileToArchive (string path)
 	{
 		auto zipPath = Path.join(orbit.constants.orbData, path);
-		writer.putFile(ZipEntryInfo(cast(char[])zipPath), cast(char[])Path.toAbsolute(path));
+		writer.putFile(ZipEntryInfo(cast(char[])zipPath), cast(char[])Path.toAbsolute(cast(char[]) path));
 	}
 	
 	void addMetaData ()

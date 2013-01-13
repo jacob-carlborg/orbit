@@ -6,8 +6,6 @@
  */
 module orbit.orbit.Installer;
 
-import tango.text.Unicode;
-
 import mambo.core._;
 import Path = orbit.io.Path;
 import orbit.orbit.Builder;
@@ -102,7 +100,7 @@ private:
 		verbose("Moving files:");
 
 		if (Path.exists(fullInstallPath))
-			throw new OrbitException(`The path "` ~ fullInstallPath ~ `" already exists.`, __FILE__, __LINE__);
+			throw new OrbitException(`The path "` ~ fullInstallPath ~ `" already exists.`);
 
 		moveExecutables;
 		moveLibraries;
@@ -116,12 +114,12 @@ private:
 		if (orb.bindir.isPresent())
 			prefix = orb.bindir;
 
-		auto executables = orb.executables.map((string e) {
+		auto executables = orb.executables.map!((e) {
 			auto path = Path.parse(cast(char[])e);
 			auto file = orbit.exeName(cast(string)path.file);
 
 			return Path.join(cast(string)path.folder, file);
-		});
+		}).toArray;
 
 		auto path = Path.join(fullInstallPath, orbit.constants.bin);
 		moveSpecificFiles(executables, path, prefix);

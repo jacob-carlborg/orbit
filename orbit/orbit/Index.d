@@ -8,8 +8,8 @@ module orbit.orbit.Index;
 
 import tango.io.device.File;
 
-import orange.serialization._;
-import orange.serialization.archives._;
+import mambo.serialization._;
+import mambo.serialization.archives._;
 
 import orbit.core._;
 import Path = orbit.io.Path;

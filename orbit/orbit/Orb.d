@@ -8,8 +8,8 @@ module orbit.orbit.Orb;
 
 import tango.text.Util;
 
-import orange.serialization.Serializable;
-import orange.serialization.Events;
+import mambo.serialization.Serializable;
+import mambo.serialization.Events;
 
 import orbit.core._;
 import orbit.dsl.Specification;

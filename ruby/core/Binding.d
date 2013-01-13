@@ -7,10 +7,11 @@
 
 module ruby.core.Binding;
 
+import mambo.core.string;
+
 import ruby.c.ruby;
 import ruby.core.Object;
 import ruby.core.String;
-import ruby.util.string;
 
 struct Binding
 {

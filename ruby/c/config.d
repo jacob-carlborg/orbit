@@ -10,7 +10,7 @@ import tango.stdc.config;
 import tango.stdc.posix.unistd;
 import tango.stdc.posix.sys.select;
 
-import ruby.util.Version;
+import mambo.util.Version;
 	
 version (linux)
 {

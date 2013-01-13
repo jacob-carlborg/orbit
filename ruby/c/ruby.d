@@ -11,13 +11,14 @@ import core.stdc.limits;
 import tango.stdc.string;
 import tango.stdc.stdarg;
 
+import mambo.core.string;
+
 import ruby.c.config;
 import ruby.c.defines;
 import ruby.c.io;
 import ruby.c.intern;
 import ruby.c.oniguruma;
 import ruby.c.st;
-import ruby.util.string;
 
 extern (C):
 

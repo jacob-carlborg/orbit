@@ -6,14 +6,16 @@
  */
 module ruby.core.Object;
 
+import mambo.core.string;
+
 import ruby.c.ruby;
 import ruby.c.intern;
-import ruby.util.string;
 
 template ObjectImpl ()
 {
-	import ruby.util.string;
-	import ruby.util.Array;
+	import mambo.core.string;
+	import mambo.core.Array;
+
 	import ruby.c.ruby;
 	import ruby.c.intern;
 	

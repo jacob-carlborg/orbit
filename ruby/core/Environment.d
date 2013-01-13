@@ -6,9 +6,10 @@
  */
 module ruby.core.Environment;
 
+import mambo.core.string;
+
 import ruby.c.intern;
 import ruby.c.ruby;
-import ruby.util.string;
 
 class Environment
 {

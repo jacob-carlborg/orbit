@@ -8,11 +8,12 @@ module orbit.dsl.ruby.SpecificationEnviroment;
 
 import tango.text.Util;
 
+import mambo.core.string;
+
 import ruby.core.Object;
 import ruby.core.Binding;
 import ruby.core.String;
 import ruby.core.Array;
-import ruby.util.string;
 
 struct SpecificationEnviroment
 {

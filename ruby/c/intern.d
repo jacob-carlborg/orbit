@@ -13,7 +13,7 @@ import tango.stdc.stdint;
 import ruby.c.config;
 import ruby.c.ruby;
 import ruby.c.st;
-import ruby.util.Version;
+import mambo.util.Version;
 
 extern (C):
 

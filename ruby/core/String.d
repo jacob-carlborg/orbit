@@ -6,12 +6,13 @@
  */
 module ruby.core.String;
 
-import ruby.core.Object;
-import ruby.util.string;
 import tango.stdc.config;
+
+import mambo.core.string;
 
 import ruby.c.ruby;
 import ruby.c.intern;
+import ruby.core.Object;
 
 struct String
 {	

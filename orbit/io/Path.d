@@ -14,7 +14,7 @@ import tango.stdc.posix.sys.stat;
 import tango.sys.Common;
 import tango.sys.Environment;
 
-import orbit.core._;
+import mambo.core._;
 
 alias Environment.toAbsolute toAbsolute;
 alias Environment.cwd workingDirectory;

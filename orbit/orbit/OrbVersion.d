@@ -9,7 +9,7 @@ module orbit.orbit.OrbVersion;
 import tango.text.Util;
 import tango.util.Convert;
 
-import orbit.core._;
+import mambo.core._;
 
 struct OrbVersion
 {

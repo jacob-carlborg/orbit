@@ -11,7 +11,7 @@ import tango.text.Util;
 import mambo.serialization.Serializable;
 import mambo.serialization.Events;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.dsl.Specification;
 import Path = orbit.io.Path;
 import orbit.orbit.Builder;

@@ -6,7 +6,7 @@
  */
 module orbit.orb.commands.Build;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.dsl.Specification;
 import Path = orbit.io.Path;
 import orbit.orbit.Archiver;

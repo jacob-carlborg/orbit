@@ -8,7 +8,7 @@ module orbit.orbit.Exceptions;
 
 import orbit.orbit.Orb;
 import orbit.orbit.Repository;
-import orbit.core.string;
+import mambo.core.string;
 
 class OrbitException : Exception
 {

@@ -11,7 +11,7 @@ import tango.io.device.File;
 import mambo.serialization._;
 import mambo.serialization.archives._;
 
-import orbit.core._;
+import mambo.core._;
 import Path = orbit.io.Path;
 import orbit.orbit.Exceptions;
 import orbit.orbit.Orb;

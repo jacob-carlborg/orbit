@@ -8,8 +8,8 @@ module orbit.orb.CommandManager;
 
 import tango.text.convert.Format : format = Format;
 
-import orbit.core._;
-import orbit.util.Singleton;
+import mambo.core._;
+import mambo.util.Singleton;
 
 import orbit.orb.Command;
 import orbit.orb.commands._;

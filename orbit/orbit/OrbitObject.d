@@ -6,7 +6,7 @@
  */
 module orbit.orbit.OrbitObject;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.orbit.Orbit;
 import orbit.orbit.Orb;
 

@@ -8,10 +8,10 @@ module orbit.orbit.Orbit;
 
 import tango.sys.Environment;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.io.Path;
 import orbit.orbit.Builder;
-import orbit.util._;
+import mambo.util._;
 
 class Orbit
 {	

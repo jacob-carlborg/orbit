@@ -9,7 +9,7 @@ module orbit.orbit.Archiver;
 import tango.util.compress.Zip;
 import tango.io.FilePath;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.dsl.Specification;
 import Path = orbit.io.Path;
 import orbit.orbit._;

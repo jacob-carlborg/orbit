@@ -13,7 +13,7 @@ import tango.net.device.Socket;
 import tango.net.http.HttpGet;
 import tango.net.http.HttpConst;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.orbit.Orbit;
 
 struct Http

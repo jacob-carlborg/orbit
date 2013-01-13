@@ -6,7 +6,7 @@
  */
 module orbit.orb.commands.Install;
 
-import orbit.core._;
+import mambo.core._;
 import Path = orbit.io.Path;
 import orbit.orb.Command;
 import orbit.orbit.Fetcher;

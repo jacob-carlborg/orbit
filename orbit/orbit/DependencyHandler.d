@@ -8,7 +8,7 @@ module orbit.orbit.DependencyHandler;
 
 import tango.util.container.HashSet;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.orbit.Index;
 import orbit.orbit.Orb;
 import orbit.orbit.Orbit;

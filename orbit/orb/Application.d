@@ -10,11 +10,11 @@ module orbit.orb.Application;
 import tango.io.Stdout;
 import tango.stdc.stdlib : EXIT_SUCCESS, EXIT_FAILURE;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.dsl.Specification;
 import orbit.orbit.Exceptions;
-import orbit.util.Singleton;
-import orbit.util.Use;
+import mambo.util.Singleton;
+import mambo.util.Use;
 
 import orbit.orb.CommandManager;
 import orbit.orb.Options;

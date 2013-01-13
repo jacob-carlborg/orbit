@@ -6,7 +6,7 @@
  */
 module orbit.orb.Exceptions;
 
-import orbit.core.string;
+import mambo.core.string;
 import orbit.orbit.Exceptions;
 
 class OrbException : OrbitException

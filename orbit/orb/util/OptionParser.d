@@ -9,9 +9,9 @@ module orbit.orb.util.OptionParser;
 import tango.io.Stdout;
 import tango.text.convert.Format;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.orb.Exceptions;
-import orbit.util._;
+import mambo.util._;
 
 import orbit.orb.util.Arguments;
 

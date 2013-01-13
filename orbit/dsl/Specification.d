@@ -15,7 +15,7 @@ import ruby.core.Environment;
 import ruby.core.Object;
 import ruby.core.String;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.dsl.ruby._;
 import Path = orbit.io.Path;
 

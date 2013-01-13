@@ -9,7 +9,7 @@ module orbit.orbit.Repository;
 import tango.net.http.HttpGet;
 import tango.text.Util;
 
-import orbit.core._;
+import mambo.core._;
 import orbit.net.Http;
 import Path = orbit.io.Path;
 import orbit.orbit._;

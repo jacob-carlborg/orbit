@@ -8,7 +8,7 @@ module orbit.orbit.Loader;
 
 import Zip = tango.util.compress.Zip : extractArchive;
 
-import orbit.core._;
+import mambo.core._;
 import Path = orbit.io.Path;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;

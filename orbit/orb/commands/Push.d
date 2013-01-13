@@ -6,7 +6,7 @@
  */
 module orbit.orb.commands.Push;
 
-import orbit.core._;
+import mambo.core._;
 import Path = orbit.io.Path;
 import orbit.orbit.Orb;
 import orbit.orbit.OrbVersion;

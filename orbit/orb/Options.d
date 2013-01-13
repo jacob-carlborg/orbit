@@ -6,8 +6,8 @@
  */
 module orbit.orb.Options;
 
-import orbit.core._;
-import orbit.util._;
+import mambo.core._;
+import mambo.util._;
 
 class Options
 {

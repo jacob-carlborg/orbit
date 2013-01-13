@@ -8,7 +8,7 @@ module orbit.orbit.Installer;
 
 import tango.text.Unicode;
 
-import orbit.core._;
+import mambo.core._;
 import Path = orbit.io.Path;
 import orbit.orbit.Builder;
 import orbit.orbit.DependencyHandler;
@@ -17,8 +17,8 @@ import orbit.orbit.Orb;
 import orbit.orbit.Orbit;
 import orbit.orbit.OrbitObject;
 import orbit.orbit.Repository;
-import orbit.util.Tuple;
-import orbit.util.Use;
+import mambo.util.Tuple;
+import mambo.util.Use;
 
 class Installer : OrbitObject
 {	

@@ -7,7 +7,7 @@
 module orbit.orb.Orb;
 
 import orbit.orb.Application;
-import orbit.core.string;
+import mambo.core.string;
 
 void main (string[] args)
 {

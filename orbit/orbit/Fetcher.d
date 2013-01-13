@@ -6,7 +6,7 @@
  */
 module orbit.orbit.Fetcher;
 
-import orbit.core._;
+import mambo.core._;
 import Path = orbit.io.Path;
 import orbit.net.Http;
 import orbit.orbit.Repository;

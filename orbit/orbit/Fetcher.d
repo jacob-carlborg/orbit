@@ -59,7 +59,7 @@ class LocalFetcher : Fetcher
 {
 	mixin Constructor;
 	
-	void fetch (Orb orb, string output = null)
+	override void fetch (Orb orb, string output = null)
 	{
 		auto source = repository.addressOfOrb(orb);
 
@@ -74,7 +74,7 @@ class RemoteFetcher : Fetcher
 {
 	mixin Constructor;
 	
-	void fetch (Orb orb, string output = null)
+	override void fetch (Orb orb, string output = null)
 	{
 		auto source = repository.addressOfOrb(orb);
 

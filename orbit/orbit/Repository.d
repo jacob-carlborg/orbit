@@ -91,7 +91,7 @@ abstract class Repository
 		return Path.setExtension(path, Orb.extension);
 	}
 	
-	string toString ()
+	override string toString ()
 	{
 		return source;
 	}
@@ -152,7 +152,7 @@ class LocalRepository : Repository
 		api_ = new Api;
 	}
 	
-	string addressOfOrb (Orb orb) 
+	override string addressOfOrb (Orb orb) 
 	{
 		auto path = super.addressOfOrb(orb);
 
@@ -162,7 +162,7 @@ class LocalRepository : Repository
 		throw new MissingOrbException(orb, this, __FILE__, __LINE__);
 	}
 	
-	string join (string[] arr ...)
+	override string join (string[] arr ...)
 	{
 		return Path.join(arr);
 	}
@@ -174,7 +174,7 @@ class LocalRepository : Repository
 			super(index);
 		}
 		
-		void upload (Orb orb) 
+		override void upload (Orb orb) 
 		{
 			auto dest = Path.join(cast(string)source, cast(string)orbit.constants.orbs);
 			
@@ -200,7 +200,7 @@ class RemoteRepository : Repository
 		api_ = new Api;
 	}
 	
-	@property string indexPath ()
+	override @property string indexPath ()
 	{
 		if (indexPath_.any())
 			return indexPath_;
@@ -213,7 +213,7 @@ class RemoteRepository : Repository
 		return indexPath_ = destination;
 	}
 	
-	string addressOfOrb (Orb orb) 
+	override string addressOfOrb (Orb orb) 
 	{
 		auto path = super.addressOfOrb(orb);
 		
@@ -223,7 +223,7 @@ class RemoteRepository : Repository
 		throw new MissingOrbException(orb, this, null, __FILE__, __LINE__);
 	}
 	
-	string join (string[] arr ...)
+	override string join (string[] arr ...)
 	{
 		return cast(string) tango.text.Util.join(arr, "/");
 	}
@@ -235,7 +235,7 @@ class RemoteRepository : Repository
 			super(index);
 		}
 		
-		void upload (Orb orb)
+		override void upload (Orb orb)
 		{
 			assert(0, "unimplemented");
 		}

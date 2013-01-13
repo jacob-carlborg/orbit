@@ -28,7 +28,7 @@ class Orbit
 	
 	private static Orbit defaultOrbit_;
 	
-	static Orbit defaultOrbit ()
+	public static Orbit defaultOrbit ()
 	{
 		return defaultOrbit_ = defaultOrbit_ ? defaultOrbit_ : defaultConfiguration(new Orbit);
 	}
@@ -188,7 +188,7 @@ static:
 	{
 		mixin Path.Constructor;
 		
-		string defaultHome ()
+		override string defaultHome ()
 		{
 			return "/usr/local/orbit";
 		}
@@ -198,7 +198,7 @@ static:
 	{
 		mixin Path.Constructor;
 		
-		string defaultHome ()
+		override string defaultHome ()
 		{
 			assert(false, "not implemented");
 		}
@@ -249,27 +249,27 @@ static:
 
 	class ConstantsPosix : Constants
 	{
-		string dylibExtension () const
+		override string dylibExtension () const
 		{
 			return "so";
 		}
 		
-		string dylibPrefix () const
+		override string dylibPrefix () const
 		{
 			return "lib";
 		}
 		
-		string exeExtension () const
+		override string exeExtension () const
 		{
 			return "";
 		}
 		
-	 	string libExtension () const
+	 	override string libExtension () const
 		{
 			return "a";
 		}
 		
-		string libPrefix () const
+		override string libPrefix () const
 		{
 			return "lib";
 		}
@@ -277,7 +277,7 @@ static:
 
 	class ConstantsDarwin : ConstantsPosix
 	{
-		string dylibExtension () const
+		override string dylibExtension () const
 		{
 			return "dylib";
 		}
@@ -285,27 +285,27 @@ static:
 
 	class ConstantsWindows : Constants
 	{
-		string dylibExtension () const
+		override string dylibExtension () const
 		{
 			return "dll";
 		}
 		
-		string dylibPrefix () const
+		override string dylibPrefix () const
 		{
 			return "";
 		}
 		
-		string exeExtension () const
+		override string exeExtension () const
 		{
 			return "exe";
 		}
 		
-		string libExtension () const
+		override string libExtension () const
 		{
 			return "lib";
 		}
 		
-		string libPrefix () const
+		override string libPrefix () const
 		{
 			return "";
 		}
@@ -366,7 +366,7 @@ static:
 				}
 		}
 		
-		void start (int contentLength, int chunkSize, int width)
+		override void start (int contentLength, int chunkSize, int width)
 		{
 			this.chunkSize = chunkSize;
 			this.contentLength = contentLength;
@@ -376,7 +376,7 @@ static:
 			orbit.print(saveCursor);
 		}
 		
-		void opCall (int bytesLeft)
+		override void opCall (int bytesLeft)
 		{
 			int i = 0;
 
@@ -397,7 +397,7 @@ static:
 			num--;
 		}
 		
-		void end ()
+		override void end ()
 		{
 			orbit.println(restoreCursor);
 			orbit.println();

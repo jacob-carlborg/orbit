@@ -30,7 +30,7 @@ class Install : Command
 		defaultOrbVersion = OrbVersion.invalid.toString;
 	}
 	
-	void execute ()
+	override void execute ()
 	{
 		scope orb = new Orb(arguments.first, arguments["version"]);
 		scope repository = Repository.instance(arguments.source);

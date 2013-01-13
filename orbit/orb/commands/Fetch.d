@@ -31,7 +31,7 @@ class Fetch : Command
 		defaultOrbVersion = OrbVersion.invalid.toString;
 	}
 	
-	void execute ()
+	override void execute ()
 	{
 		repository = Repository.instance(arguments.source);
 		auto fetcher = Fetcher.instance(repository);

@@ -22,7 +22,7 @@ class Build : Command
 		super("build", "Build an orb from an orbspec");
 	}
 	
-	void execute ()
+	override void execute ()
 	{
 		auto currentWorkingDirectory = Path.workingDirectory;
 		Path.workingDirectory = workingDirectory;

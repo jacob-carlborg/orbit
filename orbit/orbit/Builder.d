@@ -74,8 +74,11 @@ abstract class Builder : OrbitObject
 		}
 	}
 	
-	static Builder newBuilder (Orb orb, DependencyHandler dependencyHandler, Orbit orbit = Orbit.defaultOrbit)
+	static Builder newBuilder (Orb orb, DependencyHandler dependencyHandler, Orbit orbit = null)
 	{
+		if (!orbit)
+			orbit = Orbit.defaultOrbit;
+
 		static Builder sourceBuilder;
 		
 		final switch (orb.buildTool)
@@ -152,12 +155,12 @@ class Dake : Builder
 {
 	mixin Constructors;
 
-	string[] dependencyArgs ()
+	override string[] dependencyArgs ()
 	{
 		assert(0, "unimplemented");
 	}
 	
-	string[] buildArgs ()
+	override string[] buildArgs ()
 	{
 		assert(0, "unimplemented");
 	}
@@ -167,12 +170,12 @@ class Cmake : Builder
 {
 	mixin Constructors;
 		
-	string[] dependencyArgs ()
+	override string[] dependencyArgs ()
 	{
 		assert(0, "unimplemented");
 	}
 	
-	string[] buildArgs ()
+	override string[] buildArgs ()
 	{
 		assert(0, "unimplemented");
 	}
@@ -182,7 +185,7 @@ class Dsss : Builder
 {
 	mixin Constructors;
 	
-	string[] dependencyArgs ()
+	override string[] dependencyArgs ()
 	{
 		return dependencyHandler.buildDependencies().map((Orb orb) {
 			auto libraryFlag = " -ll";
@@ -195,7 +198,7 @@ class Dsss : Builder
 		});
 	}
 	
-	string[] buildArgs ()
+	override string[] buildArgs ()
 	{
 		return ["dsss", "build"];
 	}
@@ -205,12 +208,12 @@ class Make : Builder
 {
 	mixin Constructors;
 	
-	string[] dependencyArgs ()
+	override string[] dependencyArgs ()
 	{
 		assert(0, "unimplemented");
 	}
 	
-	string[] buildArgs ()
+	override string[] buildArgs ()
 	{
 		assert(0, "unimplemented");
 	}
@@ -220,12 +223,12 @@ class Rdmd : Builder
 {
 	mixin Constructors;
 	
-	string[] dependencyArgs ()
+	override string[] dependencyArgs ()
 	{
 		assert(0, "unimplemented");
 	}
 	
-	string[] buildArgs ()
+	override string[] buildArgs ()
 	{
 		assert(0, "unimplemented");
 	}
@@ -235,12 +238,12 @@ class Shell : Builder
 {
 	mixin Constructors;
 	
-	string[] dependencyArgs ()
+	override string[] dependencyArgs ()
 	{
 		assert(0, "unimplemented");
 	}
 	
-	string[] buildArgs ()
+	override string[] buildArgs ()
 	{
 		assert(0, "unimplemented");
 	}
@@ -250,12 +253,12 @@ class Source : Builder
 {
 	mixin Constructors;
 	
-	string[] dependencyArgs ()
+	override string[] dependencyArgs ()
 	{
 		assert(0, "unimplemented");
 	}
 	
-	string[] buildArgs ()
+	override string[] buildArgs ()
 	{
 		assert(0, "unimplemented");
 	}

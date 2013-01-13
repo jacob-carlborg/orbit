@@ -211,7 +211,7 @@ class Orb
 		return target_ = target_;
 	}
 	
-	string toString ()
+	override string toString ()
 	{
 		return version_.isValid ? fullName : name;
 	}

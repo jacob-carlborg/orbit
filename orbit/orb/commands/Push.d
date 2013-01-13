@@ -21,7 +21,7 @@ class Push : Command
 		super("push", "Push an orb up to DOrbit.org.");
 	}
 	
-	void execute ()
+	override void execute ()
 	{
 		scope repository = Repository.instance(arguments.source);
 		scope orb = Orb.load(orbPath);

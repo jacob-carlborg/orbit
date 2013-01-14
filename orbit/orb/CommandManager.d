@@ -33,7 +33,7 @@ class CommandManager
 			if (*c)
 				return *c;
 		
-		throw new MissingCommandException(`The command "` ~ command ~ `" was missing.`, __FILE__, __LINE__);
+		throw new MissingCommandException(`The command "` ~ command ~ `" was missing.`);
 	}
 	
 	string[] names ()
@@ -67,7 +67,7 @@ class CommandManager
 		auto classInfo = ClassInfo.find(command);
 
 		if (!classInfo)
-			throw new MissingCommandException(`The command "` ~ command ~ `" was missing.`, __FILE__, __LINE__);
+			throw new MissingCommandException(`The command "` ~ command ~ `" was missing.`);
 		
 		return cast(Command) classInfo.create;
 	}

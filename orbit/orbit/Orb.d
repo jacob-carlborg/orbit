@@ -6,8 +6,6 @@
  */
 module orbit.orbit.Orb;
 
-import tango.text.Util;
-
 import mambo.serialization.Serializable;
 import mambo.serialization.Events;
 

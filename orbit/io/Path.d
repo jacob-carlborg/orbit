@@ -16,7 +16,6 @@ import tango.sys.Environment;
 
 import mambo.core._;
 
-alias Environment.toAbsolute toAbsolute;
 alias Environment.cwd workingDirectory;
 
 bool isSymlink (string path)
@@ -109,6 +108,11 @@ string join (string[] paths ...)
 	result ~= FS.paddedLeading(paths[$ - 1]);
 	
 	return result;
+}
+
+string toAbsolute (const(char)[] path)
+{
+	return Environment.toAbsolute(path.toMutable).assumeUnique;
 }
 
 version (Posix):

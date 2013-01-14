@@ -66,7 +66,7 @@ class Index
 		}
 
 		auto orb = new Orb(name, OrbVersion.invalid, repository.orbit);
-		throw new MissingOrbException(orb, repository, __FILE__, __LINE__);
+		throw new MissingOrbException(orb, repository);
 	}
 
 	Orb opIndex (Orb orb) 
@@ -75,7 +75,7 @@ class Index
 			if (auto o = orb.version_ in *t)
 				return *o;
 				
-		throw new MissingOrbException(orb, repository, __FILE__, __LINE__);
+		throw new MissingOrbException(orb, repository);
 	}
 	
 	Orb[OrbVersion][string] orbs () 

@@ -6,7 +6,6 @@
  */
 module orbit.orbit.OrbVersion;
 
-import tango.text.Util;
 import tango.util.Convert;
 
 import mambo.core._;

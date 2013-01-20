@@ -1,6 +1,9 @@
 Given /^an orbspec named "([^"]*)"$/ do |name|
   write_file "foo.d", 'module foo;'
-  write_file "test.d", 'module test;'
+  write_file "test.d", <<-eos
+    module test;
+    void main () {}
+  eos
   write_file "dsss.conf", <<-eos
     [test.d]
     target = bin/#{name}
@@ -18,7 +21,10 @@ end
 
 Given /^an orbspec named "([^"]*)" with a dependency on "([^"]*)"$/ do |name, dependency|
   write_file "foo.d", 'module foo;'
-  write_file "test.d", 'module test;'
+  write_file "test.d", <<-eos
+    module test;
+    void main () {}
+  eos
   write_file "dsss.conf", <<-eos
     [test.d]
     target = bin/#{name}

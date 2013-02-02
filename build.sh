@@ -5,4 +5,4 @@ if [ -s "$HOME/.dvm/scripts/dvm" ] ; then
     dvm use 2.061
 fi
 
-rdmd --build-only -ofbin/orb -m32 -Idstack/dstack -Idstack/mambo -L-lruby.1.9.1-static -J./resources -L-ltango -L-lz "$@" orbit/orb/Orb.d
+rdmd --build-only -ofbin/orb -m32 -Idstack -Idstack/mambo -L-lruby.1.9.1-static -J./resources -L-ltango -L-lz "$@" orbit/orb/Orb.d

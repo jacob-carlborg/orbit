@@ -7,28 +7,31 @@
 module orbit.orb.commands.Push;
 
 import mambo.core._;
+
+import dstack.controller.Command;
+
 import Path = orbit.io.Path;
 import orbit.orbit.Orb;
 import orbit.orbit.OrbVersion;
 import orbit.orbit.Repository;
 
-import orbit.orb.Command;
-
 class Push : Command
 {
 	this ()
 	{
-		super("push", "Push an orb up to DOrbit.org.");
+		//super("push", "Push an orb up to DOrbit.org.");
 	}
-	
-	override void execute ()
+
+	protected override bool run ()
 	{
 		scope repository = Repository.instance(arguments.source);
 		scope orb = Orb.load(orbPath);
 
 		repository.api.upload(orb);
+
+		return true;
 	}
-	
+
 	protected override void setupArguments ()
 	{
 		arguments.source
@@ -36,9 +39,9 @@ class Push : Command
 			.params(1)
 			.help("URL or local path used as the remote source for orbs.");
 	}
-	
+
 private:
-	
+
 	string orbPath ()
 	{
 		auto path = Path.toAbsolute(cast(char[]) arguments.first).assumeUnique;

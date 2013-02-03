@@ -7,14 +7,16 @@
 module orbit.orb.Application;
 
 //import tango.core.tools.TraceExceptions;
-import DStack = dstack.application.Application;
 
 import mambo.core._;
 import mambo.util.Singleton;
 import mambo.util.Use;
 
+import DStack = dstack.application.Application;
+import dstack.controller.CommandManager;
+
 import orbit.dsl.Specification;
-import orbit.orb.CommandManager;
+import orbit.orb.commands._;
 import orbit.orb.Options;
 import orbit.orb.util.OptionParser;
 import orbit.orbit.Exceptions;
@@ -23,45 +25,20 @@ class Application : DStack.Application
 {
 	mixin Singleton;
 
-	private
-	{
-		CommandManager commandManager;
-	}
-
-	protected override void initialize ()
-	{
-		super.initialize();
-
-		handleCommands();
-		commandManager = CommandManager.instance;
-		registerCommands();
-	}
-
 	protected override void setupArguments ()
 	{
 		arguments('v', "verbose", "Show additional output");
 	}
 
+	protected override void registerCommands (CommandManager manager)
+	{
+		manager.register!(Build);
+		manager.register!(Fetch);
+		manager.register!(Install);
+		manager.register!(Push);
+	}
+
 private:
-
-	void registerCommands ()
-	{
-		commandManager.register("build", "orbit.orb.commands.Build.Build");
-		commandManager.register("fetch", "orbit.orb.commands.Fetch.Fetch");
-		commandManager.register("install", "orbit.orb.commands.Install.Install");
-		commandManager.register("push", "orbit.orb.commands.Push.Push");
-	}
-
-	void handleCommand (string command, string[] args)
-	{
-		commandManager[command].invoke(args);
-	}
-
-	void handleCommands ()
-	{
-		if (arguments.args.any)
-			handleCommand(arguments.args[0], arguments.args[1 .. $]);
-	}
 
 	// void parseOptions ()
 	// {

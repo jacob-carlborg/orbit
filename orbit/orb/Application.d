@@ -28,8 +28,10 @@ class Application : DStack.Application
 		CommandManager commandManager;
 	}
 
-	protected override void run ()
+	protected override void initialize ()
 	{
+		super.initialize();
+
 		handleCommands();
 		commandManager = CommandManager.instance;
 		registerCommands();

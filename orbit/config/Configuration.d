@@ -6,7 +6,7 @@
  */
 module orbit.config.Configuration;
 
-import DStack = dstack.application.Configuration;
+import DStack = dstack.component.Configuration;
 
 class Configuration : DStack.Configuration
 {

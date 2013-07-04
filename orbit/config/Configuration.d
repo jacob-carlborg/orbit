@@ -6,9 +6,11 @@
  */
 module orbit.config.Configuration;
 
-import DStack = dstack.component.Configuration;
+import mambo.util.Singleton;
 
-class Configuration : DStack.Configuration
+import dstack.application.Configuration;
+
+class Configuration : dstack.application.Configuration.Configuration
 {
 	auto appName = "orb";
 	auto appVersion = "0.0.1";

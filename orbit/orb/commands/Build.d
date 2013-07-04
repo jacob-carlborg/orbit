@@ -25,15 +25,15 @@ class Build : Command
 	}
 
 	protected override bool run ()
-	{
-		auto currentWorkingDirectory = Path.workingDirectory;
+	{println("asd");
+		/*auto currentWorkingDirectory = Path.workingDirectory;
 		Path.workingDirectory = workingDirectory;
 
 		auto spec = Specification.load(orbspecPath);
 		scope archiver = new Archiver(spec, output);
 		archiver.archive;
 
-		Path.workingDirectory = currentWorkingDirectory;
+		Path.workingDirectory = currentWorkingDirectory;*/
 
 		return true;
 	}

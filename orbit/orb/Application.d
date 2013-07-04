@@ -12,7 +12,7 @@ import mambo.core._;
 import mambo.util.Singleton;
 import mambo.util.Use;
 
-import DStack = dstack.application.Application;
+import dstack.application.Application;
 import dstack.controller.CommandManager;
 
 import orbit.dsl.Specification;
@@ -21,9 +21,9 @@ import orbit.orb.Options;
 import orbit.orb.util.OptionParser;
 import orbit.orbit.Exceptions;
 
-class Application : DStack.Application
+class Application : dstack.application.Application.Application
 {
-	mixin Singleton;
+    mixin Singleton;
 
 	protected override void setupArguments ()
 	{

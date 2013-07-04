@@ -6,11 +6,14 @@
  */
 module orbit.orb.Orb;
 
+import dstack.application.DStack;
 import orbit.orb.Application;
 import orbit.config.Configuration;
 
 int main (string[] args)
 {
-	Application.instance.config = new Configuration;
+    DStack.application = Application.instance;
+	DStack.config = new Configuration;
+
 	return Application.start(args);
 }

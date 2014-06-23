@@ -25,7 +25,7 @@ class Build : Command
 	}
 
 	protected override bool run ()
-	{println("asd");
+	{
 		/*auto currentWorkingDirectory = Path.workingDirectory;
 		Path.workingDirectory = workingDirectory;
 

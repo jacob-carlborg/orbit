@@ -15,5 +15,5 @@ int main (string[] args)
     DStack.application = Application.instance;
 	DStack.config = new Configuration;
 
-	return Application.start(args);
+	return DStack.application.start(args);
 }

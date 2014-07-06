@@ -13,6 +13,7 @@ import mambo.util.Singleton;
 import mambo.util.Use;
 
 import dstack.application.Application;
+import dstack.application.ArgumentsFormatter;
 import dstack.controller.CommandManager;
 
 import orbit.dsl.Specification;
@@ -28,6 +29,8 @@ class Application : dstack.application.Application.Application
 	protected override void setupArguments ()
 	{
 		arguments('v', "verbose", "Show additional output");
+		arguments.positional("input", "input file");
+		arguments.command("build", "builds the orbit");
 	}
 
 	protected override void registerCommands (CommandManager manager)
